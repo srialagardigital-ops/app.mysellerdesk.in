@@ -1806,18 +1806,32 @@ tbody td{padding:13px 22px;font-size:13px;}
 // ⚠️  SUPABASE MIGRATION (run once in SQL editor):
 //   ALTER TABLE settings ADD COLUMN IF NOT EXISTS features JSONB DEFAULT '{"cod":true,"reports":true}'::jsonb;
 //
+// ── Cookie adapter: session shared across subdomains (.mysellerdesk.in) ──
+const _sdCookieAdapter = {
+  getItem(key){
+    const match = document.cookie.split('; ').find(r => r.startsWith(key + '='));
+    return match ? decodeURIComponent(match.split('=').slice(1).join('=')) : null;
+  },
+  setItem(key, value){
+    const exp = new Date(Date.now() + 7*24*60*60*1000).toUTCString();
+    document.cookie = key+'='+encodeURIComponent(value)+'; Expires='+exp+'; Path=/; Domain=.mysellerdesk.in; SameSite=Lax; Secure';
+  },
+  removeItem(key){
+    document.cookie = key+'=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/; Domain=.mysellerdesk.in';
+    document.cookie = key+'=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/';
+  }
+};
+
 const _supa = window.supabase.createClient(
   window.SELLERDESK_CONFIG.SUPABASE_URL,
   window.SELLERDESK_CONFIG.SUPABASE_ANON_KEY,
   {
     auth: {
       storageKey: 'sd_supabase_auth',
-      storage: window.localStorage,
-      cookieOptions: {
-        domain: '.mysellerdesk.in',
-        sameSite: 'Lax',
-        secure: true
-      }
+      storage: _sdCookieAdapter,
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true
     }
   }
 );
