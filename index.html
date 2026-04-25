@@ -633,149 +633,157 @@ tbody td{padding:13px 22px;font-size:13px;}
 <!-- ══════════════════════════════════════
   LOGIN OVERLAY — shown when no session
 ══════════════════════════════════════ -->
-<div id="sdLoginOverlay" style="display:flex;position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0e2040 0%,#1e3a5f 50%,#0e2040 100%);align-items:center;justify-content:center;">
+<div id="sdLoginOverlay" style="display:flex;position:fixed;inset:0;z-index:9999;background:#f0f4ff;align-items:center;justify-content:center;">
 
-  <!-- Animated background blobs -->
-  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
-    <div style="position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,0.15) 0%,transparent 70%);top:-100px;left:-100px;animation:sdBlob1 8s ease-in-out infinite;"></div>
-    <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,92,191,0.12) 0%,transparent 70%);bottom:-80px;right:-80px;animation:sdBlob2 10s ease-in-out infinite;"></div>
-    <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,0.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:sdBlob1 6s ease-in-out infinite reverse;"></div>
+  <!-- Decorative side panel (left) -->
+  <div style="position:absolute;left:0;top:0;bottom:0;width:42%;background:linear-gradient(160deg,#0e2040 0%,#1e3a5f 60%,#378add 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;pointer-events:none;">
+    <div style="width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px;">🛍️</div>
+    <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;text-align:center;line-height:1.1;">My Seller<span style="color:#5ba0e8;">Desk</span></div>
+    <div style="width:48px;height:3px;background:rgba(255,255,255,0.25);border-radius:2px;margin:16px 0;"></div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.55);text-align:center;line-height:1.7;max-width:220px;">Manage your orders,<br>customers & invoices<br>— all in one place.</div>
+    <div style="position:absolute;bottom:30px;font-size:11px;color:rgba(255,255,255,0.2);">© 2026 MySellerDesk</div>
+    <!-- decorative circles -->
+    <div style="position:absolute;width:300px;height:300px;border-radius:50%;border:1px solid rgba(255,255,255,0.05);top:-60px;left:-80px;"></div>
+    <div style="position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,255,255,0.05);bottom:40px;right:-40px;"></div>
   </div>
 
-  <div id="sdLoginCard" style="position:relative;z-index:1;width:100%;max-width:420px;margin:20px;background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px 36px;box-shadow:0 32px 80px rgba(0,0,0,0.5);">
+  <!-- Right side - white card -->
+  <div id="sdLoginCard" style="position:absolute;right:0;top:0;bottom:0;width:58%;display:flex;align-items:center;justify-content:center;padding:40px;">
+    <div style="width:100%;max-width:400px;">
 
-    <!-- Brand -->
-    <div style="text-align:center;margin-bottom:28px;">
-      <div style="width:52px;height:52px;border-radius:14px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px;">🛍️</div>
-      <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.5px;">My Seller<span style="color:var(--accent);">Desk</span></div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Instagram CRM</div>
+      <!-- Title -->
+      <div style="margin-bottom:28px;">
+        <div style="font-size:22px;font-weight:900;color:#0e2040;letter-spacing:-0.5px;margin-bottom:4px;">Welcome back 👋</div>
+        <div style="font-size:13px;color:#5a7499;font-weight:500;">Sign in to continue to your dashboard</div>
+      </div>
+
+      <!-- Reason banner -->
+      <div id="sdLoginReason" style="display:none;background:#fdf0f0;border:1px solid #f5c5c5;border-radius:10px;padding:10px 14px;font-size:12px;color:#c94040;text-align:center;margin-bottom:18px;"></div>
+      <!-- Error banner -->
+      <div id="sdLoginError" style="display:none;background:#fdf0f0;border:1px solid #f5c5c5;border-radius:10px;padding:10px 14px;font-size:12px;color:#c94040;text-align:center;margin-bottom:14px;"></div>
+      <!-- Success banner -->
+      <div id="sdLoginSuccess" style="display:none;background:#edf7f2;border:1px solid #a8dfca;border-radius:10px;padding:10px 14px;font-size:12px;color:#2d9e6b;text-align:center;margin-bottom:14px;"></div>
+
+      <!-- TAB SWITCHER -->
+      <div style="display:flex;background:#f0f4ff;border-radius:10px;padding:3px;margin-bottom:24px;gap:2px;" id="sdAuthTabBar">
+        <button id="sdTabLogin"  onclick="sdSwitchTab('login')"  style="flex:1;padding:9px;border-radius:8px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;background:#378add;color:#fff;transition:all 0.2s;box-shadow:0 2px 8px rgba(55,138,221,0.3);">Sign In</button>
+        <button id="sdTabSignup" onclick="sdSwitchTab('signup')" style="flex:1;padding:9px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;background:transparent;color:#5a7499;transition:all 0.2s;">Sign Up</button>
+        <button id="sdTabForgot" onclick="sdSwitchTab('forgot')" style="display:none;"></button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="sdFormLogin">
+        <button id="sdGoogleBtn" onclick="sdLoginWithGoogle()" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid #c5d4ec;background:#fff;color:#0e2040;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;margin-bottom:18px;box-shadow:0 1px 4px rgba(14,32,64,0.06);">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
+          Continue with Google
+        </button>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+          <div style="flex:1;height:1px;background:#dde6f5;"></div>
+          <span style="font-size:11px;color:#8aaac8;font-weight:600;letter-spacing:1px;">OR</span>
+          <div style="flex:1;height:1px;background:#dde6f5;"></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
+          <input id="sdLoginEmail" type="email" placeholder="you@example.com" autocomplete="email"
+            style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
+            onkeydown="if(event.key==='Enter')document.getElementById('sdLoginPass').focus()">
+        </div>
+        <div style="margin-bottom:22px;position:relative;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password</label>
+          <input id="sdLoginPass" type="password" placeholder="••••••••" autocomplete="current-password"
+            style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
+            onkeydown="if(event.key==='Enter')sdLoginWithEmail()">
+          <span onclick="sdTogglePass('sdLoginPass',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;font-size:16px;color:#8aaac8;user-select:none;">👁️</span>
+        </div>
+        <button id="sdSignInBtn" onclick="sdLoginWithEmail()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#378add 0%,#5ba0e8 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.2px;transition:all 0.2s;box-shadow:0 4px 16px rgba(55,138,221,0.35);">
+          Sign In →
+        </button>
+        <div style="text-align:center;margin-top:16px;">
+          <span style="font-size:12px;color:#8aaac8;">New user? </span>
+          <button onclick="sdSwitchTab('signup')" style="font-size:12px;color:#378add;background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">Create account</button>
+        </div>
+        <div style="text-align:center;margin-top:10px;">
+          <button onclick="sdSwitchTab('forgot')" style="font-size:12px;color:#8aaac8;background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;text-decoration:underline;">Forgot password?</button>
+        </div>
+      </div>
+
+      <!-- SIGN UP FORM -->
+      <div id="sdFormSignup" style="display:none;">
+        <button id="sdGoogleSignupBtn" onclick="sdLoginWithGoogle()" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid #c5d4ec;background:#fff;color:#0e2040;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;margin-bottom:18px;box-shadow:0 1px 4px rgba(14,32,64,0.06);">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
+          Sign Up with Google
+        </button>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+          <div style="flex:1;height:1px;background:#dde6f5;"></div>
+          <span style="font-size:11px;color:#8aaac8;font-weight:600;letter-spacing:1px;">OR</span>
+          <div style="flex:1;height:1px;background:#dde6f5;"></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
+          <input id="sdSignupEmail" type="email" placeholder="you@example.com" autocomplete="email"
+            style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
+            onkeydown="if(event.key==='Enter')document.getElementById('sdSignupPass').focus()">
+        </div>
+        <div style="margin-bottom:14px;position:relative;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password</label>
+          <input id="sdSignupPass" type="password" placeholder="••••••••" autocomplete="new-password"
+            style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
+            onkeydown="if(event.key==='Enter')document.getElementById('sdSignupPassConfirm').focus()">
+          <span onclick="sdTogglePass('sdSignupPass',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;font-size:16px;color:#8aaac8;user-select:none;">👁️</span>
+        </div>
+        <div style="margin-bottom:22px;position:relative;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Confirm Password</label>
+          <input id="sdSignupPassConfirm" type="password" placeholder="••••••••" autocomplete="new-password"
+            style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
+            onkeydown="if(event.key==='Enter')sdSignupWithEmail()">
+          <span onclick="sdTogglePass('sdSignupPassConfirm',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;font-size:16px;color:#8aaac8;user-select:none;">👁️</span>
+        </div>
+        <button id="sdSignUpBtn" onclick="sdSignupWithEmail()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#2d9e6b 0%,#38c77e 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.2px;transition:all 0.2s;box-shadow:0 4px 16px rgba(45,158,107,0.3);">
+          Create Account →
+        </button>
+        <div style="text-align:center;margin-top:16px;">
+          <span style="font-size:12px;color:#8aaac8;">Already have an account? </span>
+          <button onclick="sdSwitchTab('login')" style="font-size:12px;color:#378add;background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">Sign In</button>
+        </div>
+      </div>
+
+      <!-- FORGOT PASSWORD FORM -->
+      <div id="sdFormForgot" style="display:none;">
+        <p style="font-size:13px;color:#5a7499;text-align:center;margin-bottom:20px;line-height:1.6;">உங்கள் email-ஐ enter செய்யுங்கள். Password reset link அனுப்புகிறோம்.</p>
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
+          <input id="sdForgotEmail" type="email" placeholder="you@example.com"
+            style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
+            onkeydown="if(event.key==='Enter')sdSendReset()">
+        </div>
+        <button id="sdResetBtn" onclick="sdSendReset()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#378add 0%,#5ba0e8 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 4px 16px rgba(55,138,221,0.35);">
+          Send Reset Link 📧
+        </button>
+        <div style="text-align:center;margin-top:16px;">
+          <button onclick="sdSwitchTab('login')" style="font-size:12px;color:#378add;background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">← Back to Sign In</button>
+        </div>
+      </div>
+
     </div>
-
-    <!-- Reason banner -->
-    <div id="sdLoginReason" style="display:none;background:rgba(201,64,64,0.15);border:1px solid rgba(201,64,64,0.3);border-radius:10px;padding:10px 14px;font-size:12px;color:#ff9999;text-align:center;margin-bottom:18px;"></div>
-
-    <!-- Error banner -->
-    <div id="sdLoginError" style="display:none;background:rgba(201,64,64,0.15);border:1px solid rgba(201,64,64,0.3);border-radius:10px;padding:10px 14px;font-size:12px;color:#ff9999;text-align:center;margin-bottom:14px;"></div>
-
-    <!-- Success banner -->
-    <div id="sdLoginSuccess" style="display:none;background:rgba(45,158,107,0.15);border:1px solid rgba(45,158,107,0.3);border-radius:10px;padding:10px 14px;font-size:12px;color:#6fdfb0;text-align:center;margin-bottom:14px;"></div>
-
-    <!-- ── TAB SWITCHER ── -->
-    <div style="display:flex;background:rgba(255,255,255,0.06);border-radius:10px;padding:3px;margin-bottom:24px;gap:2px;" id="sdAuthTabBar">
-      <button id="sdTabLogin"  onclick="sdSwitchTab('login')"  style="flex:1;padding:8px;border-radius:8px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;background:rgba(55,138,221,0.8);color:#fff;transition:all 0.2s;">Sign In</button>
-      <button id="sdTabSignup" onclick="sdSwitchTab('signup')" style="flex:1;padding:8px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;background:transparent;color:rgba(255,255,255,0.45);transition:all 0.2s;">Sign Up</button>
-      <button id="sdTabForgot" onclick="sdSwitchTab('forgot')" style="flex:1;padding:8px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;background:transparent;color:rgba(255,255,255,0.45);transition:all 0.2s;">Forgot</button>
-    </div>
-
-    <!-- ── LOGIN FORM ── -->
-    <div id="sdFormLogin">
-      <!-- Google OAuth -->
-      <button id="sdGoogleBtn" onclick="sdLoginWithGoogle()" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;margin-bottom:18px;">
-        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
-        Continue with Google
-      </button>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
-        <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
-        <span style="font-size:11px;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:1px;">OR</span>
-        <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
-      </div>
-      <div style="margin-bottom:14px;">
-        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
-        <input id="sdLoginEmail" type="email" placeholder="you@example.com" autocomplete="email"
-          style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
-          onkeydown="if(event.key==='Enter')document.getElementById('sdLoginPass').focus()">
-      </div>
-      <div style="margin-bottom:22px;position:relative;">
-        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password</label>
-        <input id="sdLoginPass" type="password" placeholder="••••••••" autocomplete="current-password"
-          style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
-          onkeydown="if(event.key==='Enter')sdLoginWithEmail()">
-        <span onclick="sdTogglePass('sdLoginPass',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;font-size:16px;color:rgba(255,255,255,0.3);user-select:none;">👁️</span>
-      </div>
-      <button id="sdSignInBtn" onclick="sdLoginWithEmail()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--accent) 0%,#5ba0e8 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.2px;transition:all 0.2s;box-shadow:0 4px 20px rgba(55,138,221,0.35);">
-        Sign In →
-      </button>
-      <div style="text-align:center;margin-top:16px;">
-        <span style="font-size:12px;color:rgba(255,255,255,0.3);">New user? </span>
-        <button onclick="sdSwitchTab('signup')" style="font-size:12px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">Create account</button>
-      </div>
-    </div>
-
-    <!-- ── SIGN UP FORM ── -->
-    <div id="sdFormSignup" style="display:none;">
-      <button id="sdGoogleSignupBtn" onclick="sdLoginWithGoogle()" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;margin-bottom:18px;">
-        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
-        Sign Up with Google
-      </button>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
-        <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
-        <span style="font-size:11px;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:1px;">OR</span>
-        <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
-      </div>
-      <div style="margin-bottom:14px;">
-        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
-        <input id="sdSignupEmail" type="email" placeholder="you@example.com" autocomplete="email"
-          style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
-          onkeydown="if(event.key==='Enter')document.getElementById('sdSignupPass').focus()">
-      </div>
-      <div style="margin-bottom:14px;position:relative;">
-        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password</label>
-        <input id="sdSignupPass" type="password" placeholder="••••••••" autocomplete="new-password"
-          style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
-          onkeydown="if(event.key==='Enter')document.getElementById('sdSignupPassConfirm').focus()">
-        <span onclick="sdTogglePass('sdSignupPass',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;font-size:16px;color:rgba(255,255,255,0.3);user-select:none;">👁️</span>
-      </div>
-      <div style="margin-bottom:22px;position:relative;">
-        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Confirm Password</label>
-        <input id="sdSignupPassConfirm" type="password" placeholder="••••••••" autocomplete="new-password"
-          style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
-          onkeydown="if(event.key==='Enter')sdSignupWithEmail()">
-        <span onclick="sdTogglePass('sdSignupPassConfirm',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;font-size:16px;color:rgba(255,255,255,0.3);user-select:none;">👁️</span>
-      </div>
-      <button id="sdSignUpBtn" onclick="sdSignupWithEmail()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#2d9e6b 0%,#38c77e 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.2px;transition:all 0.2s;box-shadow:0 4px 20px rgba(45,158,107,0.35);">
-        Create Account →
-      </button>
-      <div style="text-align:center;margin-top:16px;">
-        <span style="font-size:12px;color:rgba(255,255,255,0.3);">Already have an account? </span>
-        <button onclick="sdSwitchTab('login')" style="font-size:12px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">Sign In</button>
-      </div>
-    </div>
-
-    <!-- ── FORGOT PASSWORD FORM ── -->
-    <div id="sdFormForgot" style="display:none;">
-      <p style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;margin-bottom:20px;line-height:1.6;">உங்கள் email-ஐ enter செய்யுங்கள். Password reset link அனுப்புகிறோம்.</p>
-      <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
-        <input id="sdForgotEmail" type="email" placeholder="you@example.com"
-          style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
-          onkeydown="if(event.key==='Enter')sdSendReset()">
-      </div>
-      <button id="sdResetBtn" onclick="sdSendReset()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--accent) 0%,#5ba0e8 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 4px 20px rgba(55,138,221,0.35);">
-        Send Reset Link 📧
-      </button>
-      <div style="text-align:center;margin-top:16px;">
-        <button onclick="sdSwitchTab('login')" style="font-size:12px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">← Back to Sign In</button>
-      </div>
-    </div>
-
   </div>
-
-  <!-- Footer -->
-  <div style="position:absolute;bottom:20px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,0.2);">© 2026 MySellerDesk · Secure Login</div>
 </div>
 
 <style>
 @keyframes sdBlob1{0%,100%{transform:scale(1) translate(0,0);}50%{transform:scale(1.1) translate(20px,20px);}}
 @keyframes sdBlob2{0%,100%{transform:scale(1) translate(0,0);}50%{transform:scale(0.95) translate(-15px,10px);}}
-#sdLoginOverlay input::placeholder{color:rgba(255,255,255,0.25);}
-#sdSignInBtn:hover,#sdResetBtn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(55,138,221,0.5);}
-#sdGoogleBtn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);}
+#sdLoginOverlay input::placeholder{color:#aabdd4;}
+#sdSignInBtn:hover,#sdResetBtn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(55,138,221,0.45);}
+#sdGoogleBtn:hover,#sdGoogleSignupBtn:hover{background:#f0f4ff;border-color:#378add;}
+@media(max-width:640px){
+  #sdLoginOverlay > div:first-child{display:none!important;}
+  #sdLoginCard{position:relative!important;width:100%!important;left:0!important;right:0!important;padding:24px!important;background:#fff!important;min-height:100vh!important;align-items:flex-start!important;padding-top:60px!important;}
+}
 </style>
 
 <script>
@@ -3270,130 +3278,129 @@ function confirmDispatch(){
 function buildBillHTML(order, s, forPrint){
   const qrSvg = generateQR(`wa.me/91${(s.phone||'').replace(/\D/,'')}`, forPrint ? 100 : 88);
   const noteText = s.billnote || 'Please take a video while opening the parcel. Without unboxing video, damage claims will not be accepted.';
-  const upiText = s.upi ? s.upi : 'UPI / Gpay / Phonepe / Paytm';
   const tagline = s.tagline || '';
-  const shopAddr = s.address || s.city || '';
+  const shopAddr = [s.address, s.district].filter(Boolean).join(', ');
+  const isPaid = order.payment === 'paid';
+  const accentColor = '#378add';
+  const accentDark = '#0e2040';
 
   return `
-  <div style="font-family:Arial,sans-serif;background:#fff;color:#111;font-size:13px;max-width:600px;margin:0 auto;border:1.5px solid #ddd;border-radius:8px;overflow:hidden;">
+  <div style="font-family:'Segoe UI',Arial,sans-serif;background:#fff;color:#1a1a2e;font-size:13px;max-width:600px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(55,138,221,0.13);border:1.5px solid #c5d4ec;">
 
-    
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:3px solid #111;background:#fff;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="font-size:36px;line-height:1;">🎁</div>
+    <!-- HEADER -->
+    <div style="background:linear-gradient(135deg,${accentDark} 0%,#1e3a5f 60%,${accentColor} 100%);padding:22px 24px 18px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid rgba(255,255,255,0.25);">🛍️</div>
         <div>
-          <div style="font-size:24px;font-weight:900;letter-spacing:-0.5px;line-height:1;">${s.shopName}</div>
-          ${tagline ? `<div style="font-size:12px;color:#555;font-style:italic;margin-top:1px;">${tagline}</div>` : ''}
-          ${shopAddr ? `<div style="font-size:11px;color:#777;margin-top:4px;">${shopAddr}</div>` : ''}
+          <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px;line-height:1.1;">${s.shopName}</div>
+          ${tagline ? `<div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px;font-style:italic;">${tagline}</div>` : ''}
+          ${shopAddr ? `<div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:3px;">📍 ${shopAddr}</div>` : ''}
         </div>
       </div>
-      <div style="text-align:right;font-size:11px;color:#555;">
-        ${s.instagram ? `<div style="font-size:11px;font-weight:600;color:#e1306c;">📸 ${s.instagram}</div>` : ''}
-        ${s.facebook  ? `<div style="font-size:11px;font-weight:600;color:#1877f2;">📘 ${s.facebook}</div>`  : ''}
-        ${s.youtube   ? `<div style="font-size:11px;font-weight:600;color:#ff0000;">▶️ ${s.youtube}</div>`   : ''}
+      <div style="text-align:right;">
+        <div style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:10px;padding:8px 14px;">
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">INVOICE</div>
+          <div style="font-size:18px;font-weight:900;color:#fff;font-family:monospace;letter-spacing:1px;">${order.orderId ? '#ORD-'+order.orderId : '#ENQUIRY'}</div>
+        </div>
       </div>
     </div>
 
-    
-    <div style="text-align:center;padding:14px 20px 0;">
-      <div style="font-size:22px;font-weight:900;letter-spacing:1px;border-bottom:2px solid #111;padding-bottom:8px;">INVOICE / BILL</div>
-      <div style="background:#111;color:#fff;font-weight:700;font-size:12px;padding:6px 20px;border-radius:4px;display:inline-block;margin:10px 0;">Thank you for choosing ${s.shopName}!</div>
+    <!-- SOCIAL STRIP -->
+    ${(s.instagram||s.facebook||s.youtube) ? `
+    <div style="background:${accentColor};padding:7px 24px;display:flex;gap:16px;align-items:center;">
+      ${s.instagram ? `<span style="font-size:11px;font-weight:700;color:#fff;">📸 ${s.instagram}</span>` : ''}
+      ${s.facebook  ? `<span style="font-size:11px;font-weight:700;color:#fff;">📘 ${s.facebook}</span>`  : ''}
+      ${s.youtube   ? `<span style="font-size:11px;font-weight:700;color:#fff;">▶️ ${s.youtube}</span>`   : ''}
+    </div>` : ''}
+
+    <!-- INFO ROW -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:2px dashed #c5d4ec;margin:0 20px;">
+      <div style="padding:14px 10px 14px 0;border-right:2px dashed #c5d4ec;">
+        <div style="font-size:9px;font-weight:800;color:${accentColor};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Bill To</div>
+        <div style="font-size:14px;font-weight:800;color:${accentDark};margin-bottom:3px;">${order.name}</div>
+        <div style="font-size:11px;color:#5a7499;font-weight:600;">${order.phone}</div>
+        <div style="font-size:11px;color:#5a7499;margin-top:3px;line-height:1.4;">${order.address}${order.city ? ', '+order.city : ''}${order.pincode ? ' — '+order.pincode : ''}</div>
+      </div>
+      <div style="padding:14px 10px;border-right:2px dashed #c5d4ec;">
+        <div style="font-size:9px;font-weight:800;color:${accentColor};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Date</div>
+        <div style="font-size:13px;font-weight:700;color:${accentDark};margin-bottom:8px;">${order.date}</div>
+        <div style="font-size:9px;font-weight:800;color:${accentColor};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;">Order ID</div>
+        <div style="font-size:13px;font-weight:700;font-family:monospace;color:${accentDark};">${order.orderId ? '#ORD-'+order.orderId : '—'}</div>
+      </div>
+      <div style="padding:14px 0 14px 10px;">
+        <div style="font-size:9px;font-weight:800;color:${accentColor};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Payment</div>
+        <div style="display:inline-flex;align-items:center;gap:5px;background:${isPaid?'#edf7f2':'#fdf6e3'};border:1.5px solid ${isPaid?'#2d9e6b':'#d48c0e'};border-radius:8px;padding:4px 10px;margin-bottom:8px;">
+          <span style="font-size:12px;font-weight:800;color:${isPaid?'#2d9e6b':'#d48c0e'};">${isPaid ? '✅ Paid' : '⏳ COD'}</span>
+        </div>
+        <div style="font-size:9px;font-weight:800;color:${accentColor};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;">Courier</div>
+        <div style="font-size:12px;font-weight:700;color:${accentDark};">🚚 ${order.courier || 'Standard Delivery'}</div>
+      </div>
     </div>
 
-    
-    <div style="display:flex;gap:0;padding:0 20px;margin:12px 0;border-top:2px dashed #bbb;border-bottom:2px dashed #bbb;">
-      <div style="flex:1;padding:14px 14px 14px 0;border-right:2px dashed #bbb;">
-        <div style="font-size:13px;font-weight:900;text-decoration:underline;margin-bottom:10px;">INVOICE DETAILS</div>
-        <div style="margin-bottom:7px;font-size:13px;"><strong>Order No :</strong> <span style="font-family:monospace;">${order.orderId ? '#'+order.orderId : '(Enquiry — not confirmed)'}</span></div>
-        <div style="font-size:13px;"><strong>Date &nbsp;&nbsp;&nbsp;&nbsp;:</strong> ${order.date}</div>
-      </div>
-      <div style="flex:1.2;padding:14px 0 14px 18px;">
-        <div style="font-size:13px;font-weight:900;text-decoration:underline;margin-bottom:10px;">CUSTOMER DETAILS</div>
-        <div style="margin-bottom:6px;font-size:13px;"><strong>Name &nbsp;&nbsp;&nbsp;:</strong> ${order.name}</div>
-        <div style="margin-bottom:6px;font-size:13px;"><strong>Phone &nbsp;&nbsp;:</strong> ${order.phone}</div>
-        <div style="margin-bottom:4px;font-size:13px;"><strong>Address :</strong> ${order.address}</div>
-        ${order.city ? `<div style="font-size:12px;color:#555;"><strong>District :</strong> ${order.city}${order.pincode ? ' — '+order.pincode : ''}</div>` : ''}
-      </div>
-    </div>
-
-    
-    <div style="padding:0 20px 14px;">
-      <div style="font-size:13px;font-weight:900;text-decoration:underline;margin-bottom:10px;">ORDER DETAILS</div>
-      <table style="width:100%;border-collapse:collapse;">
+    <!-- PRODUCT TABLE -->
+    <div style="padding:16px 20px;">
+      <table style="width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;">
         <thead>
-          <tr style="background:#111;color:#fff;">
-            <th style="padding:8px 10px;text-align:center;width:32px;">#</th>
-            <th style="padding:8px 10px;text-align:left;">Item</th>
-            <th style="padding:8px 10px;text-align:center;width:60px;">Size</th>
-            <th style="padding:8px 10px;text-align:center;width:40px;">Qty</th>
-            <th style="padding:8px 10px;text-align:right;width:70px;">Price</th>
-            <th style="padding:8px 10px;text-align:right;width:70px;">Total</th>
+          <tr style="background:linear-gradient(90deg,${accentDark},#1e3a5f);">
+            <th style="padding:10px 12px;text-align:left;font-size:11px;color:rgba(255,255,255,0.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;">Product</th>
+            <th style="padding:10px 12px;text-align:center;font-size:11px;color:rgba(255,255,255,0.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;width:50px;">Qty</th>
+            <th style="padding:10px 12px;text-align:right;font-size:11px;color:rgba(255,255,255,0.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;width:80px;">Rate</th>
+            <th style="padding:10px 12px;text-align:right;font-size:11px;color:rgba(255,255,255,0.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;width:80px;">Total</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="border-bottom:1px solid #ddd;">
-            <td style="padding:10px;text-align:center;">1</td>
-            <td style="padding:10px;">${order.product}</td>
-            <td style="padding:10px;text-align:center;">—</td>
-            <td style="padding:10px;text-align:center;">1</td>
-            <td style="padding:10px;text-align:right;">₹${Number(order.amount).toLocaleString('en-IN')}</td>
-            <td style="padding:10px;text-align:right;font-weight:700;">₹${Number(order.amount).toLocaleString('en-IN')}</td>
+          <tr style="background:#f8faff;border-bottom:1.5px solid #e8f0fb;">
+            <td style="padding:12px;font-weight:600;color:${accentDark};">${order.product}${order.notes ? `<div style="font-size:10px;color:#8aaac8;font-style:italic;margin-top:3px;">${order.notes}</div>` : ''}</td>
+            <td style="padding:12px;text-align:center;font-weight:700;">1</td>
+            <td style="padding:12px;text-align:right;font-family:monospace;font-weight:600;">₹${Number(order.amount).toLocaleString('en-IN')}</td>
+            <td style="padding:12px;text-align:right;font-family:monospace;font-weight:800;color:${accentDark};">₹${Number(order.amount).toLocaleString('en-IN')}</td>
           </tr>
-          ${order.notes ? `<tr><td colspan="6" style="padding:6px 10px;font-size:11px;color:#777;font-style:italic;">Note: ${order.notes}</td></tr>` : ''}
         </tbody>
       </table>
-
-      
-      <div style="border-top:2px dashed #bbb;margin-top:10px;padding-top:10px;">
-        <div style="display:flex;justify-content:flex-end;gap:40px;font-size:13px;margin-bottom:5px;">
-          <span style="color:#555;font-weight:600;">Subtotal :</span>
-          <span style="font-family:monospace;min-width:80px;text-align:right;">₹${Number(order.amount).toLocaleString('en-IN')}</span>
-        </div>
-        <div style="display:flex;justify-content:flex-end;gap:40px;font-size:13px;margin-bottom:5px;">
-          <span style="color:#555;font-weight:600;">Shipping :</span>
-          <span style="font-family:monospace;min-width:80px;text-align:right;">₹0</span>
-        </div>
-      </div>
-      <div style="background:#ddd;border-radius:4px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-        <span style="font-size:14px;font-weight:900;">TOTAL AMOUNT</span>
-        <span style="font-size:16px;font-weight:900;font-family:monospace;">₹${Number(order.amount).toLocaleString('en-IN')}</span>
-      </div>
-      <div style="text-align:right;margin-top:6px;font-size:12px;font-weight:600;color:${order.payment==='paid'?'#2d9e6b':'#d48c0e'};">
-        ${order.payment==='paid' ? '✅ PAID' : '⏳ PENDING (COD)'}
-      </div>
-    </div>
-
-    
-    <div style="display:flex;gap:14px;padding:0 20px 18px;align-items:flex-start;">
-      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
-        
-        <div style="border:2px solid #111;border-radius:8px;padding:12px 14px;">
-          <div style="font-size:12px;font-weight:900;text-decoration:underline;margin-bottom:6px;">NOTES :</div>
-          <div style="font-size:11.5px;line-height:1.55;font-weight:600;font-style:italic;">"${noteText}"</div>
-        </div>
-        
-        <div style="border:2px solid #111;border-radius:8px;overflow:hidden;">
-          <div style="padding:8px 14px;font-size:12px;">
-            <div style="font-weight:900;text-decoration:underline;margin-bottom:5px;">Payment Method :</div>
-            <div style="font-size:12.5px;font-weight:700;">${s.upi || 'UPI / Gpay / Phonepe / Paytm'}</div>
-            ${s.instagram || s.facebook || s.youtube ? `<div style="font-size:10px;color:#555;margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;">${s.instagram?`<span>📸 ${s.instagram}</span>`:''}${s.facebook?`<span>📘 ${s.facebook}</span>`:''}${s.youtube?`<span>▶️ ${s.youtube}</span>`:''}</div>` : ''}
+      <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+        <div style="width:260px;">
+          <div style="display:flex;justify-content:space-between;padding:6px 12px;font-size:12px;color:#5a7499;font-weight:600;">
+            <span>Subtotal</span><span style="font-family:monospace;">₹${Number(order.amount).toLocaleString('en-IN')}</span>
           </div>
-          <div style="background:#111;color:#fff;text-align:center;padding:7px;font-size:12px;font-weight:700;">Thank you for your Payment!</div>
+          <div style="display:flex;justify-content:space-between;padding:6px 12px;font-size:12px;color:#5a7499;font-weight:600;">
+            <span>Shipping</span><span style="font-family:monospace;">₹0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 14px;background:linear-gradient(90deg,${accentColor},#5ba0e8);border-radius:10px;margin-top:6px;">
+            <span style="font-size:14px;font-weight:900;color:#fff;">TOTAL</span>
+            <span style="font-size:16px;font-weight:900;color:#fff;font-family:monospace;">₹${Number(order.amount).toLocaleString('en-IN')}</span>
+          </div>
         </div>
-      </div>
-      
-      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:110px;">
-        ${qrSvg}
-        ${s.phone ? `<div style="font-size:12px;font-weight:700;">📱 ${s.phone}</div>` : ''}
       </div>
     </div>
 
-    
-    <div style="background:#111;color:#fff;text-align:center;padding:12px;font-size:16px;font-weight:900;letter-spacing:1px;">
-      <span style="font-style:italic;">ⓘ</span> ${s.instagram || s.shopName}
+    <!-- NOTES + QR -->
+    <div style="display:flex;gap:14px;padding:0 20px 20px;align-items:stretch;">
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+        <div style="background:#f0f4ff;border:1.5px solid #c5d4ec;border-left:4px solid ${accentColor};border-radius:10px;padding:12px 14px;">
+          <div style="font-size:9px;font-weight:800;color:${accentColor};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">📋 Important Note</div>
+          <div style="font-size:11px;line-height:1.6;color:#3a5070;font-style:italic;">"${noteText}"</div>
+        </div>
+        ${s.upi ? `
+        <div style="background:#f8faff;border:1.5px solid #c5d4ec;border-radius:10px;padding:10px 14px;">
+          <div style="font-size:9px;font-weight:800;color:${accentColor};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;">💳 Payment Method</div>
+          <div style="font-size:12px;font-weight:700;color:${accentDark};">${s.upi}</div>
+        </div>` : ''}
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:110px;background:#f0f4ff;border:1.5px solid #c5d4ec;border-radius:12px;padding:12px;">
+        ${qrSvg}
+        ${s.phone ? `<div style="font-size:11px;font-weight:700;color:${accentDark};">📱 ${s.phone}</div>` : ''}
+        <div style="font-size:9px;color:#8aaac8;font-weight:600;">Scan to WhatsApp</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="background:linear-gradient(135deg,${accentDark},#1e3a5f);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:13px;font-weight:900;color:#fff;">Thank you for shopping! 🎉</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);">${s.instagram || s.shopName}</div>
     </div>
   </div>`;
 }
+
 
 function openBill(id){
   const order = DB.getOrders().find(o => o.id === id);
@@ -3833,12 +3840,20 @@ function saveSettingsFromModal(){
   };
   AppState.settings = { ...s, onboarded: true };
   const uid = AppState._uid;
-  if(uid){
-    _supa.from('settings').upsert({...s, onboarded: true, features: AppState.features, user_id: uid, id: uid}, {onConflict:'id'}).then();
-  }
   applySettings(s);
   closeEditProfile();
-  showToast('✅ Profile saved!');
+  if(uid){
+    _supa.from('settings').upsert({...s, onboarded: true, features: AppState.features, user_id: uid, id: uid}, {onConflict:'id'}).then(({ error }) => {
+      if(error){
+        console.error('Settings save error:', error);
+        showToast('❌ Save failed: ' + error.message);
+      } else {
+        showToast('✅ Profile saved!');
+      }
+    });
+  } else {
+    showToast('⚠️ Not logged in — profile saved locally only');
+  }
 }
 
 // ══ PLAN SYSTEM ══
