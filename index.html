@@ -4037,7 +4037,7 @@ function goToPay(planType){
   const s = getSettings();
   if(s.phone) document.getElementById('cd_phone').value = s.phone.replace(/\D/g,'').slice(-10);
   document.getElementById('cd_name').value = '';
-  document.getElementById('cd_email').value = '';
+  document.getElementById('cd_email').value = AppState._email || '';
   document.getElementById('cd_error').style.display = 'none';
   closeModal('upgradeModal');
   document.getElementById('customerDetailsModal').classList.add('show');
