@@ -2388,7 +2388,7 @@ const DB = {
     AppState.orders = orders;
     const uid = AppState._uid;
     if(!uid) return;
-    const rows = orders.map(o => ({...o, user_id: uid}));
+    const rows = orders.map(o => { const { products, ...rest } = o; return { ...rest, user_id: uid }; });
     _supa.from('orders').upsert(rows, {onConflict:'id'}).then(({error}) => {
       if(error) console.error('Orders sync error:', error.message);
     });
