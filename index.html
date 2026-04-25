@@ -4,76 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MySellerDesk — Instagram CRM</title>
-<!-- ── AUTH BRIDGE (must be first) ── -->
 <script src="dashboard-page-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script>
-(async function dashboardAuthBridge(){
-  const cfg = window.SELLERDESK_CONFIG || {};
-  const IDLE_MS = cfg.IDLE_TIMEOUT_MS || 600000;
-
-  function clearSdStorage(){
-    const keys = [];
-    for(let i = 0; i < localStorage.length; i++){
-      const k = localStorage.key(i);
-      if(k && (k.startsWith('sd_') || k === 'sd_supabase_auth')) keys.push(k);
-    }
-    keys.forEach(k => localStorage.removeItem(k));
-    sessionStorage.clear();
-  }
-
-  function goToLanding(reason){
-    const base = (cfg.SITE_URL || 'https://mysellerdesk.in');
-    window.location.replace(base + '/' + (reason ? '?reason=' + reason : ''));
-  }
-
-  const client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, {
-    auth: {
-      storageKey: 'sd_supabase_auth',
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      flowType: 'pkce'
-    }
-  });
-
-  window._sdSupabaseClient = client;
-
-  const params = new URLSearchParams(window.location.search);
-  if(params.get('auth') === '1'){
-    history.replaceState({}, '', window.location.pathname);
-  }
-
-  const { data: { session }, error } = await client.auth.getSession();
-  if(error || !session){
-    clearSdStorage();
-    goToLanding('session_expired');
-    return;
-  }
-
-  let idleTimer;
-  function resetIdle(){
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(async function(){
-      await client.auth.signOut();
-      clearSdStorage();
-      goToLanding('idle_timeout');
-    }, IDLE_MS);
-  }
-  ['mousemove','keydown','click','touchstart','scroll'].forEach(function(e){
-    document.addEventListener(e, resetIdle, { passive: true });
-  });
-  resetIdle();
-
-  client.auth.onAuthStateChange(function(event, sess){
-    if(event === 'SIGNED_OUT' || !sess){
-      clearSdStorage();
-      goToLanding('signed_out');
-    }
-  });
-})();
-</script>
-<!-- ── END AUTH BRIDGE ── -->
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -1806,7 +1738,7 @@ tbody td{padding:13px 22px;font-size:13px;}
 // ⚠️  SUPABASE MIGRATION (run once in SQL editor):
 //   ALTER TABLE settings ADD COLUMN IF NOT EXISTS features JSONB DEFAULT '{"cod":true,"reports":true}'::jsonb;
 //
-// ── Cookie adapter: session shared across subdomains (.mysellerdesk.in) ──
+// ── Single Supabase client — cookie-based for cross-subdomain session ──
 const _sdCookieAdapter = {
   getItem(key){
     const match = document.cookie.split('; ').find(r => r.startsWith(key + '='));
@@ -1835,6 +1767,55 @@ const _supa = window.supabase.createClient(
     }
   }
 );
+
+// ── Auth guard + idle logout (single client, no duplicate) ──
+(function(){
+  const cfg = window.SELLERDESK_CONFIG || {};
+  const IDLE_MS = cfg.IDLE_TIMEOUT_MS || 600000;
+
+  function goToLanding(reason){
+    const base = cfg.SITE_URL || 'https://mysellerdesk.in';
+    window.location.replace(base + '/' + (reason ? '?reason=' + reason : ''));
+  }
+
+  // Clean URL params
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('auth') === '1'){
+    history.replaceState({}, '', window.location.pathname);
+  }
+
+  // Session check on load
+  document.addEventListener('DOMContentLoaded', async function(){
+    const { data: { session } } = await _supa.auth.getSession();
+    if(!session){
+      goToLanding('session_expired');
+      return;
+    }
+  });
+
+  // Idle logout
+  let idleTimer;
+  function resetIdle(){
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(async function(){
+      await _supa.auth.signOut();
+      sessionStorage.clear();
+      goToLanding('idle_timeout');
+    }, IDLE_MS);
+  }
+  ['mousemove','keydown','click','touchstart','scroll'].forEach(function(e){
+    document.addEventListener(e, resetIdle, { passive: true });
+  });
+  resetIdle();
+
+  // Auth state change
+  _supa.auth.onAuthStateChange(function(event, sess){
+    if(event === 'SIGNED_OUT' || !sess){
+      sessionStorage.clear();
+      goToLanding('signed_out');
+    }
+  });
+})();
 
 // ══ APP STATE — JS Memory only (zero localStorage) ══
 const AppState = {
