@@ -3361,7 +3361,7 @@ function buildBillHTML(order, s, forPrint){
   const total = subtotal + shipping;
 
   return `
-  <div style="font-family:'Segoe UI',Arial,sans-serif;background:#fff;color:#1a1a2e;font-size:13px;max-width:600px;margin:0 auto;border:1.5px solid #ddd;border-radius:12px;overflow:hidden;">
+  <div style="font-family:'Segoe UI',Arial,sans-serif;background:#fff;color:#1a1a2e;font-size:13px;max-width:600px;margin:0 auto;border:1.5px solid #ddd;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:${forPrint?'210mm':'auto'};">
 
     <!-- HEADER -->
     <div style="padding:24px 28px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #eee;">
@@ -3415,7 +3415,13 @@ function buildBillHTML(order, s, forPrint){
             <th style="padding:10px 12px;text-align:right;font-size:11px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;width:90px;">TOTAL</th>
           </tr>
         </thead>
-        <tbody>${productRows}</tbody>
+        <tbody>${productRows}${(()=>{
+            const minRows=6;
+            const cnt=(order.products&&Array.isArray(order.products)&&order.products.length>0)?order.products.length:1;
+            let e='';
+            for(let i=cnt;i<minRows;i++) e+='<tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:10px 12px;">&nbsp;</td><td></td><td></td><td></td></tr>';
+            return e;
+          })()}</tbody>
       </table>
 
       <!-- TOTALS -->
@@ -3435,18 +3441,21 @@ function buildBillHTML(order, s, forPrint){
       </div>
     </div>
 
+    <!-- SPACER pushes footer to bottom -->
+    <div style="flex:1;"></div>
+
     <!-- NOTE -->
     ${noteText ? `
-    <div style="margin:0 28px 20px;padding:12px 16px;background:#fffdf5;border:1px solid #f0e0a0;border-radius:8px;font-size:11px;color:#555;line-height:1.6;">
+    <div style="margin:0 28px 16px;padding:12px 16px;background:#fffdf5;border:1px solid #f0e0a0;border-radius:8px;font-size:11px;color:#555;line-height:1.6;">
       <strong style="color:#0e2040;">Dear Customer,</strong><br>${noteText}
     </div>` : ''}
 
     <!-- FOOTER -->
-    <div style="border-top:1px solid #eee;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
-      <div style="font-size:12px;color:#555;">
-        ${s.instagram ? `<span style="margin-right:12px;">📸 ${s.instagram}</span>` : ''}
-        ${s.facebook  ? `<span style="margin-right:12px;">📘 ${s.facebook}</span>`  : ''}
-        ${s.youtube   ? `<span>▶️ ${s.youtube}</span>`   : ''}
+    <div style="border-top:1px solid #eee;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        ${s.instagram ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#fff0f6;border:1.5px solid #e1306c;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#e1306c;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#e1306c" stroke="none"/></svg> ${s.instagram}</span>` : ''}
+        ${s.facebook  ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e8f0ff;border:1.5px solid #1877f2;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#1877f2;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#1877f2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg> ${s.facebook}</span>`  : ''}
+        ${s.youtube   ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#fff2f2;border:1.5px solid #ff0000;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#ff0000;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#ff0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#fff" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg> ${s.youtube}</span>`   : ''}
       </div>
       <div style="font-size:11px;color:#aaa;">Thank you for your order!</div>
     </div>
@@ -4505,8 +4514,8 @@ refreshAll();
 function getBillPageHTML(order, s){
   return `<!DOCTYPE html><html><head><meta charset="UTF-8">
   <title>Invoice ${order.orderId ? '#'+order.orderId : '(Enquiry)'} — ${s.shopName}<\/title>
-  <style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#fff;padding:20px;font-family:Arial,sans-serif;}@page{size:A4;margin:15mm;}<\/style>
-  <\/head><body>${buildBillHTML(order, s, true)}<\/body><\/html>`;
+  <style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#fff;font-family:'Segoe UI',Arial,sans-serif;}@page{size:A5;margin:5mm;}.bill-wrap{width:148mm;min-height:210mm;margin:0 auto;font-size:11px;}.bill-wrap table{font-size:11px!important;}<\/style>
+  <\/head><body><div class="bill-wrap">${buildBillHTML(order, s, true)}<\/div><\/body><\/html>`;
 }
 
 function printBill(){
@@ -4555,10 +4564,10 @@ function openShippingLabel(id){
       <div class="label-header">
         <div>
           <div style="font-size:15px;font-weight:800;letter-spacing:-0.3px;">${s.shopName}</div>
-          <div style="font-size:10px;opacity:0.7;margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;">
-            ${s.instagram ? `<span>📸 ${s.instagram}</span>` : ''}
-            ${s.facebook  ? `<span>📘 ${s.facebook}</span>`  : ''}
-            ${s.youtube   ? `<span>▶️ ${s.youtube}</span>`   : ''}
+          <div style="font-size:10px;opacity:0.7;margin-top:3px;display:flex;gap:6px;flex-wrap:wrap;">
+            ${s.instagram ? `<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(225,48,108,0.15);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:700;color:#e1306c;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#e1306c" stroke="none"/></svg> ${s.instagram}</span>` : ''}
+            ${s.facebook  ? `<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(24,119,242,0.15);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:700;color:#1877f2;"><svg width="10" height="10" viewBox="0 0 24 24" fill="#1877f2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg> ${s.facebook}</span>`  : ''}
+            ${s.youtube   ? `<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,0,0,0.12);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:700;color:#ff0000;"><svg width="10" height="10" viewBox="0 0 24 24" fill="#ff0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#fff" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg> ${s.youtube}</span>`   : ''}
           </div>
         </div>
         <div style="text-align:right;">
