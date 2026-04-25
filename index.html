@@ -2265,10 +2265,46 @@ async function saveFeatures(f){
   AppState.features = f;
   const uid = AppState._uid;
   if(!uid) return;
-  await _supa.from('settings').upsert(
-    { ...AppState.settings, features: f, user_id: uid, id: uid },
-    { onConflict: 'id' }
-  );
+  const dbRow = { ...settingsToDb(AppState.settings || {}), features: f, user_id: uid, id: uid };
+  await _supa.from('settings').upsert(dbRow, { onConflict: 'id' });
+}
+
+// ── camelCase <-> snake_case mapping for Supabase settings table ──
+function settingsToDb(s){
+  return {
+    shop_name:  s.shopName,
+    phone:      s.phone,
+    district:   s.district,
+    pincode:    s.pincode,
+    address:    s.address,
+    tagline:    s.tagline,
+    instagram:  s.instagram,
+    facebook:   s.facebook,
+    youtube:    s.youtube,
+    bill_note:  s.billnote,
+    upi:        s.upi,
+    logo:       s.logo,
+    onboarded:  s.onboarded,
+    signature:  s.signature,
+  };
+}
+function settingsFromDb(row){
+  return {
+    shopName:  row.shop_name  || row.shopName  || '',
+    phone:     row.phone      || '',
+    district:  row.district   || row.city      || '',
+    pincode:   row.pincode    || '',
+    address:   row.address    || '',
+    tagline:   row.tagline    || '',
+    instagram: row.instagram  || '',
+    facebook:  row.facebook   || '',
+    youtube:   row.youtube    || '',
+    billnote:  row.bill_note  || row.billnote  || '',
+    upi:       row.upi        || '',
+    logo:      row.logo       || '',
+    onboarded: row.onboarded  || false,
+    signature: row.signature  || '',
+  };
 }
 
 // ── Settings (from AppState — loaded via Supabase) ──
@@ -2286,7 +2322,11 @@ function getSettings(){
 }
 
 // ── Plan — always from AppState (Supabase-verified, never localStorage) ──
-function getPlan(){ return AppState.plan || 'starter'; }
+function getPlan(){
+  // Plan is set only by Supabase on login — re-read from AppState
+  const p = AppState.plan || 'starter';
+  return ['starter','growth','elite'].includes(p) ? p : 'starter';
+}
 function isPaid(){ const p = getPlan(); return p === 'growth' || p === 'elite'; }
 function isPro(){  const p = getPlan(); return p === 'growth' || p === 'elite'; }
 
@@ -2314,7 +2354,8 @@ const DB = {
     AppState.products  = productsRes.data  || [];
 
     if(settingsRes.data && settingsRes.data.length > 0){
-      const {user_id, id, created_at, features, ...s} = settingsRes.data[0];
+      const {user_id, id, created_at, features, ...rawRow} = settingsRes.data[0];
+      const s = settingsFromDb(rawRow);
       AppState.settings = s;
       // features loaded from Supabase — never from localStorage
       if(features && typeof features === 'object'){
@@ -2348,7 +2389,9 @@ const DB = {
     const uid = AppState._uid;
     if(!uid) return;
     const rows = orders.map(o => ({...o, user_id: uid}));
-    _supa.from('orders').upsert(rows, {onConflict:'id'}).then();
+    _supa.from('orders').upsert(rows, {onConflict:'id'}).then(({error}) => {
+      if(error) console.error('Orders sync error:', error.message);
+    });
   },
 
   addOrder(data){
@@ -2413,7 +2456,9 @@ const DB = {
       return;
     }
     const rows = c.map(cu => ({...cu, user_id: uid, id: cu.phone}));
-    _supa.from('customers').upsert(rows, {onConflict:'id'}).then();
+    _supa.from('customers').upsert(rows, {onConflict:'id'}).then(({error}) => {
+      if(error) console.error('Customers sync error:', error.message);
+    });
   },
 
   _syncCustomer(order){
@@ -3843,7 +3888,8 @@ function saveSettingsFromModal(){
   applySettings(s);
   closeEditProfile();
   if(uid){
-    _supa.from('settings').upsert({...s, onboarded: true, features: AppState.features, user_id: uid, id: uid}, {onConflict:'id'}).then(({ error }) => {
+    const dbRow = { ...settingsToDb({...s, onboarded: true}), features: AppState.features, user_id: uid, id: uid };
+    _supa.from('settings').upsert(dbRow, {onConflict:'id'}).then(({ error }) => {
       if(error){
         console.error('Settings save error:', error);
         showToast('❌ Save failed: ' + error.message);
