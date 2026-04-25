@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   }
 
   const payment = req.body.payload.payment_link.entity;
-  const email = payment.customer?.email || payment.email_id;
+  const email = payment.customer?.email || payment.email_id || req.body.payload?.payment?.entity?.email;
   const amount = payment.amount;
 
   let plan = 'free';
