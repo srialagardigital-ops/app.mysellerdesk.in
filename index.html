@@ -106,8 +106,12 @@ body{
 /* ── MAIN ── */
 .main{
   margin-left:var(--sidebar-w);
-  flex:1;min-height:100vh;
-  display:flex;flex-direction:column;
+  flex:1;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  width:calc(100% - var(--sidebar-w));
+  min-width:0;
 }
 
 /* ── TOPBAR ── */
@@ -139,14 +143,14 @@ body{
 .topbar-btn:hover{background:#2b72c7;}
 
 /* ── CONTENT ── */
-.content{padding:24px 28px;flex:1;}
-.tab-section{display:none;}
-.tab-section.active{display:block;}
+.content{padding:24px 28px;flex:1;width:100%;min-width:0;}
+.tab-section{display:none;width:100%;}
+.tab-section.active{display:block;width:100%;}
 
 /* ── STATS ROW ── */
 .stats-row{
   display:grid;grid-template-columns:repeat(5,1fr);
-  gap:14px;margin-bottom:24px;
+  gap:14px;margin-bottom:24px;width:100%;
 }
 .stat-card{
   background:var(--surface);
@@ -184,6 +188,7 @@ body{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--radius);overflow:hidden;
   box-shadow:var(--shadow);margin-bottom:20px;
+  width:100%;
 }
 .table-head{
   display:flex;align-items:center;justify-content:space-between;
@@ -325,7 +330,7 @@ tbody td{padding:13px 22px;font-size:13px;}
 .bill-row.total{font-weight:700;font-size:14px;margin-top:8px;}
 
 /* ── DASHBOARD CHARTS ── */
-.charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:22px;}
+.charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:22px;width:100%;}
 .chart-card{
   background:var(--surface);
   border:none;
@@ -523,11 +528,333 @@ tbody td{padding:13px 22px;font-size:13px;}
 .toggle-switch input:checked + .toggle-slider{background:var(--accent);}
 .toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px);}
 
+/* ══════════════════════════════════════
+   MOBILE RESPONSIVE
+══════════════════════════════════════ */
+
+/* ── Mobile sidebar overlay ── */
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;z-index:99;
+  background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);
+}
+.sidebar-overlay.show{display:block;}
+
+/* hamburger button */
+.mob-menu-btn{
+  display:none;width:36px;height:36px;border-radius:9px;
+  background:var(--surface2);border:1.5px solid var(--border);
+  align-items:center;justify-content:center;
+  cursor:pointer;font-size:18px;flex-shrink:0;
+}
+
+@media(max-width:900px){
+  /* stats grid: 2 columns */
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+}
+
+@media(max-width:768px){
+  :root{--sidebar-w:240px;}
+
+  /* Show hamburger */
+  .mob-menu-btn{display:flex;}
+
+  /* Sidebar: off-screen by default, slides in */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform 0.25s ease;
+    z-index:200;
+  }
+  .sidebar.mob-open{transform:translateX(0);}
+
+  /* Main takes full width on mobile */
+  .main{margin-left:0 !important;width:100% !important;}
+
+  /* Topbar */
+  .topbar{padding:0 14px;gap:10px;}
+  .topbar-title{font-size:14px;}
+  .topbar-sub{display:none;}
+  .topbar-search-hidden{display:none;}
+
+  /* Content padding */
+  .content{padding:14px;}
+
+  /* Stats: 2 col */
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+  .stat-card{padding:14px 14px 12px;}
+  .stat-val{font-size:20px;}
+
+  /* Charts row: stack */
+  /* Charts row: stack on mobile */
+  .charts-row{display:flex;flex-direction:column;gap:12px;}
+  .chart-card{width:100%;}
+
+  /* Table: horizontal scroll */
+  .table-card{overflow-x:auto;}
+  table{min-width:560px;}
+
+  /* Table head */
+  .table-head{flex-wrap:wrap;gap:8px;padding:12px 14px;}
+  .filter-tabs{flex-wrap:wrap;}
+
+  /* Modal: full width on mobile */
+  .modal-box{width:95vw!important;max-width:95vw!important;padding:18px 16px;border-radius:14px;}
+
+  /* Login overlay card */
+  #sdLoginCard{padding:28px 20px!important;margin:12px!important;border-radius:18px!important;}
+
+  /* Upgrade banner */
+  .upgrade-banner{margin:0 0 12px;}
+
+  /* Topbar btn */
+  .topbar-btn{padding:0 10px;font-size:12px;height:32px;}
+
+  /* Hide plan badge text on mobile */
+  #topbarPlanBadge{font-size:9px;padding:3px 7px;}
+}
+
+@media(max-width:480px){
+  /* Stats: single column on very small */
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .stat-val{font-size:18px;}
+
+  /* Tab section full width */
+  .tab-section{width:100%;}
+
+  .content{padding:10px;}
+
+  /* Filter tabs smaller */
+  .filter-tab{font-size:11px;padding:4px 8px;}
+}
 </style>
 
 </head>
 <body>
 
+<!-- ══════════════════════════════════════
+  LOGIN OVERLAY — shown when no session
+══════════════════════════════════════ -->
+<div id="sdLoginOverlay" style="display:flex;position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0e2040 0%,#1e3a5f 50%,#0e2040 100%);align-items:center;justify-content:center;">
+
+  <!-- Animated background blobs -->
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+    <div style="position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,0.15) 0%,transparent 70%);top:-100px;left:-100px;animation:sdBlob1 8s ease-in-out infinite;"></div>
+    <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,92,191,0.12) 0%,transparent 70%);bottom:-80px;right:-80px;animation:sdBlob2 10s ease-in-out infinite;"></div>
+    <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,0.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:sdBlob1 6s ease-in-out infinite reverse;"></div>
+  </div>
+
+  <div id="sdLoginCard" style="position:relative;z-index:1;width:100%;max-width:420px;margin:20px;background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px 36px;box-shadow:0 32px 80px rgba(0,0,0,0.5);">
+
+    <!-- Brand -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="width:52px;height:52px;border-radius:14px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px;">🛍️</div>
+      <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.5px;">My Seller<span style="color:var(--accent);">Desk</span></div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Instagram CRM</div>
+    </div>
+
+    <!-- Reason banner -->
+    <div id="sdLoginReason" style="display:none;background:rgba(201,64,64,0.15);border:1px solid rgba(201,64,64,0.3);border-radius:10px;padding:10px 14px;font-size:12px;color:#ff9999;text-align:center;margin-bottom:18px;"></div>
+
+    <!-- Error banner -->
+    <div id="sdLoginError" style="display:none;background:rgba(201,64,64,0.15);border:1px solid rgba(201,64,64,0.3);border-radius:10px;padding:10px 14px;font-size:12px;color:#ff9999;text-align:center;margin-bottom:14px;"></div>
+
+    <!-- Success banner -->
+    <div id="sdLoginSuccess" style="display:none;background:rgba(45,158,107,0.15);border:1px solid rgba(45,158,107,0.3);border-radius:10px;padding:10px 14px;font-size:12px;color:#6fdfb0;text-align:center;margin-bottom:14px;"></div>
+
+    <!-- ── TAB SWITCHER ── -->
+    <div style="display:flex;background:rgba(255,255,255,0.06);border-radius:10px;padding:3px;margin-bottom:24px;" id="sdAuthTabBar">
+      <button id="sdTabLogin" onclick="sdSwitchTab('login')" style="flex:1;padding:8px;border-radius:8px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;background:rgba(55,138,221,0.8);color:#fff;transition:all 0.2s;">Sign In</button>
+      <button id="sdTabForgot" onclick="sdSwitchTab('forgot')" style="flex:1;padding:8px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;background:transparent;color:rgba(255,255,255,0.45);transition:all 0.2s;">Forgot Password</button>
+    </div>
+
+    <!-- ── LOGIN FORM ── -->
+    <div id="sdFormLogin">
+      <!-- Google OAuth -->
+      <button id="sdGoogleBtn" onclick="sdLoginWithGoogle()" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;margin-bottom:18px;">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </button>
+
+      <!-- Divider -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+        <span style="font-size:11px;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:1px;">OR</span>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+      </div>
+
+      <!-- Email -->
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
+        <input id="sdLoginEmail" type="email" placeholder="you@example.com" autocomplete="email"
+          style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+          onkeydown="if(event.key==='Enter')document.getElementById('sdLoginPass').focus()">
+      </div>
+
+      <!-- Password -->
+      <div style="margin-bottom:22px;position:relative;">
+        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password</label>
+        <input id="sdLoginPass" type="password" placeholder="••••••••" autocomplete="current-password"
+          style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+          onkeydown="if(event.key==='Enter')sdLoginWithEmail()">
+        <span onclick="sdTogglePass('sdLoginPass',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;font-size:16px;color:rgba(255,255,255,0.3);user-select:none;">👁️</span>
+      </div>
+
+      <!-- Sign In button -->
+      <button id="sdSignInBtn" onclick="sdLoginWithEmail()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--accent) 0%,#5ba0e8 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.2px;transition:all 0.2s;box-shadow:0 4px 20px rgba(55,138,221,0.35);">
+        Sign In →
+      </button>
+
+      <div style="text-align:center;margin-top:16px;">
+        <span style="font-size:12px;color:rgba(255,255,255,0.3);">Forgot your password? </span>
+        <button onclick="sdSwitchTab('forgot')" style="font-size:12px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">Reset it</button>
+      </div>
+    </div>
+
+    <!-- ── FORGOT PASSWORD FORM ── -->
+    <div id="sdFormForgot" style="display:none;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;margin-bottom:20px;line-height:1.6;">உங்கள் email-ஐ enter செய்யுங்கள். Password reset link அனுப்புகிறோம்.</p>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
+        <input id="sdForgotEmail" type="email" placeholder="you@example.com"
+          style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(55,138,221,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+          onkeydown="if(event.key==='Enter')sdSendReset()">
+      </div>
+      <button id="sdResetBtn" onclick="sdSendReset()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--accent) 0%,#5ba0e8 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 4px 20px rgba(55,138,221,0.35);">
+        Send Reset Link 📧
+      </button>
+      <div style="text-align:center;margin-top:16px;">
+        <button onclick="sdSwitchTab('login')" style="font-size:12px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">← Back to Sign In</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="position:absolute;bottom:20px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,0.2);">© 2025 MySellerDesk · Secure Login</div>
+</div>
+
+<style>
+@keyframes sdBlob1{0%,100%{transform:scale(1) translate(0,0);}50%{transform:scale(1.1) translate(20px,20px);}}
+@keyframes sdBlob2{0%,100%{transform:scale(1) translate(0,0);}50%{transform:scale(0.95) translate(-15px,10px);}}
+#sdLoginOverlay input::placeholder{color:rgba(255,255,255,0.25);}
+#sdSignInBtn:hover,#sdResetBtn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(55,138,221,0.5);}
+#sdGoogleBtn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);}
+</style>
+
+<script>
+// ══ LOGIN OVERLAY FUNCTIONS ══
+// NOTE: _supa is declared later in the file. These functions are called only
+// on user interaction (button clicks) — by that time _supa is fully ready.
+
+function sdSwitchTab(tab){
+  const isLogin = tab === 'login';
+  document.getElementById('sdFormLogin').style.display  = isLogin ? 'block' : 'none';
+  document.getElementById('sdFormForgot').style.display = isLogin ? 'none'  : 'block';
+  const tl = document.getElementById('sdTabLogin');
+  const tf = document.getElementById('sdTabForgot');
+  tl.style.background = isLogin ? 'rgba(55,138,221,0.8)' : 'transparent';
+  tl.style.color       = isLogin ? '#fff' : 'rgba(255,255,255,0.45)';
+  tf.style.background  = isLogin ? 'transparent' : 'rgba(55,138,221,0.8)';
+  tf.style.color       = isLogin ? 'rgba(255,255,255,0.45)' : '#fff';
+  sdClearMessages();
+}
+
+function sdClearMessages(){
+  ['sdLoginError','sdLoginSuccess','sdLoginReason'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el){ el.style.display = 'none'; el.textContent = ''; }
+  });
+}
+
+function sdShowError(msg){
+  const el = document.getElementById('sdLoginError');
+  if(!el) return;
+  el.textContent = msg; el.style.display = 'block';
+  const s = document.getElementById('sdLoginSuccess');
+  if(s) s.style.display = 'none';
+}
+
+function sdShowSuccess(msg){
+  const el = document.getElementById('sdLoginSuccess');
+  if(!el) return;
+  el.textContent = msg; el.style.display = 'block';
+  const e = document.getElementById('sdLoginError');
+  if(e) e.style.display = 'none';
+}
+
+function sdSetBtnLoading(btnId, loading, text){
+  const btn = document.getElementById(btnId);
+  if(!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? '⏳ Please wait...' : text;
+  btn.style.opacity = loading ? '0.7' : '1';
+}
+
+function sdTogglePass(inputId, icon){
+  const inp = document.getElementById(inputId);
+  if(!inp) return;
+  if(inp.type === 'password'){ inp.type = 'text'; icon.textContent = '🙈'; }
+  else{ inp.type = 'password'; icon.textContent = '👁️'; }
+}
+
+// ── Called by buttons — _supa is ready by then ──
+async function sdLoginWithEmail(){
+  sdClearMessages();
+  const email = document.getElementById('sdLoginEmail').value.trim();
+  const pass  = document.getElementById('sdLoginPass').value;
+  if(!email || !pass){ sdShowError('Email மற்றும் Password தேவை.'); return; }
+  sdSetBtnLoading('sdSignInBtn', true, 'Sign In →');
+  const { data, error } = await _supa.auth.signInWithPassword({ email, password: pass });
+  sdSetBtnLoading('sdSignInBtn', false, 'Sign In →');
+  if(error){ sdShowError('❌ ' + (error.message || 'Login தோல்வியடைந்தது.')); return; }
+  // Success
+  AppState._email = data.user.email;
+  AppState._uid   = data.user.id;
+  window._sdHideLoginOverlay();
+  document.querySelectorAll('.shop-name').forEach(el => el.textContent = getSettings().shopName || 'My Shop');
+  document.querySelectorAll('.shop-handle').forEach(el => el.textContent = data.user.email);
+  const av = document.getElementById('sidebarAvatar');
+  if(av) av.textContent = (getSettings().shopName || 'S')[0].toUpperCase();
+  await DB.loadFromSupabase();
+}
+
+async function sdLoginWithGoogle(){
+  sdClearMessages();
+  const googleBtn = document.getElementById('sdGoogleBtn');
+  if(googleBtn) googleBtn.innerHTML = '⏳ Redirecting to Google...';
+  const cfg = window.SELLERDESK_CONFIG || {};
+  const redirectTo = (cfg.APP_URL || window.location.origin) + '/index.html';
+  const { error } = await _supa.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo }
+  });
+  if(error){
+    sdShowError('❌ Google login தோல்வி: ' + error.message);
+    if(googleBtn) googleBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg> Continue with Google`;
+  }
+}
+
+async function sdSendReset(){
+  sdClearMessages();
+  const email = document.getElementById('sdForgotEmail').value.trim();
+  if(!email){ sdShowError('Email address தேவை.'); return; }
+  sdSetBtnLoading('sdResetBtn', true, 'Send Reset Link 📧');
+  const cfg = window.SELLERDESK_CONFIG || {};
+  const redirectTo = (cfg.APP_URL || window.location.origin) + '/index.html';
+  const { error } = await _supa.auth.resetPasswordForEmail(email, { redirectTo });
+  sdSetBtnLoading('sdResetBtn', false, 'Send Reset Link 📧');
+  if(error){ sdShowError('❌ ' + error.message); return; }
+  sdShowSuccess('✅ Reset link உங்கள் email-க்கு அனுப்பப்பட்டது! Inbox பாருங்கள்.');
+  document.getElementById('sdForgotEmail').value = '';
+}
+</script>
+
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobSidebar()"></div>
+
+<div id="sdDashboardWrap" style="visibility:hidden;display:flex;flex:1;width:100%;min-height:100vh;">
 
 <nav class="sidebar">
   <div class="sidebar-brand">
@@ -595,6 +922,7 @@ tbody td{padding:13px 22px;font-size:13px;}
 
 <div class="main">
   <div class="topbar">
+    <button class="mob-menu-btn" onclick="openMobSidebar()" aria-label="Menu">☰</button>
     <div>
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
       <div class="topbar-sub" id="topbarSub">Welcome back! Here's your store overview.</div>
@@ -1768,15 +2096,40 @@ const _supa = window.supabase.createClient(
   }
 );
 
-// ── Auth guard + idle logout (single client, no duplicate) ──
+// ══ LOGIN OVERLAY SYSTEM ══
+// Defined after _supa so all callers (auth guard, idle timer) are in scope.
+window._sdShowLoginOverlay = function(reason){
+  const overlay = document.getElementById('sdLoginOverlay');
+  if(!overlay) return;
+  const msgs = {
+    session_expired: '⏱️ Session expired. மீண்டும் login செய்யுங்கள்.',
+    idle_timeout:    '💤 Inactive — security காரணமாக logout ஆனீர்கள்.',
+    signed_out:      '✅ Successfully logged out.',
+    config_error:    '⚠️ Configuration error. Admin-ஐ தொடர்பு கொள்ளுங்கள்.'
+  };
+  const reasonEl = document.getElementById('sdLoginReason');
+  if(reasonEl){
+    reasonEl.textContent = (reason && msgs[reason]) ? msgs[reason] : '';
+    reasonEl.style.display = (reason && msgs[reason]) ? 'block' : 'none';
+  }
+  // Reset to login tab, clear old errors
+  if(typeof sdSwitchTab === 'function') sdSwitchTab('login');
+  overlay.style.display = 'flex';
+  const wrap = document.getElementById('sdDashboardWrap');
+  if(wrap) wrap.style.visibility = 'hidden';
+};
+
+window._sdHideLoginOverlay = function(){
+  const overlay = document.getElementById('sdLoginOverlay');
+  if(overlay) overlay.style.display = 'none';
+  const wrap = document.getElementById('sdDashboardWrap');
+  if(wrap) wrap.style.visibility = 'visible';
+};
+
+// ── Auth guard + idle logout ──
 (function(){
   const cfg = window.SELLERDESK_CONFIG || {};
   const IDLE_MS = cfg.IDLE_TIMEOUT_MS || 600000;
-
-  function goToLanding(reason){
-    const base = cfg.SITE_URL || 'https://mysellerdesk.in';
-    window.location.replace(base + '/' + (reason ? '?reason=' + reason : ''));
-  }
 
   // Clean URL params
   const params = new URLSearchParams(window.location.search);
@@ -1784,13 +2137,13 @@ const _supa = window.supabase.createClient(
     history.replaceState({}, '', window.location.pathname);
   }
 
-  // Session check on load
+  // Overlay is visible by default — hide only if valid session exists
   document.addEventListener('DOMContentLoaded', async function(){
     const { data: { session } } = await _supa.auth.getSession();
-    if(!session){
-      goToLanding('session_expired');
-      return;
+    if(session){
+      window._sdHideLoginOverlay();
     }
+    // No session → overlay stays visible (already showing)
   });
 
   // Idle logout
@@ -1800,7 +2153,7 @@ const _supa = window.supabase.createClient(
     idleTimer = setTimeout(async function(){
       await _supa.auth.signOut();
       sessionStorage.clear();
-      goToLanding('idle_timeout');
+      window._sdShowLoginOverlay('idle_timeout');
     }, IDLE_MS);
   }
   ['mousemove','keydown','click','touchstart','scroll'].forEach(function(e){
@@ -1812,7 +2165,7 @@ const _supa = window.supabase.createClient(
   _supa.auth.onAuthStateChange(function(event, sess){
     if(event === 'SIGNED_OUT' || !sess){
       sessionStorage.clear();
-      goToLanding('signed_out');
+      window._sdShowLoginOverlay('signed_out');
     }
   });
 })();
@@ -4294,12 +4647,11 @@ async function toggleFeature(name, enabled){
 
 
 
-(function(){
-  const cfg = window.SELLERDESK_CONFIG || {};
-  function trimSlash(v){ return (v || '').replace(/\/$/, ''); }
-  function getSiteUrl(){ return trimSlash(cfg.SITE_URL || window.location.origin); }
 
-  // Bridge: read URL params once, store only in AppState (never localStorage)
+
+
+// ── Identity + Access bootstrap ──
+(function(){
   function bridgeAuthFromUrl(){
     try {
       const url = new URL(window.location.href);
@@ -4312,52 +4664,35 @@ async function toggleFeature(name, enabled){
         url.searchParams.delete('auth');
         url.searchParams.delete('shop');
         url.searchParams.delete('email');
-        history.replaceState({}, document.title, url.pathname + (url.search ? url.search : '') + (url.hash ? url.hash : ''));
+        history.replaceState({}, document.title, url.pathname + (url.search || '') + (url.hash || ''));
       }
     } catch(e){}
   }
 
-  // Identity from Supabase session — never from localStorage
   function applyTopbarIdentity(){
     const shop = AppState._shopName || 'My Shop';
     const email = AppState._email || '';
     document.querySelectorAll('.shop-name').forEach(el => el.textContent = shop);
     document.querySelectorAll('.shop-handle').forEach(el => el.textContent = email);
+    const av = document.getElementById('sidebarAvatar');
+    if(av) av.textContent = (shop[0] || 'S').toUpperCase();
   }
 
   async function ensureAccess(){
     const { data: { session } } = await _supa.auth.getSession();
     if(!session){
-      // No valid Supabase session → redirect to login
-      window.location.href = getSiteUrl() + '/';
-      return;
+      return; // overlay already visible by default
     }
-    // Identity stored in JS memory only
     AppState._email    = session.user.email;
+    AppState._uid      = session.user.id;
     AppState._shopName = AppState._shopName || getSettings().shopName || 'My Shop';
     applyTopbarIdentity();
+    window._sdHideLoginOverlay();
     await DB.loadFromSupabase();
   }
 
   bridgeAuthFromUrl();
-
-  let idleTimer;
-  function resetIdleTimer(){
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(async () => {
-      await _supa.auth.signOut();
-      sessionStorage.clear();
-      // No localStorage keys — zero localStorage usage
-      window.location.href = getSiteUrl() + '/';
-    }, 10 * 60 * 1000);
-  }
-  ['click','mousemove','keypress','scroll','touchstart'].forEach(e => {
-    document.addEventListener(e, resetIdleTimer);
-  });
-  resetIdleTimer();
-
   document.addEventListener('DOMContentLoaded', ensureAccess);
-
 })();
 
 window.logoutSellerDesk = async function(){
@@ -4369,11 +4704,29 @@ window.logoutSellerDesk = async function(){
     sessionStorage.clear();
     await _supa.auth.signOut();
   } catch(e){}
-  const cfg = window.SELLERDESK_CONFIG || {};
-  const base = (cfg.SITE_URL || window.location.origin).replace(/\/$/, '');
-  window.location.href = base + '/';
+  window._sdShowLoginOverlay('signed_out');
 };
 
+// ── Mobile sidebar ──
+function openMobSidebar(){
+  document.querySelector('.sidebar').classList.add('mob-open');
+  document.getElementById('sidebarOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobSidebar(){
+  document.querySelector('.sidebar').classList.remove('mob-open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.nav-item').forEach(function(el){
+    el.addEventListener('click', function(){
+      if(window.innerWidth <= 768) closeMobSidebar();
+    });
+  });
+});
+
 </script>
+</div><!-- /#sdDashboardWrap -->
 </body>
 </html>
