@@ -4514,7 +4514,38 @@ refreshAll();
 function getBillPageHTML(order, s){
   return `<!DOCTYPE html><html><head><meta charset="UTF-8">
   <title>Invoice ${order.orderId ? '#'+order.orderId : '(Enquiry)'} — ${s.shopName}<\/title>
-  <style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#fff;font-family:'Segoe UI',Arial,sans-serif;}@page{size:A5;margin:5mm;}.bill-wrap{width:148mm;min-height:210mm;margin:0 auto;font-size:11px;}.bill-wrap table{font-size:11px!important;}<\/style>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#fff;font-family:'Segoe UI',Arial,sans-serif;}
+    @page{size:A5;margin:4mm;}
+    .bill-wrap{
+      width:140mm;
+      height:202mm;
+      margin:0 auto;
+      font-size:10px;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .bill-wrap [style*="padding:24px 28px"]{padding:10px 14px!important;}
+    .bill-wrap [style*="padding:16px 28px"]{padding:8px 14px!important;}
+    .bill-wrap [style*="padding:20px 28px"]{padding:10px 14px!important;}
+    .bill-wrap [style*="padding:12px 28px"]{padding:6px 14px!important;}
+    .bill-wrap [style*="padding:10px 28px"]{padding:5px 14px!important;}
+    .bill-wrap [style*="font-size:18px"]{font-size:13px!important;}
+    .bill-wrap [style*="font-size:15px"]{font-size:12px!important;}
+    .bill-wrap [style*="font-size:14px"]{font-size:11px!important;}
+    .bill-wrap [style*="font-size:13px"]{font-size:10px!important;}
+    .bill-wrap [style*="font-size:12px"]{font-size:10px!important;}
+    .bill-wrap [style*="font-size:11px"]{font-size:9px!important;}
+    .bill-wrap [style*="width:48px"]{width:32px!important;height:32px!important;font-size:18px!important;}
+    .bill-wrap [style*="padding:10px 12px"]{padding:6px 8px!important;}
+    .bill-wrap [style*="margin-top:16px"]{margin-top:8px!important;}
+    .bill-wrap [style*="width:240px"]{width:180px!important;}
+    .bill-wrap [style*="margin:0 28px"]{margin:0 14px 8px!important;}
+    .bill-wrap table{font-size:10px!important;width:100%!important;}
+    .bill-wrap [style*="gap:14px"]{gap:8px!important;}
+  <\/style>
   <\/head><body><div class="bill-wrap">${buildBillHTML(order, s, true)}<\/div><\/body><\/html>`;
 }
 
