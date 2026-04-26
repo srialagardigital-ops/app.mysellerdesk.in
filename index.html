@@ -548,7 +548,6 @@ tbody td{padding:13px 22px;font-size:13px;}
 }
 
 @media(max-width:900px){
-  /* stats grid: 2 columns */
   .stats-row{grid-template-columns:repeat(2,1fr);}
 }
 
@@ -558,7 +557,7 @@ tbody td{padding:13px 22px;font-size:13px;}
   /* Show hamburger */
   .mob-menu-btn{display:flex;}
 
-  /* Sidebar: off-screen by default, slides in */
+  /* Sidebar: off-screen, slides in */
   .sidebar{
     transform:translateX(-100%);
     transition:transform 0.25s ease;
@@ -573,7 +572,7 @@ tbody td{padding:13px 22px;font-size:13px;}
   .sidebar-nav{flex:1;overflow-y:auto;min-height:0;}
   .sidebar-bottom{flex-shrink:0 !important;}
 
-  /* Main takes full width on mobile */
+  /* Main: full width */
   .main{margin-left:0 !important;width:100% !important;}
 
   /* Topbar */
@@ -581,56 +580,97 @@ tbody td{padding:13px 22px;font-size:13px;}
   .topbar-title{font-size:14px;}
   .topbar-sub{display:none;}
   .topbar-search-hidden{display:none;}
+  .topbar-btn{padding:0 10px;font-size:12px;height:32px;}
+  #topbarPlanBadge{font-size:9px;padding:3px 7px;}
 
-  /* Content padding */
+  /* Content */
   .content{padding:14px;}
 
-  /* Stats: 2 col */
+  /* Stats */
   .stats-row{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
   .stat-card{padding:14px 14px 12px;}
   .stat-val{font-size:20px;}
 
-  /* Charts row: stack */
-  /* Charts row: stack on mobile */
+  /* Charts: stack vertically */
   .charts-row{display:flex;flex-direction:column;gap:12px;}
   .chart-card{width:100%;}
 
-  /* Table: horizontal scroll */
-  .table-card{overflow-x:auto;}
+  /* Table: horizontal scroll with touch support */
+  .table-card{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   table{min-width:560px;}
-
-  /* Table head */
   .table-head{flex-wrap:wrap;gap:8px;padding:12px 14px;}
   .filter-tabs{flex-wrap:wrap;}
+  .table-actions{flex-wrap:wrap;gap:6px;}
 
-  /* Modal: full width on mobile */
+  /* Modal */
   .modal-box{width:95vw!important;max-width:95vw!important;padding:18px 16px;border-radius:14px;}
 
-  /* Login overlay card */
-  #sdLoginCard{padding:28px 20px!important;margin:12px!important;border-radius:18px!important;}
+  /* Form rows: stack */
+  .form-row{grid-template-columns:1fr !important;}
+
+  /* Plan cards: stack */
+  .plan-cards{flex-direction:column !important;}
+
+  /* Stage stepper: hide scrollbar, touch scroll */
+  .stage-stepper{-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .stage-stepper::-webkit-scrollbar{display:none;}
+
+  /* Action buttons */
+  .action-btns{flex-wrap:wrap;}
+
+  /* Courier chips */
+  .courier-list{gap:6px;}
+  .courier-chip{font-size:11px;padding:6px 10px;}
 
   /* Upgrade banner */
   .upgrade-banner{margin:0 0 12px;}
+}
 
-  /* Topbar btn */
-  .topbar-btn{padding:0 10px;font-size:12px;height:32px;}
-
-  /* Hide plan badge text on mobile */
-  #topbarPlanBadge{font-size:9px;padding:3px 7px;}
+/* Login page mobile — hide left decorative panel */
+@media(max-width:640px){
+  #sdLoginOverlay > div:first-child{display:none !important;}
+  #sdLoginCard{
+    position:relative !important;
+    width:100% !important;
+    left:0 !important;
+    right:0 !important;
+    padding:32px 20px !important;
+    background:#fff !important;
+    min-height:100vh !important;
+    align-items:flex-start !important;
+    padding-top:60px !important;
+    display:flex !important;
+    justify-content:center !important;
+  }
 }
 
 @media(max-width:480px){
-  /* Stats: single column on very small */
   .stats-row{grid-template-columns:1fr 1fr;}
   .stat-val{font-size:18px;}
+  .stat-label{font-size:11px;}
+  .stat-card-info{display:none;}
 
-  /* Tab section full width */
   .tab-section{width:100%;}
-
   .content{padding:10px;}
 
-  /* Filter tabs smaller */
   .filter-tab{font-size:11px;padding:4px 8px;}
+
+  /* Modal footer: stack buttons */
+  .modal-footer{flex-direction:column;}
+  .btn-secondary{width:100%;text-align:center;}
+
+  /* Topbar tighter */
+  .topbar{padding:0 10px;}
+  .topbar-title{font-size:13px;}
+
+  /* Plan cards smaller */
+  .plan-card{padding:16px;}
+  .plan-name{font-size:15px;}
+  .plan-price{font-size:22px;}
+
+  /* Toast: full width */
+  #toast{left:12px;right:12px;bottom:16px;font-size:12px;}
+  .locked-toast{left:12px;right:12px;max-width:none;}
 }
 </style>
 
