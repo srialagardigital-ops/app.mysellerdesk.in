@@ -2429,6 +2429,9 @@ const DB = {
     // Update UI now that plan is confirmed
     updatePlanUI();
     applyFeatures();
+
+    // Render all dashboard data immediately after login
+    if(typeof refreshAll === 'function') refreshAll();
   },
 
   saveOrders(orders){
@@ -2620,6 +2623,7 @@ function refreshAll(){
   updatePendingCount();
   updateProductDatalist();
   refreshStageStepper();
+  refreshReports();
 }
 
 function refreshStageStepper(){
@@ -3529,8 +3533,7 @@ function sendBillWhatsApp(){
   if(!currentBillOrder) return;
   const o = currentBillOrder;
   const s = getSettings();
-  const socialLine = [s.instagram ? `📸 ${s.instagram}` : '', s.facebook ? `📘 ${s.facebook}` : '', s.youtube ? `▶️ ${s.youtube}` : ''].filter(Boolean).join(' · ');
-  const msg = `🧾 *Invoice from ${s.shopName}*\n\nHi ${o.name}!\n\n📦 Product: ${o.product}\n💰 Amount: ₹${Number(o.amount).toLocaleString('en-IN')}\n💳 Payment: ${o.payment==='paid'?'✅ Paid':'⏳ Pending (COD)'}\n\n📅 Date: ${o.date}\n🔢 Order ID: ${o.orderId ? '#'+o.orderId : '(Enquiry)'}\n\nThank you for shopping with us! 🙏${socialLine ? '\n'+socialLine : ''}`;
+  const msg = `🧾 *Invoice from ${s.shopName}*\n\nHi ${o.name}!\n\n📦 Product: ${o.product}\n💰 Amount: ₹${Number(o.amount).toLocaleString('en-IN')}\n💳 Payment: ${o.payment==='paid'?'✅ Paid':'⏳ Pending (COD)'}\n\n📅 Date: ${o.date}\n🔢 Order ID: ${o.orderId ? '#'+o.orderId : '(Enquiry)'}\n\nThank you for your order! We appreciate your support. 🙏`;
   const phone = o.phone.replace(/\D/g,'');
   window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
@@ -3563,58 +3566,58 @@ function sendWhatsApp(id){
   if(stage === 'enquiry'){
     msg = `Hi ${order.name}! 👋
 
-நாங்கள் உங்கள் enquiry-ஐ பெற்றோம்! 🛍️
+We have received your enquiry! 🛍️
 
 📦 Product: ${order.product}
 
-விரைவில் confirm பண்ணி தெரிவிக்கிறோம்.
+We will confirm your order shortly and get back to you.
 
 ${sig}`;
   }
   else if(stage === 'order_confirm'){
     msg = `Hi ${order.name}! 👋
 
-உங்கள் order confirm ஆனது! ✅
+Your order has been confirmed! ✅
 
 ${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
 💰 Amount: ${amt}
 💳 Payment: ${order.payment === 'paid' ? '✅ Paid' : '⏳ COD'}
 
-நாங்கள் உங்கள் order prepare பண்ண ஆரம்பிக்கிறோம்! 🎉
+We are now starting to prepare your order! 🎉
 
 ${sig}`;
   }
   else if(stage === 'order_process'){
     msg = `Hi ${order.name}! 👋
 
-உங்கள் order process ஆகிறது! ⚙️
+Your order is being processed! ⚙️
 
 ${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
 
-விரைவில் pack பண்ணி dispatch பண்றோம்! 📦
+We will pack and dispatch it soon! 📦
 
 ${sig}`;
   }
   else if(stage === 'order_prepare'){
     msg = `Hi ${order.name}! 👋
 
-உங்கள் order prepare ஆகிறது! 📋
+Your order is being prepared! 📋
 
 ${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
 
-Pack பண்ண ready ஆகிறோம்! 🎁
+Getting it ready for packing! 🎁
 
 ${sig}`;
   }
   else if(stage === 'packing'){
     msg = `Hi ${order.name}! 👋
 
-உங்கள் order பேக் ஆகிறது! 📦
+Your order is being packed! 📦
 
 ${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
 💰 Amount: ${amt}
 
-விரைவில் dispatch ஆகும்! 🚚
+It will be dispatched very soon! 🚚
 
 ${sig}`;
   }
@@ -3622,13 +3625,13 @@ ${sig}`;
     const trackLink = order.courier && order.tracking ? getTrackingUrl(order.courier, order.tracking) : '';
     msg = `Hi ${order.name}! 👋
 
-உங்கள் order dispatch ஆனது! 🚚
+Your order has been dispatched! 🚚
 
 ${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
 💰 Amount: ${amt}
-🚚 Courier: ${order.courier || '—'}
-🔢 Tracking No: ${order.tracking || '—'}
-${trackLink ? '🔗 Track here:\n' + trackLink : ''}
+🚚 Courier: ${order.courier || '-'}
+🔢 Tracking No: ${order.tracking || '-'}
+${trackLink ? '🔗 Track your order:\n' + trackLink : ''}
 
 ${sig}`;
   }
@@ -3661,8 +3664,8 @@ Thank you for shopping with *${s.shopName}*! 🛍️
 
 We hope you love your *${order.product}*! ❤️
 
-We'd love to hear your feedback:
-⭐ How was your experience?
+We would love to hear your feedback:
+⭐ How was your overall experience?
 📦 Did the product meet your expectations?
 
 Your review means a lot to us! 🙏
