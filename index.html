@@ -469,6 +469,40 @@ tbody td{padding:13px 22px;font-size:13px;}
 .plan-badge.growth{background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;}
 .plan-badge.elite{background:linear-gradient(90deg,var(--purple),#9b6fe0);color:#fff;}
 
+/* ── PLAN EXPIRY CHIP ── */
+.plan-expiry-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;}
+.plan-expiry-chip.chip-blue{background:#e8f3ff;color:#185fa5;border:0.5px solid #85b7eb;}
+.plan-expiry-chip.chip-amber{background:#fef3e2;color:#854f0b;border:0.5px solid #fac775;}
+.chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.chip-dot.blue{background:#378add;}
+.chip-dot.amber{background:#e8960a;}
+
+/* ── PLAN EXPIRED OVERLAY ── */
+#sdPlanExpiredOverlay{display:none;position:fixed;inset:0;z-index:9998;align-items:center;justify-content:center;}
+#sdPlanExpiredOverlay.show{display:flex;}
+.plan-expired-blur{position:absolute;inset:0;background:rgba(255,255,255,0.22);backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);}
+.plan-expired-card{position:relative;background:#fff;border-radius:16px;width:100%;max-width:360px;overflow:hidden;border:0.5px solid #c5d4ec;box-shadow:0 12px 48px rgba(14,32,64,0.16);}
+.pec-header{background:#0e2040;padding:18px 22px;display:flex;align-items:center;gap:10px;}
+.pec-brand-dot{width:7px;height:7px;border-radius:50%;background:#378add;flex-shrink:0;}
+.pec-title{font-size:13px;font-weight:500;color:#fff;}
+.pec-sub{font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px;}
+.pec-expired-badge{margin-left:auto;background:rgba(231,74,74,0.15);border:0.5px solid rgba(231,74,74,0.38);border-radius:20px;padding:2px 9px;font-size:10px;color:#f09595;font-weight:500;}
+.pec-body{padding:20px 22px;}
+.pec-desc{font-size:12px;color:#5a7499;line-height:1.7;margin-bottom:16px;}
+.pec-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;}
+.pec-box{border-radius:8px;padding:9px 11px;}
+.pec-box.blue{background:#f0f6ff;}
+.pec-box.red{background:#fdeaea;}
+.pec-box-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+.pec-box.blue .pec-box-lbl{color:#378add;}
+.pec-box.red .pec-box-lbl{color:#c94040;}
+.pec-box-val{font-size:11px;font-weight:500;}
+.pec-box.blue .pec-box-val{color:#0c447c;}
+.pec-box.red .pec-box-val{color:#a32d2d;}
+.pec-warn{background:#fdeaea;border-radius:8px;padding:9px 13px;font-size:11px;color:#a32d2d;text-align:center;line-height:1.65;margin-bottom:14px;}
+.pec-btn-primary{width:100%;padding:10px;border-radius:8px;border:none;background:#378add;color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:6px;}
+.pec-btn-secondary{width:100%;padding:10px;border-radius:8px;border:0.5px solid #85b7eb;background:transparent;color:#185fa5;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;}
+
 .upgrade-banner{background:linear-gradient(135deg,#1f1a17,#2d1f0e);border:1.5px solid #f59e0b;border-radius:10px;padding:14px 16px;cursor:pointer;transition:all 0.2s;}
 .upgrade-banner:hover{border-color:#f97316;transform:translateY(-1px);}
 .upgrade-banner-title{font-size:12px;font-weight:800;color:#f59e0b;margin-bottom:3px;}
@@ -682,16 +716,88 @@ tbody td{padding:13px 22px;font-size:13px;}
 ══════════════════════════════════════ -->
 <div id="sdLoginOverlay" style="display:flex;position:fixed;inset:0;z-index:9999;background:#f0f4ff;align-items:center;justify-content:center;">
 
-  <!-- Decorative side panel (left) -->
-  <div style="position:absolute;left:0;top:0;bottom:0;width:42%;background:linear-gradient(160deg,#0e2040 0%,#1e3a5f 60%,#378add 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;pointer-events:none;">
-    <div style="width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px;">🛍️</div>
-    <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;text-align:center;line-height:1.1;">My Seller<span style="color:#5ba0e8;">Desk</span></div>
-    <div style="width:48px;height:3px;background:rgba(255,255,255,0.25);border-radius:2px;margin:16px 0;"></div>
-    <div style="font-size:13px;color:rgba(255,255,255,0.55);text-align:center;line-height:1.7;max-width:220px;">Manage your orders,<br>customers & invoices<br>— all in one place.</div>
-    <div style="position:absolute;bottom:30px;font-size:11px;color:rgba(255,255,255,0.2);">© 2026 MySellerDesk</div>
-    <!-- decorative circles -->
-    <div style="position:absolute;width:300px;height:300px;border-radius:50%;border:1px solid rgba(255,255,255,0.05);top:-60px;left:-80px;"></div>
-    <div style="position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,255,255,0.05);bottom:40px;right:-40px;"></div>
+  <!-- Promo side panel (left) -->
+  <div style="position:absolute;left:0;top:0;bottom:0;width:42%;background:linear-gradient(160deg,#06112b 0%,#0e2040 45%,#0d2d5a 80%,#1a4a8a 100%);display:flex;flex-direction:column;justify-content:center;padding:36px 38px;overflow:hidden;pointer-events:none;">
+
+    <!-- Decorative circles -->
+    <div style="position:absolute;width:380px;height:380px;border-radius:50%;border:1px solid rgba(55,138,221,0.08);top:-100px;left:-120px;"></div>
+    <div style="position:absolute;width:260px;height:260px;border-radius:50%;border:1px solid rgba(55,138,221,0.06);bottom:-60px;right:-80px;"></div>
+    <div style="position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,0.12) 0%,transparent 70%);top:30%;right:-40px;"></div>
+
+    <!-- Logo -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+      <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#378add,#1a5fa8);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 16px rgba(55,138,221,0.4);">🛍️</div>
+      <div>
+        <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px;line-height:1;">My<span style="color:#5ba0e8;">Seller</span><span style="color:#fff;">Desk</span></div>
+
+      </div>
+    </div>
+
+    <!-- Limited offer badge -->
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,64,64,0.18);border:1.5px solid rgba(201,64,64,0.5);border-radius:30px;padding:6px 14px;margin-bottom:20px;width:fit-content;">
+      <span style="width:9px;height:9px;border-radius:50%;background:#ff4444;box-shadow:0 0 6px #ff4444;flex-shrink:0;"></span>
+      <span style="font-size:12px;font-weight:700;color:#ff8888;letter-spacing:0.3px;">Limited Offer — First Batch Only</span>
+    </div>
+
+    <!-- Main headline -->
+    <div style="margin-bottom:6px;">
+      <div style="font-size:42px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1;">30 Days</div>
+      <div style="font-size:42px;font-weight:900;letter-spacing:-2px;line-height:1;">
+        <span style="color:#5ba0e8;">FREE</span><span style="color:#fff;"> Trial</span>
+      </div>
+      <div style="font-size:34px;font-weight:900;color:#5ba0e8;letter-spacing:-1px;line-height:1.2;margin-top:4px;">போடுங்க!</div>
+    </div>
+
+    <!-- Sub headline -->
+    <div style="margin-bottom:22px;">
+      <div style="font-size:13px;color:rgba(255,255,255,0.75);font-weight:600;line-height:1.5;">Top Performer-ஆ இருந்தா —</div>
+      <div style="font-size:13px;color:#5ba0e8;font-weight:700;">Exclusive rewards!</div>
+    </div>
+
+    <!-- Feature cards -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#378add,#1a5fa8);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🏆</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;"><span style="color:#5ba0e8;">✔ 6 Months</span> Full Access FREE</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#378add,#1a5fa8);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">⭐</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;"><span style="color:#5ba0e8;">✔ Brand Ambassador</span> Status</div>
+      </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div style="background:linear-gradient(135deg,#378add,#5ba0e8);border-radius:14px;padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;box-shadow:0 6px 24px rgba(55,138,221,0.45);">
+      <span style="font-size:18px;">🚀</span>
+      <span style="font-size:15px;font-weight:800;color:#fff;letter-spacing:0.2px;">Start Free Trial →</span>
+    </div>
+
+    <!-- Warning -->
+    <div style="background:rgba(212,140,14,0.12);border:1.5px solid rgba(212,140,14,0.35);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:22px;">
+      <span style="font-size:14px;">⚠️</span>
+      <span style="font-size:12px;font-weight:700;color:#f0b429;">இந்த offer எப்பவும் இருக்காது!</span>
+    </div>
+
+    <!-- Trust badges -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
+      <div style="text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">🛡️</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:600;line-height:1.3;">Secure<br>&amp; Safe</div>
+      </div>
+      <div style="width:1px;height:30px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">☁️</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:600;line-height:1.3;">Cloud<br>Based</div>
+      </div>
+      <div style="width:1px;height:30px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">🎧</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:600;line-height:1.3;">24/7<br>Support</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:10px;color:rgba(255,255,255,0.18);font-weight:500;">© 2026 MySellerDesk. All rights reserved.</div>
   </div>
 
   <!-- Right side - white card -->
@@ -1089,6 +1195,7 @@ async function sdUpdatePassword(){
     <div class="topbar-right">
 
       <span id="topbarPlanBadge" class="plan-badge starter" style="cursor:pointer;" onclick="openUpgradeModal()">STARTER</span>
+      <span id="planExpiryChip" class="plan-expiry-chip chip-blue" style="display:none;" onclick="openUpgradeModal()"><span class="chip-dot blue" id="planExpiryDot"></span><span id="planExpiryText"></span></span>
       <button class="topbar-btn" onclick="openNewOrder()">+ New Order</button>
     </div>
   </div>
@@ -3597,7 +3704,7 @@ function sendBillWhatsApp(){
   if(!currentBillOrder) return;
   const o = currentBillOrder;
   const s = getSettings();
-  const msg = `🧾 *Invoice from ${s.shopName}*\n\nHi ${o.name}!\n\n📦 Product: ${o.product}\n💰 Amount: ₹${Number(o.amount).toLocaleString('en-IN')}\n💳 Payment: ${o.payment==='paid'?'✅ Paid':'⏳ Pending (COD)'}\n\n📅 Date: ${o.date}\n🔢 Order ID: ${o.orderId ? '#'+o.orderId : '(Enquiry)'}\n\nThank you for your order! We appreciate your support. 🙏`;
+  const msg = `Invoice from *${s.shopName}*\n\nHi ${o.name},\n\n• Product: ${o.product}\n• Amount: ₹${Number(o.amount).toLocaleString('en-IN')}\n• Payment: ${o.payment==='paid'?'Paid':'Pending (COD)'}\n• Date: ${o.date}\n• Order ID: ${o.orderId ? '#'+o.orderId : '(Enquiry)'}\n\nThank you for your order!\n\n*${s.shopName}*`;
   const phone = o.phone.replace(/\D/g,'');
   window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
@@ -3628,81 +3735,86 @@ function sendWhatsApp(id){
   let msg = '';
 
   if(stage === 'enquiry'){
-    msg = `Hi ${order.name}! 👋
+    msg = `Hi ${order.name},
 
-We have received your enquiry! 🛍️
+Welcome to *${shop}*!
 
-📦 Product: ${order.product}
+What product are you looking for? We will help you find the right one.
 
-We will confirm your order shortly and get back to you.
-
-${sig}`;
+*${shop}*`;
   }
   else if(stage === 'order_confirm'){
-    msg = `Hi ${order.name}! 👋
+    msg = `Order Confirmed!
 
-Your order has been confirmed! ✅
+Hi ${order.name},
 
-${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
-💰 Amount: ${amt}
-💳 Payment: ${order.payment === 'paid' ? '✅ Paid' : '⏳ COD'}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
 
-We are now starting to prepare your order! 🎉
+Next step: Your order is now being processed
 
-${sig}`;
+*${shop}*`;
   }
   else if(stage === 'order_process'){
-    msg = `Hi ${order.name}! 👋
+    msg = `Order Processing!
 
-Your order is being processed! ⚙️
+Hi ${order.name},
 
-${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
 
-We will pack and dispatch it soon! 📦
+Next step: We are preparing your order for packing
 
-${sig}`;
+*${shop}*`;
   }
   else if(stage === 'order_prepare'){
-    msg = `Hi ${order.name}! 👋
+    msg = `Order Being Prepared!
 
-Your order is being prepared! 📋
+Hi ${order.name},
 
-${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
 
-Getting it ready for packing! 🎁
+Next step: Your order will be packed very soon
 
-${sig}`;
+*${shop}*`;
   }
   else if(stage === 'packing'){
-    msg = `Hi ${order.name}! 👋
+    msg = `Order Packing!
 
-Your order is being packed! 📦
+Hi ${order.name},
 
-${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
-💰 Amount: ${amt}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
 
-It will be dispatched very soon! 🚚
+Next step: Your order will be dispatched soon
 
-${sig}`;
+*${shop}*`;
   }
   else if(stage === 'dispatched'){
     const trackLink = order.courier && order.tracking ? getTrackingUrl(order.courier, order.tracking) : null;
-    msg = `Hi ${order.name}! 👋
+    msg = `Order Dispatched!
 
-Your order has been dispatched! 🚚
+Hi ${order.name},
 
-${orderId ? '🔢 Order ID: ' + orderId + '\n' : ''}📦 Product: ${order.product}
-💰 Amount: ${amt}
-🚚 Courier: ${order.courier || '-'}
-🔢 Tracking No: ${order.tracking || '-'}
-${trackLink ? '🔗 Track your order:\n' + trackLink : ''}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
+• Courier: ${order.courier || '-'}
+• Tracking: ${order.tracking || '-'}${trackLink ? '\n• Track: ' + trackLink : ''}
 
-${sig}`;
+Next step: Expect your delivery within 2-3 days
+
+*${shop}*`;
   }
   else {
-    msg = `Hi ${order.name}! 👋
+    msg = `Hi ${order.name},
 
-${sig}`;
+*${shop}*`;
   }
 
   const phone = order.phone.replace(/\D/g,'');
@@ -3722,19 +3834,21 @@ function sendFeedbackWhatsApp(id){
   const order = DB.getOrders().find(o => o.id === id);
   if(!order) return;
   const s = getSettings();
-  const msg = `Hi ${order.name}! 😊
+  const msg = `Order Delivered!
 
-Thank you for shopping with *${s.shopName}*! 🛍️
+Hi ${order.name},
 
-We hope you love your *${order.product}*! ❤️
+• Order ID: ${order.orderId ? '#'+order.orderId : '-'}
+• Product: ${order.product}
 
-We would love to hear your feedback:
-⭐ How was your overall experience?
-📦 Did the product meet your expectations?
+We hope you love your order!
 
-Your review means a lot to us! 🙏
+• How was your experience?
+• Did the product meet your expectations?
 
-${s.signature||'— '+s.shopName}`;
+Your review means a lot to us!
+
+*${s.shopName}*`;
   const phone = order.phone.replace(/\D/g,'');
   window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
@@ -5062,3 +5176,130 @@ document.addEventListener('DOMContentLoaded', function(){
 </div><!-- /#sdDashboardWrap -->
 </body>
 </html>
+
+<!-- ── PLAN EXPIRED OVERLAY ── -->
+<div id="sdPlanExpiredOverlay">
+  <div class="plan-expired-blur"></div>
+  <div class="plan-expired-card">
+    <div class="pec-header">
+      <div class="pec-brand-dot"></div>
+      <div>
+        <div class="pec-title">MySellerDesk</div>
+        <div class="pec-sub" id="pecPlanName">Starter Plan</div>
+      </div>
+      <div class="pec-expired-badge">Expired</div>
+    </div>
+    <div class="pec-body">
+      <p class="pec-desc">Your plan has expired. Dashboard access is restricted until you renew or upgrade.</p>
+      <div class="pec-grid">
+        <div class="pec-box blue">
+          <div class="pec-box-lbl">Started</div>
+          <div class="pec-box-val" id="pecStartDate">—</div>
+        </div>
+        <div class="pec-box red">
+          <div class="pec-box-lbl">Expired</div>
+          <div class="pec-box-val" id="pecExpiredDate">—</div>
+        </div>
+        <div class="pec-box red">
+          <div class="pec-box-lbl">Data Deleted</div>
+          <div class="pec-box-val" id="pecDeleteDate">—</div>
+        </div>
+        <div class="pec-box red">
+          <div class="pec-box-lbl">Days Remaining</div>
+          <div class="pec-box-val" id="pecDaysLeft">—</div>
+        </div>
+      </div>
+      <div class="pec-warn">Your data will be <strong>permanently deleted</strong> on <span id="pecDeleteDateInline">—</span>.</div>
+      <button class="pec-btn-primary" onclick="openUpgradeModal();document.getElementById('sdPlanExpiredOverlay').classList.remove('show');">Upgrade Now</button>
+      <button class="pec-btn-secondary" onclick="openUpgradeModal();document.getElementById('sdPlanExpiredOverlay').classList.remove('show');">View Plans</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── PLAN EXPIRY SYSTEM ──
+(function(){
+  function fmtDate(d){
+    return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  }
+
+  function getPlanStartDate(){
+    // Supabase user metadata or fallback to signup date
+    try {
+      const meta = _supa.auth.getSession().then(({data:{session}})=>{
+        if(!session) return;
+        const created = new Date(session.user.created_at);
+        initExpirySystem(created);
+      });
+    } catch(e){}
+  }
+
+  window.initExpirySystem = function(signupDate){
+    const plan = AppState.plan || 'starter';
+    const planLabels = { starter:'Starter Plan', growth:'Growth Plan', elite:'Elite Plan' };
+
+    // Duration in days per plan
+    const durations = { starter:30, growth:30, elite:365 };
+    const duration = durations[plan] || 30;
+
+    const startDate = new Date(signupDate);
+    const expiryDate = new Date(startDate);
+    expiryDate.setDate(expiryDate.getDate() + duration);
+
+    const deleteDate = new Date(expiryDate);
+    deleteDate.setDate(deleteDate.getDate() + 30);
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    expiryDate.setHours(0,0,0,0);
+
+    const daysLeft = Math.ceil((expiryDate - today) / (1000*60*60*24));
+    const daysToDelete = Math.ceil((deleteDate - today) / (1000*60*60*24));
+
+    // Update expiry chip
+    const chip = document.getElementById('planExpiryChip');
+    const chipText = document.getElementById('planExpiryText');
+    const chipDot = document.getElementById('planExpiryDot');
+
+    if(chip && chipText){
+      chip.style.display = 'inline-flex';
+      if(daysLeft <= 0){
+        // Expired
+        chipText.textContent = planLabels[plan] + ' · Expired';
+        chip.className = 'plan-expiry-chip chip-amber';
+        chipDot.className = 'chip-dot amber';
+        // Show expired overlay
+        showPlanExpiredOverlay(plan, startDate, expiryDate, deleteDate, daysToDelete);
+      } else if(daysLeft <= 3){
+        chipText.textContent = planLabels[plan] + ' · ' + daysLeft + ' day' + (daysLeft===1?'':'s') + ' left · Renew';
+        chip.className = 'plan-expiry-chip chip-amber';
+        chipDot.className = 'chip-dot amber';
+      } else {
+        chipText.textContent = planLabels[plan] + ' · ' + daysLeft + ' days left';
+        chip.className = 'plan-expiry-chip chip-blue';
+        chipDot.className = 'chip-dot blue';
+      }
+    }
+  };
+
+  function showPlanExpiredOverlay(plan, startDate, expiryDate, deleteDate, daysToDelete){
+    const planLabels = { starter:'Starter Plan', growth:'Growth Plan', elite:'Elite Plan' };
+    document.getElementById('pecPlanName').textContent = planLabels[plan] || 'Starter Plan';
+    document.getElementById('pecStartDate').textContent = fmtDate(startDate);
+    document.getElementById('pecExpiredDate').textContent = fmtDate(expiryDate);
+    document.getElementById('pecDeleteDate').textContent = fmtDate(deleteDate);
+    document.getElementById('pecDaysLeft').textContent = Math.max(0, daysToDelete) + ' days';
+    document.getElementById('pecDeleteDateInline').textContent = fmtDate(deleteDate);
+    document.getElementById('sdPlanExpiredOverlay').classList.add('show');
+  }
+
+  // Hook into ensureAccess — run after login
+  document.addEventListener('DOMContentLoaded', function(){
+    _supa.auth.getSession().then(function({data:{session}}){
+      if(!session) return;
+      const created = new Date(session.user.created_at);
+      window.initExpirySystem(created);
+    });
+  });
+})();
+</script>
