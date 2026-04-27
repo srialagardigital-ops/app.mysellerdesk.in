@@ -854,14 +854,19 @@ function sdSwitchTab(tab){
   document.getElementById('sdFormForgot').style.display  = tab === 'forgot'  ? 'block' : 'none';
   document.getElementById('sdFormNewPass').style.display = tab === 'newpass' ? 'block' : 'none';
 
-  const tabs = { login: 'sdTabLogin', signup: 'sdTabSignup', forgot: 'sdTabForgot' };
-  Object.entries(tabs).forEach(([key, id]) => {
+  // Tab bar — forgot/newpass-ல hide பண்ணு
+  const tabBar = document.getElementById('sdAuthTabBar');
+  if(tabBar) tabBar.style.display = (tab === 'forgot' || tab === 'newpass') ? 'none' : 'flex';
+
+  // Active tab styling
+  const activeStyle   = { background: '#378add', color: '#fff', fontWeight: '700', boxShadow: '0 2px 8px rgba(55,138,221,0.3)' };
+  const inactiveStyle = { background: 'transparent', color: '#5a7499', fontWeight: '600', boxShadow: 'none' };
+  const tabMap = { login: 'sdTabLogin', signup: 'sdTabSignup' };
+  Object.entries(tabMap).forEach(([key, id]) => {
     const el = document.getElementById(id);
     if(!el) return;
-    const active = key === tab;
-    el.style.background = active ? 'rgba(55,138,221,0.8)' : 'transparent';
-    el.style.color       = active ? '#fff' : 'rgba(255,255,255,0.45)';
-    el.style.fontWeight  = active ? '700' : '600';
+    const s = key === tab ? activeStyle : inactiveStyle;
+    Object.assign(el.style, s);
   });
   sdClearMessages();
 }
@@ -4993,13 +4998,18 @@ async function toggleFeature(name, enabled){
   }
 
   async function ensureAccess(){
+    // PASSWORD_RECOVERY hash இருந்தா dashboard-க்கு போகாதே
+    const hash = window.location.hash || "";
+    if(hash.includes("type=recovery")){
+      return;
+    }
     const { data: { session } } = await _supa.auth.getSession();
     if(!session){
-      return; // overlay already visible by default
+      return;
     }
     AppState._email    = session.user.email;
     AppState._uid      = session.user.id;
-    AppState._shopName = AppState._shopName || getSettings().shopName || 'My Shop';
+    AppState._shopName = AppState._shopName || getSettings().shopName || "My Shop";
     applyTopbarIdentity();
     window._sdHideLoginOverlay();
     await DB.loadFromSupabase();
