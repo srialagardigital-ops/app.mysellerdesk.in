@@ -2307,13 +2307,19 @@ window._sdHideLoginOverlay = function(){
     history.replaceState({}, '', window.location.pathname);
   }
 
+  // PASSWORD_RECOVERY flag — event vantha set aagum
+  window._sdIsPasswordRecovery = false;
+
   // Overlay is visible by default — hide only if valid session exists
   document.addEventListener('DOMContentLoaded', async function(){
     const { data: { session } } = await _supa.auth.getSession();
-    if(session){
-      window._sdHideLoginOverlay();
-    }
-    // No session → overlay stays visible (already showing)
+    if(!session) return;
+
+    // onAuthStateChange PASSWORD_RECOVERY event முன்னாடி வரும்
+    // அது வந்திருந்தா flag set ஆகியிருக்கும் — dashboard திறக்காதே
+    if(window._sdIsPasswordRecovery) return;
+
+    window._sdHideLoginOverlay();
   });
 
   // Idle logout
@@ -2334,6 +2340,8 @@ window._sdHideLoginOverlay = function(){
   // Auth state change
   _supa.auth.onAuthStateChange(function(event, sess){
     if(event === 'PASSWORD_RECOVERY'){
+      // Flag set பண்ணு — DOMContentLoaded dashboard திறக்காதே
+      window._sdIsPasswordRecovery = true;
       // Reset link click பண்ணா — new password form காட்டு
       window._sdShowLoginOverlay('');
       sdSwitchTab('newpass');
