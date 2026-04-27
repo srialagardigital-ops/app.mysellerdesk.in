@@ -1,0 +1,13 @@
+{
+  "name": "app-mysellerdesk-in",
+  "version": "1.0.0",
+  "description": "MySellerDesk Instagram CRM Dashboard",
+  "private": true,
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'Static HTML project - no build needed'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
