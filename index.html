@@ -469,18 +469,12 @@ tbody td{padding:13px 22px;font-size:13px;}
 .plan-badge.growth{background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;}
 .plan-badge.elite{background:linear-gradient(90deg,var(--purple),#9b6fe0);color:#fff;}
 
-/* ── PLAN EXPIRY CHIP ── */
-.plan-expiry-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;}
-.plan-expiry-chip.chip-blue{background:#e8f3ff;color:#185fa5;border:0.5px solid #85b7eb;}
-.plan-expiry-chip.chip-amber{background:#fef3e2;color:#854f0b;border:0.5px solid #fac775;}
-.chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.chip-dot.blue{background:#378add;}
-.chip-dot.amber{background:#e8960a;}
+
 
 /* ── PLAN EXPIRED OVERLAY ── */
 #sdPlanExpiredOverlay{display:none;position:fixed;inset:0;z-index:9998;align-items:center;justify-content:center;}
 #sdPlanExpiredOverlay.show{display:flex;}
-.plan-expired-blur{position:absolute;inset:0;background:rgba(255,255,255,0.22);backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);}
+.plan-expired-blur{position:absolute;inset:0;background:rgba(255,255,255,0.22);backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);pointer-events:none;}
 .plan-expired-card{position:relative;background:#fff;border-radius:16px;width:100%;max-width:360px;overflow:hidden;border:0.5px solid #c5d4ec;box-shadow:0 12px 48px rgba(14,32,64,0.16);}
 .pec-header{background:#0e2040;padding:18px 22px;display:flex;align-items:center;gap:10px;}
 .pec-brand-dot{width:7px;height:7px;border-radius:50%;background:#378add;flex-shrink:0;}
@@ -1195,7 +1189,6 @@ async function sdUpdatePassword(){
     <div class="topbar-right">
 
       <span id="topbarPlanBadge" class="plan-badge starter" style="cursor:pointer;" onclick="openUpgradeModal()">STARTER</span>
-      <span id="planExpiryChip" class="plan-expiry-chip chip-blue" style="display:none;" onclick="openUpgradeModal()"><span class="chip-dot blue" id="planExpiryDot"></span><span id="planExpiryText"></span></span>
       <button class="topbar-btn" onclick="openNewOrder()">+ New Order</button>
     </div>
   </div>
@@ -4000,7 +3993,12 @@ function closeProductDetail(){
 }
 
 // ══ MODAL ══
-function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+function closeModal(id){
+  document.getElementById(id).classList.remove('show');
+  if(AppState._planExpired){
+    document.getElementById('sdPlanExpiredOverlay').classList.add('show');
+  }
+}
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if(e.target === m) m.classList.remove('show'); });
 });
@@ -5210,8 +5208,8 @@ document.addEventListener('DOMContentLoaded', function(){
         </div>
       </div>
       <div class="pec-warn">Your data will be <strong>permanently deleted</strong> on <span id="pecDeleteDateInline">—</span>.</div>
-      <button class="pec-btn-primary" onclick="openUpgradeModal();document.getElementById('sdPlanExpiredOverlay').classList.remove('show');">Upgrade Now</button>
-      <button class="pec-btn-secondary" onclick="openUpgradeModal();document.getElementById('sdPlanExpiredOverlay').classList.remove('show');">View Plans</button>
+      <button class="pec-btn-primary" onclick="openUpgradeModal()">Upgrade Now</button>
+      <button class="pec-btn-secondary" onclick="openUpgradeModal()">View Plans</button>
     </div>
   </div>
 </div>
@@ -5256,28 +5254,20 @@ document.addEventListener('DOMContentLoaded', function(){
     const daysLeft = Math.ceil((expiryDate - today) / (1000*60*60*24));
     const daysToDelete = Math.ceil((deleteDate - today) / (1000*60*60*24));
 
-    // Update expiry chip
-    const chip = document.getElementById('planExpiryChip');
-    const chipText = document.getElementById('planExpiryText');
-    const chipDot = document.getElementById('planExpiryDot');
+    // Update topbar plan badge with days left
+    const tbadge = document.getElementById('topbarPlanBadge');
+    const badgeLabels = { starter:'STARTER', growth:'⚡ GROWTH', elite:'👑 ELITE' };
+    const prefix = badgeLabels[plan] || 'STARTER';
 
-    if(chip && chipText){
-      chip.style.display = 'inline-flex';
+    if(tbadge){
       if(daysLeft <= 0){
-        // Expired
-        chipText.textContent = planLabels[plan] + ' · Expired';
-        chip.className = 'plan-expiry-chip chip-amber';
-        chipDot.className = 'chip-dot amber';
+        tbadge.textContent = prefix + ' · Expired';
         // Show expired overlay
         showPlanExpiredOverlay(plan, startDate, expiryDate, deleteDate, daysToDelete);
       } else if(daysLeft <= 3){
-        chipText.textContent = planLabels[plan] + ' · ' + daysLeft + ' day' + (daysLeft===1?'':'s') + ' left · Renew';
-        chip.className = 'plan-expiry-chip chip-amber';
-        chipDot.className = 'chip-dot amber';
+        tbadge.textContent = prefix + ' · ' + daysLeft + ' day' + (daysLeft===1?'':'s') + ' left · Renew';
       } else {
-        chipText.textContent = planLabels[plan] + ' · ' + daysLeft + ' days left';
-        chip.className = 'plan-expiry-chip chip-blue';
-        chipDot.className = 'chip-dot blue';
+        tbadge.textContent = prefix + ' · ' + daysLeft + ' days left';
       }
     }
   };
@@ -5290,6 +5280,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('pecDeleteDate').textContent = fmtDate(deleteDate);
     document.getElementById('pecDaysLeft').textContent = Math.max(0, daysToDelete) + ' days';
     document.getElementById('pecDeleteDateInline').textContent = fmtDate(deleteDate);
+    AppState._planExpired = true;
     document.getElementById('sdPlanExpiredOverlay').classList.add('show');
   }
 
