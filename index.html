@@ -3605,15 +3605,15 @@ function sendBillWhatsApp(){
 // ══ SEND WHATSAPP (stage-based messages) ══
 function getTrackingUrl(courier, tracking){
   const urls = {
-    'ST Courier': `https://www.stcourier.com/tracking?trackid=${tracking}`,
-    'Professional': `https://www.tpcindia.com/tracking?docket=${tracking}`,
+    'ST Courier': `https://stcourier.com`,
+    'Professional': `https://www.tpcindia.com`,
     'DTDC': `https://www.dtdc.in/tracking/tracking_results.asp?Ttype=awb&strCnno=${tracking}`,
     'Delhivery': `https://www.delhivery.com/track/package/${tracking}`,
-    'India Post': `https://www.indiapost.gov.in/vas/pages/trackconsignment.aspx`,
-    'Bluedart': `https://www.bluedart.com/tracking?trackFor=0&track=${tracking}`,
-    'Other': `Tracking No: ${tracking}`
+    'India Post': `https://www.indiapost.gov.in/VAS/Pages/trackconsignment.aspx`,
+    'Bluedart': `https://www.bluedart.com/tracking`,
+    'Other': null
   };
-  return urls[courier] || `Tracking: ${tracking}`;
+  return urls[courier] || null;
 }
 
 function sendWhatsApp(id){
@@ -3686,7 +3686,7 @@ It will be dispatched very soon! 🚚
 ${sig}`;
   }
   else if(stage === 'dispatched'){
-    const trackLink = order.courier && order.tracking ? getTrackingUrl(order.courier, order.tracking) : '';
+    const trackLink = order.courier && order.tracking ? getTrackingUrl(order.courier, order.tracking) : null;
     msg = `Hi ${order.name}! 👋
 
 Your order has been dispatched! 🚚
