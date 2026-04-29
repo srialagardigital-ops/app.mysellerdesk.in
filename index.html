@@ -147,6 +147,9 @@ body{
 .content{padding:18px 22px;flex:1;width:100%;min-width:0;}
 .tab-section{display:none;width:100%;}
 .tab-section.active{display:block;width:100%;}
+#tab-dashboard{overflow:hidden;}
+#tab-dashboard .stats-row{margin-bottom:12px;}
+#tab-dashboard .charts-row{margin-bottom:0;}
 
 /* ── STATS ROW ── */
 .stats-row{
@@ -1467,6 +1470,21 @@ async function sdUpdatePassword(){
             </div>
           </div>
           <div class="mini-bar-wrap" id="weekChart"></div>
+          <div id="weekRevenueCard" style="margin-top:14px;background:linear-gradient(135deg,#e8f8f0,#d4f0e0);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:42px;height:42px;border-radius:50%;background:#2d9e6b;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
+              <div>
+                <div style="font-size:12px;font-weight:600;color:#2d9e6b;">This Week Revenue</div>
+                <div style="font-size:20px;font-weight:900;color:#0e2040;letter-spacing:-0.5px;" id="weekRevenueAmt">₹0</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:18px;font-weight:800;color:#2d9e6b;" id="weekRevenueChg">↑ 0%</div>
+              <div style="font-size:11px;color:#5a7499;">vs last week</div>
+            </div>
+          </div>
         </div>
 
         
@@ -1499,46 +1517,10 @@ async function sdUpdatePassword(){
         </div>
       </div>
 
-      
-      <div class="table-card" style="border:none;border-radius:18px;box-shadow:0 2px 12px rgba(14,32,64,0.07);">
-        <div class="table-head" style="padding:18px 24px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div class="table-title" style="font-size:15px;font-weight:800;">Recent Sales</div>
-          </div>
-          <div class="table-actions">
-            <div class="topbar-search-hidden" style="width:190px;border-radius:10px;">
-              <span style="color:var(--muted2);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-              <input placeholder="Search..." id="dashSearchInput" oninput="filterRecentDash(this.value)">
-            </div>
-            <div class="filter-tabs" style="border-radius:10px;">
-              <button class="filter-tab active" onclick="filterDashOrders('all',this)">All</button>
-              <button class="filter-tab" onclick="filterDashOrders('pending',this)">Pending</button>
-              <button class="filter-tab" onclick="filterDashOrders('delivered',this)">Done</button>
-            </div>
-            <button class="act-btn" style="border-radius:9px;" onclick="showTab('orders', document.querySelectorAll('.nav-item')[1])">View All →</button>
-          </div>
-        </div>
-        <table>
-          <thead><tr>
-            <th style="padding:10px 24px;"><input type="checkbox" style="border-radius:4px;width:14px;height:14px;cursor:pointer;accent-color:var(--accent);"></th>
-            <th>Order ID</th><th>Date</th><th>Customer</th><th>Product</th><th>Status</th><th>Amount</th>
-          </tr></thead>
-          <tbody id="recentOrdersTbody"></tbody>
-        </table>
-      </div>
     </div>
 
     
     <div class="tab-section" id="tab-orders">
-      
-      <div class="orders-limit-bar" id="orderLimitBar" style="display:none;">
-        <div style="flex:1;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-            <span style="font-size:12px;font-weight:700;">Orders this month</span>
-            <span style="font-size:12px;font-weight:700;" id="orderLimitText">0 / 20</span>
-          </div>
-          <div class="limit-bar-track"><div class="limit-bar-fill" id="orderLimitFill" style="width:0%;background:var(--accent);"></div></div>
-        </div>
       </div>
       
       <div class="stage-stepper" id="stageStepper"></div>
@@ -3289,6 +3271,40 @@ function refreshCharts(mode){
       <div class="mini-bar-label">${barLabels[i]}</div>
     </div>`).join('');
 
+  // ── This Week Revenue card ──
+  if(currentChartMode === 'weekly'){
+    const now2 = new Date();
+    const getWeekRev = (weeksAgo) => {
+      let total = 0;
+      for(let i=6;i>=0;i--){
+        const d = new Date(); d.setDate(d.getDate() - (weeksAgo*7) - i); d.setHours(0,0,0,0);
+        const dEnd = new Date(d); dEnd.setHours(23,59,59,999);
+        orders.filter(o=>{
+          const p=(o.date||'').split('/');
+          if(p.length<3) return false;
+          const od = new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));
+          return od>=d && od<=dEnd;
+        }).forEach(o => total += (Number(o.amount)||0));
+      }
+      return total;
+    };
+    const thisWeekRev = getWeekRev(0);
+    const lastWeekRev = getWeekRev(1);
+    const chgPct = lastWeekRev > 0 ? Math.round(((thisWeekRev-lastWeekRev)/lastWeekRev)*100) : 0;
+    const amtEl = document.getElementById('weekRevenueAmt');
+    const chgEl = document.getElementById('weekRevenueChg');
+    if(amtEl) amtEl.textContent = '₹' + thisWeekRev.toLocaleString('en-IN');
+    if(chgEl){
+      chgEl.textContent = (chgPct>=0?'↑ ':'↓ ') + Math.abs(chgPct) + '%';
+      chgEl.style.color = chgPct >= 0 ? '#2d9e6b' : '#c94040';
+    }
+    const card = document.getElementById('weekRevenueCard');
+    if(card) card.style.display = 'flex';
+  } else {
+    const card = document.getElementById('weekRevenueCard');
+    if(card) card.style.display = 'none';
+  }
+
   // ── Gauge chart ──
   const delivered = orders.filter(o=>o.status==='delivered').length;
   const total = orders.length || 1;
@@ -4351,10 +4367,7 @@ function updatePlanUI(){
   // Upgrade banner
   document.getElementById('upgradeBanner').style.display = paid ? 'none' : 'block';
 
-  // Order limit bar
-  const bar = document.getElementById('orderLimitBar');
-  if(!paid){ bar.style.display = 'flex'; updateOrderLimitBar(); }
-  else { bar.style.display = 'none'; }
+  // Order limit bar removed
 }
 
 function updateOrderLimitBar(){
