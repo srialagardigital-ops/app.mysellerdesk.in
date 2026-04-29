@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MySellerDesk — Instagram CRM</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23378add'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-size='16' font-weight='900' fill='white'%3ESD%3C/text%3E%3C/svg%3E">
 <script src="dashboard-page-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -739,12 +740,12 @@ tbody td{padding:13px 22px;font-size:13px;}
       <div style="font-size:42px;font-weight:900;letter-spacing:-2px;line-height:1;">
         <span style="color:#5ba0e8;">FREE</span><span style="color:#fff;"> Trial</span>
       </div>
-      <div style="font-size:34px;font-weight:900;color:#5ba0e8;letter-spacing:-1px;line-height:1.2;margin-top:4px;">போடுங்க!</div>
+      <div style="font-size:34px;font-weight:900;color:#5ba0e8;letter-spacing:-1px;line-height:1.2;margin-top:4px;">Get Started!</div>
     </div>
 
     <!-- Sub headline -->
     <div style="margin-bottom:22px;">
-      <div style="font-size:13px;color:rgba(255,255,255,0.75);font-weight:600;line-height:1.5;">Top Performer-ஆ இருந்தா —</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.75);font-weight:600;line-height:1.5;">As a Top Performer —</div>
       <div style="font-size:13px;color:#5ba0e8;font-weight:700;">Exclusive rewards!</div>
     </div>
 
@@ -769,7 +770,7 @@ tbody td{padding:13px 22px;font-size:13px;}
     <!-- Warning -->
     <div style="background:rgba(212,140,14,0.12);border:1.5px solid rgba(212,140,14,0.35);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:22px;">
       <span style="font-size:14px;">⚠️</span>
-      <span style="font-size:12px;font-weight:700;color:#f0b429;">இந்த offer எப்பவும் இருக்காது!</span>
+      <span style="font-size:12px;font-weight:700;color:#f0b429;">This offer won't last forever!</span>
     </div>
 
     <!-- Trust badges -->
@@ -852,7 +853,7 @@ tbody td{padding:13px 22px;font-size:13px;}
 
         <div style="margin-bottom:14px;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Shop Name *</label>
-          <input id="sdSignupShopName" type="text" placeholder="உங்கள் Shop பெயர்" autocomplete="organization"
+          <input id="sdSignupShopName" type="text" placeholder="Your Shop Name" autocomplete="organization"
             style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
             onkeydown="if(event.key==='Enter')document.getElementById('sdSignupWhatsapp').focus()">
@@ -868,7 +869,7 @@ tbody td{padding:13px 22px;font-size:13px;}
 
         <div style="margin-bottom:14px;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Shop Address *</label>
-          <input id="sdSignupAddress" type="text" placeholder="கடை முகவரி"
+          <input id="sdSignupAddress" type="text" placeholder="Shop Address"
             style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'">
         </div>
@@ -937,7 +938,7 @@ tbody td{padding:13px 22px;font-size:13px;}
 
       <!-- FORGOT PASSWORD FORM -->
       <div id="sdFormForgot" style="display:none;">
-        <p style="font-size:13px;color:#5a7499;text-align:center;margin-bottom:20px;line-height:1.6;">உங்கள் email-ஐ enter செய்யுங்கள். Password reset link அனுப்புகிறோம்.</p>
+        <p style="font-size:13px;color:#5a7499;text-align:center;margin-bottom:20px;line-height:1.6;">Enter your email address. We will send you a password reset link.</p>
         <div style="margin-bottom:20px;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
           <input id="sdForgotEmail" type="email" placeholder="you@example.com"
@@ -957,7 +958,7 @@ tbody td{padding:13px 22px;font-size:13px;}
       <div id="sdFormNewPass" style="display:none;">
         <div style="text-align:center;margin-bottom:20px;">
           <div style="font-size:32px;margin-bottom:8px;">🔐</div>
-          <p style="font-size:13px;color:#5a7499;line-height:1.6;">புதிய password set செய்யுங்கள்.</p>
+          <p style="font-size:13px;color:#5a7499;line-height:1.6;">Set your new password below.</p>
         </div>
         <div style="margin-bottom:14px;position:relative;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">New Password</label>
@@ -1007,7 +1008,7 @@ function sdSwitchTab(tab){
   document.getElementById('sdFormForgot').style.display  = tab === 'forgot'  ? 'block' : 'none';
   document.getElementById('sdFormNewPass').style.display = tab === 'newpass' ? 'block' : 'none';
 
-  // Tab bar — forgot/newpass-ல hide பண்ணு
+  // Tab bar — hide on forgot/newpass screens
   const tabBar = document.getElementById('sdAuthTabBar');
   if(tabBar) tabBar.style.display = (tab === 'forgot' || tab === 'newpass') ? 'none' : 'flex';
 
@@ -1067,11 +1068,11 @@ async function sdLoginWithEmail(){
   sdClearMessages();
   const email = document.getElementById('sdLoginEmail').value.trim();
   const pass  = document.getElementById('sdLoginPass').value;
-  if(!email || !pass){ sdShowError('Email மற்றும் Password தேவை.'); return; }
+  if(!email || !pass){ sdShowError('Email and Password are required.'); return; }
   sdSetBtnLoading('sdSignInBtn', true, 'Sign In →');
   const { data, error } = await _supa.auth.signInWithPassword({ email, password: pass });
   sdSetBtnLoading('sdSignInBtn', false, 'Sign In →');
-  if(error){ sdShowError('❌ ' + (error.message || 'Login தோல்வியடைந்தது.')); return; }
+  if(error){ sdShowError('❌ ' + (error.message || 'Login failed. Please try again.')); return; }
   AppState._email = data.user.email;
   AppState._uid   = data.user.id;
   window._sdHideLoginOverlay();
@@ -1093,14 +1094,14 @@ async function sdSignupWithEmail(){
   const pass     = document.getElementById('sdSignupPass').value;
   const confirm  = document.getElementById('sdSignupPassConfirm').value;
 
-  if(!shopName){ sdShowError('❌ Shop Name தேவை.'); return; }
-  if(!whatsapp || whatsapp.length < 10){ sdShowError('❌ சரியான WhatsApp Number தேவை.'); return; }
-  if(!address){ sdShowError('❌ Shop Address தேவை.'); return; }
-  if(!district){ sdShowError('❌ District select பண்ணுங்கள்.'); return; }
-  if(!pincode || pincode.length < 6){ sdShowError('❌ சரியான Pincode தேவை.'); return; }
-  if(!email || !pass){ sdShowError('❌ Email மற்றும் Password தேவை.'); return; }
-  if(pass.length < 6){ sdShowError('❌ Password குறைந்தது 6 characters வேண்டும்.'); return; }
-  if(pass !== confirm){ sdShowError('❌ Password match ஆகவில்லை. மீண்டும் try பண்ணுங்கள்.'); return; }
+  if(!shopName){ sdShowError('❌ Shop Name is required.'); return; }
+  if(!whatsapp || whatsapp.length < 10){ sdShowError('❌ Please enter a valid WhatsApp Number.'); return; }
+  if(!address){ sdShowError('❌ Shop Address is required.'); return; }
+  if(!district){ sdShowError('❌ Please select your District.'); return; }
+  if(!pincode || pincode.length < 6){ sdShowError('❌ Please enter a valid Pincode.'); return; }
+  if(!email || !pass){ sdShowError('❌ Email and Password are required.'); return; }
+  if(pass.length < 6){ sdShowError('❌ Password must be at least 6 characters.'); return; }
+  if(pass !== confirm){ sdShowError('❌ Passwords do not match. Please try again.'); return; }
 
   sdSetBtnLoading('sdSignUpBtn', true, 'Creating Account...');
   const { data, error } = await _supa.auth.signUp({
@@ -1117,7 +1118,7 @@ async function sdSignupWithEmail(){
     }
   });
   sdSetBtnLoading('sdSignUpBtn', false, 'Create Account →');
-  if(error){ sdShowError('❌ ' + (error.message || 'Signup தோல்வியடைந்தது.')); return; }
+  if(error){ sdShowError('❌ ' + (error.message || 'Signup failed. Please try again.')); return; }
   if(data.user && data.user.identities && data.user.identities.length === 0){
     sdShowError('❌ An account with this email already exists. Please Sign In instead.'); return;
   }
@@ -1151,7 +1152,7 @@ async function sdLoginWithGoogle(){
     options: { redirectTo }
   });
   if(error){
-    sdShowError('❌ Google login தோல்வி: ' + error.message);
+    sdShowError('❌ Google login failed: ' + error.message);
     if(googleBtn) googleBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg> Continue with Google`;
   }
 }
@@ -1159,14 +1160,14 @@ async function sdLoginWithGoogle(){
 async function sdSendReset(){
   sdClearMessages();
   const email = document.getElementById('sdForgotEmail').value.trim();
-  if(!email){ sdShowError('Email address தேவை.'); return; }
+  if(!email){ sdShowError('Email address is required.'); return; }
   sdSetBtnLoading('sdResetBtn', true, 'Send Reset Link 📧');
   const cfg = window.SELLERDESK_CONFIG || {};
   const redirectTo = (cfg.APP_URL || window.location.origin) + '/index.html';
   const { error } = await _supa.auth.resetPasswordForEmail(email, { redirectTo });
   sdSetBtnLoading('sdResetBtn', false, 'Send Reset Link 📧');
   if(error){ sdShowError('❌ ' + error.message); return; }
-  sdShowSuccess('✅ Reset link உங்கள் email-க்கு அனுப்பப்பட்டது! Inbox பாருங்கள்.');
+  sdShowSuccess('✅ Reset link has been sent to your email! Please check your inbox.');
   document.getElementById('sdForgotEmail').value = '';
 }
 
@@ -1176,11 +1177,11 @@ async function sdUpdatePassword(){
   const confirmPass = document.getElementById('sdConfirmPass').value;
   const errEl = document.getElementById('sdNewPassError');
   if(!newPass || newPass.length < 6){
-    errEl.textContent = '❌ Password குறைந்தது 6 characters வேண்டும்.';
+    errEl.textContent = '❌ Password must be at least 6 characters.';
     errEl.style.display = 'block'; return;
   }
   if(newPass !== confirmPass){
-    errEl.textContent = '❌ Passwords match ஆகவில்லை.';
+    errEl.textContent = '❌ Passwords do not match.';
     errEl.style.display = 'block'; return;
   }
   errEl.style.display = 'none';
@@ -1188,7 +1189,7 @@ async function sdUpdatePassword(){
   const { error } = await _supa.auth.updateUser({ password: newPass });
   sdSetBtnLoading('sdUpdatePassBtn', false, 'Update Password ✅');
   if(error){ errEl.textContent = '❌ ' + error.message; errEl.style.display = 'block'; return; }
-  sdShowSuccess('✅ Password மாற்றப்பட்டது! Sign In பண்ணுங்கள்.');
+  sdShowSuccess('✅ Password has been updated! Please Sign In.');
   document.getElementById('sdNewPass').value = '';
   document.getElementById('sdConfirmPass').value = '';
   await _supa.auth.signOut();
@@ -1761,7 +1762,7 @@ async function sdUpdatePassword(){
             </div>
             <div id="rpt_insights" style="display:flex;flex-direction:column;gap:10px;">
               <div style="background:var(--surface2);border-radius:10px;padding:14px 16px;border-left:3px solid var(--accent);font-size:13px;color:var(--muted);">
-                Reports tab-ஐ open பண்ணும்போது insights auto-generate ஆகும் ✨
+                Insights are auto-generated when you open the Reports tab ✨
               </div>
             </div>
           </div>
@@ -1801,7 +1802,7 @@ async function sdUpdatePassword(){
         <div class="chart-card" style="padding:0;margin-bottom:22px;overflow:hidden;">
           <div class="table-head">
             <div class="table-title">🔻 Enquiry → Order Funnel</div>
-            <div style="font-size:11px;color:var(--muted);font-weight:500;">எந்த stage-ல எத்தனை % drop ஆகுது</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:500;">Track drop-off % at each stage</div>
           </div>
           <div style="padding:20px 24px;" id="rpt_funnelChart">
             <div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">No data yet</div>
@@ -2036,7 +2037,7 @@ async function sdUpdatePassword(){
     </div>
     <div class="form-group" style="position:relative;">
       <label class="form-label">Customer Name <span style="color:var(--danger)">*</span></label>
-      <input class="form-input" id="f_name" placeholder="பெயர் type பண்ணுங்க..." autocomplete="off" oninput="showNameSuggestions(this.value)" onblur="setTimeout(()=>hideNameSuggestions(),200)">
+      <input class="form-input" id="f_name" placeholder="Type customer name..." autocomplete="off" oninput="showNameSuggestions(this.value)" onblur="setTimeout(()=>hideNameSuggestions(),200)">
       <div id="nameSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.12);max-height:180px;overflow-y:auto;margin-top:3px;"></div>
     </div>
 
@@ -2059,7 +2060,7 @@ async function sdUpdatePassword(){
       <span class="modal-close" onclick="closeModal('confirmOrderModal')">✕</span>
     </div>
     <div style="background:var(--purple-bg);border:1.5px solid var(--purple);border-radius:10px;padding:11px 14px;margin-bottom:18px;font-size:12px;color:var(--purple);font-weight:600;">
-      🎉 Order confirm ஆனதும் Order ID automatically generate ஆகும்!
+      🎉 Order ID will be automatically generated once the order is confirmed!
     </div>
     <div class="form-group" id="c_product_group">
       <label class="form-label">Products <span style="color:var(--danger)">*</span></label>
@@ -2302,8 +2303,8 @@ async function sdUpdatePassword(){
       <div style="font-size:13px;color:var(--muted);margin-top:3px;" id="payModal_product">—</div>
     </div>
     <div style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;">
-      ✅ Payment received confirm பண்ணுறீங்களா?<br>
-      Payment confirmed ஆனதும் automatically <strong>Order Process</strong> stage-க்கு move ஆகும்.
+      ✅ Are you confirming payment received?<br>
+      Once confirmed, the order will automatically move to the <strong>Order Process</strong> stage.
     </div>
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('paymentModal')">Cancel</button>
@@ -2479,10 +2480,10 @@ window._sdShowLoginOverlay = function(reason){
   const overlay = document.getElementById('sdLoginOverlay');
   if(!overlay) return;
   const msgs = {
-    session_expired: '⏱️ Session expired. மீண்டும் login செய்யுங்கள்.',
-    idle_timeout:    '💤 Inactive — security காரணமாக logout ஆனீர்கள்.',
+    session_expired: '⏱️ Session expired. Please login again.',
+    idle_timeout:    '💤 Inactive — you have been logged out for security reasons.',
     signed_out:      '✅ Successfully logged out.',
-    config_error:    '⚠️ Configuration error. Admin-ஐ தொடர்பு கொள்ளுங்கள்.'
+    config_error:    '⚠️ Configuration error. Please contact your administrator.'
   };
   const reasonEl = document.getElementById('sdLoginReason');
   if(reasonEl){
@@ -2522,8 +2523,8 @@ window._sdHideLoginOverlay = function(){
     const { data: { session } } = await _supa.auth.getSession();
     if(!session) return;
 
-    // onAuthStateChange PASSWORD_RECOVERY event முன்னாடி வரும்
-    // அது வந்திருந்தா flag set ஆகியிருக்கும் — dashboard திறக்காதே
+    // onAuthStateChange fires before PASSWORD_RECOVERY event
+    // If that flag is set — do not open the dashboard
     if(window._sdIsPasswordRecovery) return;
 
     window._sdHideLoginOverlay();
@@ -2547,12 +2548,12 @@ window._sdHideLoginOverlay = function(){
   // Auth state change
   _supa.auth.onAuthStateChange(function(event, sess){
     if(event === 'PASSWORD_RECOVERY'){
-      // Flag set பண்ணு — DOMContentLoaded dashboard திறக்காதே
+      // Set flag — prevent DOMContentLoaded from opening the dashboard
       window._sdIsPasswordRecovery = true;
-      // Reset link click பண்ணா — new password form காட்டு
+      // If reset link was clicked — show new password form
       window._sdShowLoginOverlay('');
       sdSwitchTab('newpass');
-      // Header text மாத்து
+      // Update header text
       const h2 = document.querySelector('#sdLoginCard h2');
       const sub = document.querySelector('#sdLoginCard p');
       if(h2) h2.textContent = 'Reset Password 🔐';
@@ -3658,7 +3659,7 @@ function confirmDispatch(){
 
   closeModal('dispatchModal');
   refreshAll();
-  showToast('🚚 Dispatched! WA button press பண்ணி customer-க்கு details அனுப்புங்க.');
+  showToast('🚚 Order Dispatched! Press the WA button to send tracking details to the customer.');
 }
 
 // ══ BILL ══
@@ -4217,20 +4218,43 @@ function closeEditProfile(){
 function previewLogo(input){
   if(input.files && input.files[0]){
     const file = input.files[0];
-    if(file.size > 500*1024){
-      alert('File too large! Max 500KB.');
-      input.value = '';
-      return;
-    }
     const reader = new FileReader();
     reader.onload = function(e){
-      const img = document.getElementById('logo_img');
-      const initial = document.getElementById('logo_initial');
-      img.src = e.target.result;
-      img.style.display = 'block';
-      initial.style.display = 'none';
-      // Store base64 in AppState
-      AppState._logoBase64 = e.target.result;
+      const srcDataUrl = e.target.result;
+      const image = new Image();
+      image.onload = function(){
+        // Auto-compress to under 100KB using canvas
+        const MAX_BYTES = 100 * 1024;
+        const MAX_DIM = 400; // cap dimensions for storage efficiency
+        const canvas = document.createElement('canvas');
+        let w = image.naturalWidth, h = image.naturalHeight;
+        if(w > MAX_DIM || h > MAX_DIM){
+          if(w >= h){ h = Math.round(h * MAX_DIM / w); w = MAX_DIM; }
+          else       { w = Math.round(w * MAX_DIM / h); h = MAX_DIM; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(image, 0, 0, w, h);
+        // Binary-search the best JPEG quality that stays under 100KB
+        let lo = 0.1, hi = 0.92, best = canvas.toDataURL('image/jpeg', 0.7);
+        for(let i = 0; i < 8; i++){
+          const mid = (lo + hi) / 2;
+          const candidate = canvas.toDataURL('image/jpeg', mid);
+          const bytes = Math.round((candidate.length - 22) * 3 / 4);
+          if(bytes <= MAX_BYTES){ best = candidate; lo = mid; }
+          else { hi = mid; }
+        }
+        // Show preview
+        const imgEl = document.getElementById('logo_img');
+        const initial = document.getElementById('logo_initial');
+        imgEl.src = best;
+        imgEl.style.display = 'block';
+        initial.style.display = 'none';
+        AppState._logoBase64 = best;
+        // Feedback: show final size
+        const finalKB = Math.round((best.length - 22) * 3 / 4 / 1024);
+        showToast('✅ Logo compressed to ~' + finalKB + 'KB and ready to save.');
+      };
+      image.src = srcDataUrl;
     };
     reader.readAsDataURL(file);
   }
@@ -4274,8 +4298,8 @@ function saveSettingsFromModal(){
 // ══ PLAN SYSTEM ══
 const FREE_ORDER_LIMIT = 20;
 const PAY_LINKS = {
-  growth: 'https://rzp.io/rzp/jj0WEzr8', // 👈 உன் Razorpay Growth payment link இங்க போடு
-  elite:  'https://rzp.io/rzp/VfmALvIZ'   // 👈 உன் Razorpay Elite payment link இங்க போடு
+  growth: 'https://rzp.io/rzp/jj0WEzr8', // 👈 Add your Razorpay Growth payment link here
+  elite:  'https://rzp.io/rzp/VfmALvIZ'   // 👈 Add your Razorpay Elite payment link here
 };
 
 function updatePlanUI(){
@@ -4690,7 +4714,7 @@ function generateAIInsights(){
 
       if(!orders.length){
         insightsEl.innerHTML = `<div style="background:var(--surface2);border-radius:10px;padding:14px 16px;border-left:3px solid var(--muted);font-size:13px;color:var(--muted);">
-          📭 இந்த period-ல orders இல்ல. Orders add பண்ணினா insights automatically show ஆகும்!
+          📭 No orders in this period. Add orders to automatically see insights!
         </div>`;
         if(btn){ btn.disabled = false; btn.innerHTML = '✨ Refresh'; }
         return;
@@ -4732,36 +4756,36 @@ function generateAIInsights(){
 
       // Insight 1 — Revenue & orders summary
       if(revenue > 0){
-        insights.push(`💰 <b>${period}</b>-ல <b>₹${revenue.toLocaleString('en-IN')}</b> revenue வந்துருக்கு — <b>${orders.length} orders</b>! Average order value <b>₹${avgOrder.toLocaleString('en-IN')}</b>. ${avgOrder > 500 ? 'Super-a இருக்கு, keep it up! 🔥' : 'Average-ஐ increase பண்ண premium products try பண்ணுங்க.'}`);
+        insights.push(`💰 <b>${period}</b> Revenue: <b>₹${revenue.toLocaleString('en-IN')}</b> across <b>${orders.length} orders</b>. Average order value: <b>₹${avgOrder.toLocaleString('en-IN')}</b>. ${avgOrder > 500 ? 'Excellent performance, keep it up! 🔥' : 'Try adding premium products to increase your average order value.'}`);
       } else {
-        insights.push(`📦 ${period}-ல <b>${orders.length} orders</b> record ஆச்சு. Payment details add பண்ண மறக்காதீங்க!`);
+        insights.push(`📦 <b>${orders.length} orders</b> recorded in ${period}. Don't forget to add payment details!`);
       }
 
       // Insight 2 — Top city & product
       if(topCity && topProd){
-        insights.push(`📍 Top city: <b>${topCity[0]}</b> (${topCity[1]} orders) · Top product: <b>${topProd[0]}</b> (${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')}). ${topCity[0] !== 'Unknown' ? topCity[0]+'-ல targeted promotions போட்டா இன்னும் grow ஆகும்! 📣' : 'Customer city data add பண்ணினா better targeting possible.'}`);
+        insights.push(`📍 Top city: <b>${topCity[0]}</b> (${topCity[1]} orders) · Top product: <b>${topProd[0]}</b> (${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')}). ${topCity[0] !== 'Unknown' ? 'Run targeted promotions in '+topCity[0]+' to grow further! 📣' : 'Add customer city data for better targeting.'}`);
       } else if(topProd){
-        insights.push(`🏷️ Best seller: <b>${topProd[0]}</b> — ${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')} revenue. இந்த product-ஐ Instagram-ல feature பண்ணுங்க! 🌟`);
+        insights.push(`🏷️ Best seller: <b>${topProd[0]}</b> — ${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')} revenue. Feature this product on Instagram for more sales! 🌟`);
       }
 
       // Insight 3 — Customer loyalty
       if(repeatCust > 0){
         const loyalPct = Math.round((repeatCust / (repeatCust + newCust)) * 100);
-        insights.push(`❤️ <b>${repeatCust} repeat customers</b> இருக்காங்க (${loyalPct}% loyalty rate)! இவங்களுக்கு exclusive offers கொடுங்க. <b>${newCust} new customers</b> இந்த period-ல join பண்ணாங்க — onboarding message அனுப்புங்க! 👋`);
+        insights.push(`❤️ <b>${repeatCust} repeat customers</b> (${loyalPct}% loyalty rate)! Reward them with exclusive offers. <b>${newCust} new customers</b> joined this period — send them a welcome message! 👋`);
       } else if(newCust > 0){
-        insights.push(`👥 <b>${newCust} new customers</b> இந்த period-ல வந்தாங்க! Follow-up message அனுப்பி repeat orders encourage பண்ணுங்க. Loyal customers = stable income! 🎯`);
+        insights.push(`👥 <b>${newCust} new customers</b> joined this period! Send a follow-up message to encourage repeat orders. Loyal customers = stable income! 🎯`);
       }
 
       // Insight 4 — Delivery or COD tip
       if(delivRate > 0){
-        const tip = delivRate >= 80 ? '🎉 Excellent delivery rate! Customer satisfaction top-a இருக்கு.' :
-                    delivRate >= 50 ? '📦 Good progress! Dispatch speed improve பண்ணா rate higher ஆகும்.' :
-                                      '⚠️ Delivery rate கொஞ்சம் low. Pending orders quickly dispatch பண்ணுங்க!';
-        insights.push(`🚚 Delivery rate: <b>${delivRate}%</b> (${deliveredCount} delivered, ${dispatchedCount} in-transit, ${pendingCount} pending). ${tip}${codShare > 0 ? ` COD share: <b>${codShare}%</b> — prepaid orders encourage பண்ண discount offer பண்ணலாம்.` : ''}`);
+        const tip = delivRate >= 80 ? '🎉 Excellent delivery rate! Customer satisfaction is at its peak.' :
+                    delivRate >= 50 ? '📦 Good progress! Improve dispatch speed to push the rate higher.' :
+                                      '⚠️ Delivery rate is low. Dispatch pending orders quickly!';
+        insights.push(`🚚 Delivery rate: <b>${delivRate}%</b> (${deliveredCount} delivered, ${dispatchedCount} in-transit, ${pendingCount} pending). ${tip}${codShare > 0 ? ` COD share: <b>${codShare}%</b> — offer a small discount to encourage prepaid orders.` : ''}`);
       } else if(codShare > 0){
-        insights.push(`💳 COD orders <b>${codShare}%</b> share பிடிக்குது. Prepaid customers-க்கு small discount கொடுத்தா cash flow better ஆகும். Try பண்ணுங்க! 💡`);
+        insights.push(`💳 COD orders account for <b>${codShare}%</b> of sales. Offering a small discount to prepaid customers can improve your cash flow. Give it a try! 💡`);
       } else {
-        insights.push(`📊 Orders are coming in — keep tracking statuses! Delivered orders mark பண்ணினா delivery rate insight கிடைக்கும். 📈`);
+        insights.push(`📊 Orders are coming in — keep tracking statuses! Mark delivered orders to see your delivery rate insights. 📈`);
       }
 
       const colors2 = ['var(--accent)','var(--success)','var(--warning)','var(--purple)'];
@@ -4771,7 +4795,7 @@ function generateAIInsights(){
         </div>`).join('');
 
     } catch(e) {
-      insightsEl.innerHTML = '<div style="background:var(--danger-bg);border-radius:10px;padding:14px 16px;border-left:3px solid var(--danger);font-size:13px;color:var(--danger);">⚠️ Insights load ஆகல. Page refresh பண்ணி retry பண்ணுங்க.</div>';
+      insightsEl.innerHTML = '<div style="background:var(--danger-bg);border-radius:10px;padding:14px 16px;border-left:3px solid var(--danger);font-size:13px;color:var(--danger);">⚠️ Insights failed to load. Please refresh the page and try again.</div>';
     }
     if(btn){ btn.disabled = false; btn.innerHTML = '✨ Refresh'; }
   }, 400); // slight delay for smooth UX feel
@@ -5245,7 +5269,7 @@ async function toggleFeature(name, enabled){
   }
 
   async function ensureAccess(){
-    // PASSWORD_RECOVERY hash இருந்தா dashboard-க்கு போகாதே
+    // Do not open dashboard if PASSWORD_RECOVERY hash is present
     const hash = window.location.hash || "";
     if(hash.includes("type=recovery")){
       return;
