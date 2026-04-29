@@ -1890,20 +1890,7 @@ async function sdUpdatePassword(){
     
 
     
-    <!-- WELCOME ONBOARDING MODAL -->
-    <div class="modal-overlay" id="welcomeModal" style="z-index:300;">
-      <div class="modal-box" style="width:480px;text-align:center;">
-        <div style="padding:10px 0 24px;">
-          <div style="font-size:22px;font-weight:900;letter-spacing:-0.5px;color:var(--dark);margin-bottom:10px;">Welcome to MySellerDesk!</div>
-          <div style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:6px;">Every sale takes you one step higher.</div>
-          <div style="height:1px;background:var(--border);margin:20px 0;"></div>
-          <div style="font-size:13px;color:var(--text);font-weight:600;">Please update your shop profile to get started.</div>
-        </div>
-        <div class="modal-footer" style="justify-content:center;">
-          <button class="btn-primary" style="max-width:220px;" onclick="closeWelcomeAndOpenProfile()">Update Shop Profile</button>
-        </div>
-      </div>
-    </div>
+    
 
     <div class="modal-overlay" id="editProfileModal">
       <div class="modal-box" style="width:500px;">
@@ -2733,20 +2720,8 @@ const DB = {
       if(features && typeof features === 'object'){
         AppState.features = features;
       }
-      // Show welcome popup for new users who haven't set up profile
-      if(!s.onboarded){
-        setTimeout(() => {
-          const wm = document.getElementById('welcomeModal');
-          if(wm) wm.classList.add('show');
-        }, 600);
-      }
-    } else {
       // No settings row at all — brand new user
-      setTimeout(() => {
-        const wm = document.getElementById('welcomeModal');
-        if(wm) wm.classList.add('show');
-      }, 600);
-    }
+    } else {
 
     // Plan verified from Supabase — cannot be tampered via browser console
     AppState.plan = planRes.data?.[0]?.plan || 'starter';
