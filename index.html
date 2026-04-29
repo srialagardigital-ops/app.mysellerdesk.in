@@ -1135,7 +1135,7 @@ async function sdLoginWithEmail(){
   if(error){ sdShowError('' + (error.message || 'Login failed. Please try again.')); return; }
   AppState._email = data.user.email;
   AppState._uid   = data.user.id;
-  sdShowSuccess('✅ <strong>Welcome back!</strong> Signing you in...');
+  sdShowSuccess('✅ Welcome back! Signing you in...');
   await new Promise(r => setTimeout(r, 900));
   window._sdHideLoginOverlay();
   document.querySelectorAll('.shop-name').forEach(el => el.textContent = getSettings().shopName || 'My Shop');
@@ -1200,7 +1200,7 @@ async function sdSignupWithEmail(){
     if(settingsError){ console.error('Settings error:', settingsError.message); }
   }
 
-  sdShowSuccess('✅ <strong>Account Created Successfully!</strong><br><small style="font-size:11px;">Check your inbox — not there? Check spam folder.</small>');
+  sdShowSuccess('✅ Account created! Please check your email and click the confirmation link to verify your account.');
 }
 
 // ── Safe redirect URL builder — prevents open redirect via tampered APP_URL ──
