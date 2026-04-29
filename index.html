@@ -2770,6 +2770,18 @@ const DB = {
     orders[idx].status = 'pending';
     this.saveOrders(orders);
     this._syncCustomer(orders[idx]);
+    // Log activity to Supabase
+    const uid = AppState._uid;
+    const shopName = AppState.settings && AppState.settings.shopName ? AppState.settings.shopName : 'Seller';
+    if(uid){
+      _supa.from('activity_logs').insert({
+        type: 'order',
+        message: 'Order #' + String(nextNum) + ' created by ' + shopName,
+        user_id: uid
+      }).then(({error}) => {
+        if(error) console.error('Activity log error:', error.message);
+      });
+    }
     return orders[idx];
   },
 
