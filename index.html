@@ -1103,7 +1103,7 @@ function sdShowError(msg){
 function sdShowSuccess(msg){
   const el = document.getElementById('sdLoginSuccess');
   if(!el) return;
-  el.innerHTML = msg; el.style.display = 'block';
+  el.textContent = msg; el.style.display = 'block';
   const e = document.getElementById('sdLoginError');
   if(e) e.style.display = 'none';
 }
@@ -1203,12 +1203,24 @@ async function sdSignupWithEmail(){
   sdShowSuccess('✅ <strong>Account Created Successfully!</strong><br><small style="font-size:11px;">Check your inbox — not there? Check spam folder.</small>');
 }
 
+// ── Safe redirect URL builder — prevents open redirect via tampered APP_URL ──
+function getSafeRedirectUrl(){
+  const cfg = window.SELLERDESK_CONFIG || {};
+  try {
+    const appUrl = cfg.APP_URL ? new URL(cfg.APP_URL) : null;
+    // Only use APP_URL if it matches the current origin
+    if(appUrl && appUrl.origin === window.location.origin){
+      return appUrl.origin + '/index.html';
+    }
+  } catch(e){}
+  return window.location.origin + '/index.html';
+}
+
 async function sdLoginWithGoogle(){
   sdClearMessages();
   const googleBtn = document.getElementById('sdGoogleBtn');
-  if(googleBtn) googleBtn.innerHTML = 'Redirecting to Google...';
-  const cfg = window.SELLERDESK_CONFIG || {};
-  const redirectTo = (cfg.APP_URL || window.location.origin) + '/index.html';
+  if(googleBtn) googleBtn.textContent = 'Redirecting to Google...';
+  const redirectTo = getSafeRedirectUrl();
   const { error } = await _supa.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo }
@@ -1224,8 +1236,7 @@ async function sdSendReset(){
   const email = document.getElementById('sdForgotEmail').value.trim();
   if(!email){ sdShowError('Email address is required.'); return; }
   sdSetBtnLoading('sdResetBtn', true, 'Send Reset Link');
-  const cfg = window.SELLERDESK_CONFIG || {};
-  const redirectTo = (cfg.APP_URL || window.location.origin) + '/index.html';
+  const redirectTo = getSafeRedirectUrl();
   const { error } = await _supa.auth.resetPasswordForEmail(email, { redirectTo });
   sdSetBtnLoading('sdResetBtn', false, 'Send Reset Link');
   if(error){ sdShowError('' + error.message); return; }
@@ -2655,6 +2666,17 @@ function settingsFromDb(row){
   };
 }
 
+// ── XSS helper — always use for user-supplied data in innerHTML ──
+function escapeHtml(str){
+  if(str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;');
+}
+
 // ── Settings (from AppState — loaded via Supabase) ──
 function getSettings(){
   const defaults = {
@@ -3374,12 +3396,12 @@ function refreshRecentOrders(){
     return;
   }
   tbody.innerHTML = orders.map(o=>`
-    <tr onclick="openBill('${o.id}')">
+    <tr onclick="openBill('${escapeHtml(o.id)}')">
       <td style="padding:13px 24px;"><input type="checkbox" style="border-radius:4px;width:14px;height:14px;cursor:pointer;accent-color:var(--accent);" onclick="event.stopPropagation()"></td>
-      <td class="mono" style="font-weight:700;color:var(--success);">${o.orderId ? '#'+o.orderId : '<span style="color:var(--muted2);font-size:11px;">Enquiry</span>'}</td>
-      <td style="color:var(--muted);font-size:12px;">${o.date}</td>
-      <td><div class="customer-cell"><span class="customer-name">${o.name}</span><span class="customer-phone">${o.phone}</span></div></td>
-      <td><span class="product-tag">${o.product||'—'}</span></td>
+      <td class="mono" style="font-weight:700;color:var(--success);">${o.orderId ? '#'+escapeHtml(o.orderId) : '<span style="color:var(--muted2);font-size:11px;">Enquiry</span>'}</td>
+      <td style="color:var(--muted);font-size:12px;">${escapeHtml(o.date)}</td>
+      <td><div class="customer-cell"><span class="customer-name">${escapeHtml(o.name)}</span><span class="customer-phone">${escapeHtml(o.phone)}</span></div></td>
+      <td><span class="product-tag">${escapeHtml(o.product||'—')}</span></td>
       <td>${statusPill(o.status)}</td>
       <td class="mono" style="font-weight:700;">₹${Number(o.amount).toLocaleString('en-IN')}</td>
     </tr>`).join('');
@@ -3427,22 +3449,22 @@ function refreshAllOrders(){
     return `<tr style="${isEnquiry ? 'background:var(--surface2);' : ''}">
       <td class="mono" style="font-size:12px;">
         ${o.orderId
-          ? `<span style="color:var(--success);font-weight:800;">#${o.orderId}</span>`
+          ? `<span style="color:var(--success);font-weight:800;">#${escapeHtml(o.orderId)}</span>`
           : `<span style="color:var(--muted2);font-size:11px;">Enquiry</span>`}
-        <br><span style="color:var(--muted2);font-size:10px;">${o.date}</span>
+        <br><span style="color:var(--muted2);font-size:10px;">${escapeHtml(o.date)}</span>
       </td>
       <td>
         <div class="customer-cell">
-          <span class="customer-name">${o.name}</span>
-          <span class="customer-phone">${o.phone}</span>
+          <span class="customer-name">${escapeHtml(o.name)}</span>
+          <span class="customer-phone">${escapeHtml(o.phone)}</span>
         </div>
       </td>
-      <td><span class="product-tag">${o.product||'—'}</span></td>
+      <td><span class="product-tag">${escapeHtml(o.product||'—')}</span></td>
       <td class="mono" style="font-weight:700;${!o.orderId?'color:var(--muted2);':''}">
         ${!o.orderId ? '—' : '₹'+Number(o.amount).toLocaleString('en-IN')}
       </td>
       <td>${!o.orderId ? '<span style="color:var(--muted2);font-size:11px;">—</span>' : paymentPill(o.payment)}</td>
-      <td style="color:var(--muted);font-size:12px;">${o.courier||'—'}${o.tracking?'<br><span class="mono" style="font-size:10px;">'+o.tracking+'</span>':''}</td>
+      <td style="color:var(--muted);font-size:12px;">${escapeHtml(o.courier||'—')}${o.tracking?'<br><span class="mono" style="font-size:10px;">'+escapeHtml(o.tracking)+'</span>':''}</td>
       <td>${stagePill(stage)}</td>
       <td>
         <div class="action-btns" style="flex-wrap:wrap;gap:5px;">
@@ -3470,9 +3492,9 @@ function refreshCustomers(){
       ? `<span style="background:#fff3cd;color:#d48c0e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;margin-left:6px;">Returning</span>`
       : '';
     return `<tr>
-      <td style="font-weight:600">${c.name}${badge}</td>
-      <td class="mono">${c.phone}</td>
-      <td style="color:var(--muted)">${c.city}</td>
+      <td style="font-weight:600">${escapeHtml(c.name)}${badge}</td>
+      <td class="mono">${escapeHtml(c.phone)}</td>
+      <td style="color:var(--muted)">${escapeHtml(c.city)}</td>
       <td style="font-weight:700;color:${isReturning ? 'var(--success)' : 'var(--text)'}">${c.orders}</td>
       <td class="mono" style="font-weight:600">₹${c.spent.toLocaleString('en-IN')}</td>
     </tr>`;
@@ -3497,24 +3519,24 @@ function refreshProducts(){
           ? `<span style="color:var(--danger);font-weight:700;">⚠️ ${stockNum}</span>`
           : `<span style="color:var(--success);font-weight:700;">${stockNum}</span>`)
       : `<span style="color:var(--muted2);">—</span>`;
-    return `<tr onclick="openProductDetail('${p.id}')" style="cursor:pointer;">
+    return `<tr onclick="openProductDetail('${escapeHtml(p.id)}')" style="cursor:pointer;">
       <td>
         <div style="display:flex;align-items:center;gap:10px;">
-          ${p.img ? `<img src="${p.img}" style="width:36px;height:36px;border-radius:8px;object-fit:cover;border:1.5px solid var(--border);flex-shrink:0;" onerror="this.style.display='none'">` : `<div style="width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>`}
+          ${p.img ? `<img src="${escapeHtml(p.img)}" style="width:36px;height:36px;border-radius:8px;object-fit:cover;border:1.5px solid var(--border);flex-shrink:0;" onerror="this.style.display='none'">` : `<div style="width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>`}
           <div>
-            <div style="font-weight:700;font-size:13px;">${p.name}</div>
-            ${p.sku && p.sku!=='—' ? `<div style="font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;">${p.sku}</div>` : ''}
+            <div style="font-weight:700;font-size:13px;">${escapeHtml(p.name)}</div>
+            ${p.sku && p.sku!=='—' ? `<div style="font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;">${escapeHtml(p.sku)}</div>` : ''}
           </div>
         </div>
       </td>
-      <td><span class="product-tag">${p.category}</span></td>
+      <td><span class="product-tag">${escapeHtml(p.category)}</span></td>
       <td class="mono" style="font-weight:600;">₹${Number(p.price).toLocaleString('en-IN')}</td>
       <td>${stockLabel}</td>
       <td>${p.orders}</td>
       <td>
         <div class="action-btns" onclick="event.stopPropagation()">
-          <button class="act-btn" onclick="openEditProduct('${p.id}')">Edit</button>
-          <button class="act-btn danger" onclick="confirmDeleteProduct('${p.id}','${p.name.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
+          <button class="act-btn" onclick="openEditProduct('${escapeHtml(p.id)}')">Edit</button>
+          <button class="act-btn danger" onclick="confirmDeleteProduct('${escapeHtml(p.id)}','${escapeHtml(p.name)}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
         </div>
       </td>
     </tr>`;
@@ -3542,13 +3564,13 @@ function refreshPayments(){
   if(!orders.length){ tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="empty-title">${q ? 'No results found' : 'No orders yet'}</div></div></td></tr>`; return; }
   tbody.innerHTML = orders.map(o => `
     <tr>
-      <td class="mono">${o.orderId ? '#'+o.orderId : '<span style="color:var(--muted2);font-size:11px;">Enquiry</span>'}</td>
-      <td style="font-weight:600">${o.name}</td>
+      <td class="mono">${o.orderId ? '#'+escapeHtml(o.orderId) : '<span style="color:var(--muted2);font-size:11px;">Enquiry</span>'}</td>
+      <td style="font-weight:600">${escapeHtml(o.name)}</td>
       <td class="mono">₹${Number(o.amount).toLocaleString('en-IN')}</td>
       <td>${o.payment === 'paid'
         ? '<span class="status-pill delivered"><span class="status-dot"></span>Paid</span>'
         : '<span class="status-pill pending"><span class="status-dot"></span>Pending</span>'}</td>
-      <td>${o.payment !== 'paid' ? `<button class="act-btn success" onclick="markPaid('${o.id}')">Mark Paid</button>` : ''}</td>
+      <td>${o.payment !== 'paid' ? `<button class="act-btn success" onclick="markPaid('${escapeHtml(o.id)}')">Mark Paid</button>` : ''}</td>
     </tr>`).join('');
 }
 
@@ -3557,7 +3579,7 @@ function refreshPayments(){
 function updateProductDatalist(){
   const list = document.getElementById('productList');
   if(!list) return;
-  list.innerHTML = DB.getProducts().map(p => `<option value="${p.name}">`).join('');
+  list.innerHTML = DB.getProducts().map(p => `<option value="${escapeHtml(p.name)}">`).join('');
 }
 
 // ══ NEW ORDER ══
@@ -3732,8 +3754,8 @@ function buildBillHTML(order, s, forPrint){
       productRows += `
         <tr style="border-bottom:1px solid #e8e8e8;">
           <td style="padding:10px 12px;">
-            <div style="font-weight:600;font-size:13px;color:#1a1a2e;">${p.name}</div>
-            ${p.sku ? `<div style="font-size:10px;color:#888;margin-top:2px;">${p.sku}</div>` : ''}
+            <div style="font-weight:600;font-size:13px;color:#1a1a2e;">${escapeHtml(p.name)}</div>
+            ${p.sku ? `<div style="font-size:10px;color:#888;margin-top:2px;">${escapeHtml(p.sku)}</div>` : ''}
           </td>
           <td style="padding:10px 12px;text-align:center;font-weight:600;">${qty}</td>
           <td style="padding:10px 12px;text-align:right;font-weight:600;">₹${price.toLocaleString('en-IN')}</td>
@@ -3744,7 +3766,7 @@ function buildBillHTML(order, s, forPrint){
     subtotal = Number(order.amount) || 0;
     productRows = `
       <tr style="border-bottom:1px solid #e8e8e8;">
-        <td style="padding:10px 12px;font-weight:600;font-size:13px;color:#1a1a2e;">${order.product || '—'}</td>
+        <td style="padding:10px 12px;font-weight:600;font-size:13px;color:#1a1a2e;">${escapeHtml(order.product || '—')}</td>
         <td style="padding:10px 12px;text-align:center;font-weight:600;">1</td>
         <td style="padding:10px 12px;text-align:right;font-weight:600;">₹${subtotal.toLocaleString('en-IN')}</td>
         <td style="padding:10px 12px;text-align:right;font-weight:700;">₹${subtotal.toLocaleString('en-IN')}</td>
@@ -3762,10 +3784,10 @@ function buildBillHTML(order, s, forPrint){
       <div style="display:flex;align-items:center;gap:14px;">
         <div style="width:48px;height:48px;border-radius:12px;background:#378add;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
         <div>
-          <div style="font-size:18px;font-weight:900;color:#0e2040;letter-spacing:-0.3px;">${s.shopName || 'My Shop'}</div>
-          ${tagline ? `<div style="font-size:11px;color:#888;margin-top:2px;font-style:italic;">${tagline}</div>` : ''}
-          ${shopAddr ? `<div style="font-size:11px;color:#888;margin-top:3px;">${shopAddr}</div>` : ''}
-          ${s.phone ? `<div style="font-size:11px;color:#888;">+91 ${s.phone}</div>` : ''}
+          <div style="font-size:18px;font-weight:900;color:#0e2040;letter-spacing:-0.3px;">${escapeHtml(s.shopName || 'My Shop')}</div>
+          ${tagline ? `<div style="font-size:11px;color:#888;margin-top:2px;font-style:italic;">${escapeHtml(tagline)}</div>` : ''}
+          ${shopAddr ? `<div style="font-size:11px;color:#888;margin-top:3px;">${escapeHtml(shopAddr)}</div>` : ''}
+          ${s.phone ? `<div style="font-size:11px;color:#888;">+91 ${escapeHtml(s.phone)}</div>` : ''}
         </div>
       </div>
       <div style="text-align:right;">
@@ -3778,15 +3800,15 @@ function buildBillHTML(order, s, forPrint){
     <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:0;border-bottom:1px solid #eee;">
       <div style="padding:16px 28px;border-right:1px solid #eee;">
         <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">BILL TO</div>
-        <div style="font-size:14px;font-weight:800;color:#0e2040;margin-bottom:3px;">${order.name}</div>
-        <div style="font-size:11px;color:#555;">${order.phone}</div>
-        <div style="font-size:11px;color:#555;margin-top:3px;line-height:1.5;">${[order.address, order.city, order.pincode].filter(Boolean).join(', ')}</div>
+        <div style="font-size:14px;font-weight:800;color:#0e2040;margin-bottom:3px;">${escapeHtml(order.name)}</div>
+        <div style="font-size:11px;color:#555;">${escapeHtml(order.phone)}</div>
+        <div style="font-size:11px;color:#555;margin-top:3px;line-height:1.5;">${escapeHtml([order.address, order.city, order.pincode].filter(Boolean).join(', '))}</div>
       </div>
       <div style="padding:16px 20px;border-right:1px solid #eee;">
         <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">DATE</div>
-        <div style="font-size:13px;font-weight:700;color:#0e2040;margin-bottom:10px;">${order.date}</div>
+        <div style="font-size:13px;font-weight:700;color:#0e2040;margin-bottom:10px;">${escapeHtml(order.date)}</div>
         <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">ORDER ID</div>
-        <div style="font-size:13px;font-weight:700;color:#0e2040;font-family:monospace;">${order.orderId ? '#ORD-'+order.orderId : '—'}</div>
+        <div style="font-size:13px;font-weight:700;color:#0e2040;font-family:monospace;">${order.orderId ? '#ORD-'+escapeHtml(order.orderId) : '—'}</div>
       </div>
       <div style="padding:16px 20px;">
         <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">PAYMENT</div>
@@ -3794,7 +3816,7 @@ function buildBillHTML(order, s, forPrint){
           <span style="font-size:12px;font-weight:700;color:${isPaid?'#2d9e6b':'#d48c0e'};">${isPaid ? 'Paid' : 'COD'}</span>
         </div>
         <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">COURIER</div>
-        <div style="font-size:12px;font-weight:700;color:#0e2040;">${order.courier || 'Standard Delivery'}</div>
+        <div style="font-size:12px;font-weight:700;color:#0e2040;">${escapeHtml(order.courier || 'Standard Delivery')}</div>
       </div>
     </div>
 
@@ -3841,15 +3863,15 @@ function buildBillHTML(order, s, forPrint){
     <!-- NOTE -->
     ${noteText ? `
     <div style="margin:0 28px 16px;padding:12px 16px;background:#fffdf5;border:1px solid #f0e0a0;border-radius:8px;font-size:11px;color:#555;line-height:1.6;">
-      <strong style="color:#0e2040;">Dear Customer,</strong><br>${noteText}
+      <strong style="color:#0e2040;">Dear Customer,</strong><br>${escapeHtml(noteText)}
     </div>` : ''}
 
     <!-- FOOTER -->
     <div style="border-top:1px solid #eee;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;background:#fafafa;">
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-        ${s.instagram ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#fff0f6;border:1.5px solid #e1306c;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#e1306c;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#e1306c" stroke="none"/></svg> ${s.instagram}</span>` : ''}
-        ${s.facebook  ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e8f0ff;border:1.5px solid #1877f2;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#1877f2;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#1877f2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg> ${s.facebook}</span>`  : ''}
-        ${s.youtube   ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#fff2f2;border:1.5px solid #ff0000;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#ff0000;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#ff0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#fff" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg> ${s.youtube}</span>`   : ''}
+        ${s.instagram ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#fff0f6;border:1.5px solid #e1306c;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#e1306c;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#e1306c" stroke="none"/></svg> ${escapeHtml(s.instagram)}</span>` : ''}
+        ${s.facebook  ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#e8f0ff;border:1.5px solid #1877f2;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#1877f2;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#1877f2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg> ${escapeHtml(s.facebook)}</span>`  : ''}
+        ${s.youtube   ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#fff2f2;border:1.5px solid #ff0000;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;color:#ff0000;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#ff0000"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#fff" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg> ${escapeHtml(s.youtube)}</span>`   : ''}
       </div>
       <div style="font-size:11px;color:#aaa;">Thank you for your order!</div>
     </div>
@@ -4804,16 +4826,16 @@ function generateAIInsights(){
 
       // Insight 1 — Revenue & orders summary
       if(revenue > 0){
-        insights.push(`<b>${period}</b> Revenue: <b>₹${revenue.toLocaleString('en-IN')}</b> across <b>${orders.length} orders</b>. Average order value: <b>₹${avgOrder.toLocaleString('en-IN')}</b>. ${avgOrder > 500 ? 'Excellent performance, keep it up! ' : 'Try adding premium products to increase your average order value.'}`);
+        insights.push(`<b>${escapeHtml(period)}</b> Revenue: <b>₹${revenue.toLocaleString('en-IN')}</b> across <b>${orders.length} orders</b>. Average order value: <b>₹${avgOrder.toLocaleString('en-IN')}</b>. ${avgOrder > 500 ? 'Excellent performance, keep it up! ' : 'Try adding premium products to increase your average order value.'}`);
       } else {
-        insights.push(`<b>${orders.length} orders</b> recorded in ${period}. Don't forget to add payment details!`);
+        insights.push(`<b>${orders.length} orders</b> recorded in ${escapeHtml(period)}. Don't forget to add payment details!`);
       }
 
       // Insight 2 — Top city & product
       if(topCity && topProd){
-        insights.push(`Top city: <b>${topCity[0]}</b> (${topCity[1]} orders) · Top product: <b>${topProd[0]}</b> (${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')}). ${topCity[0] !== 'Unknown' ? 'Run targeted promotions in '+topCity[0]+' to grow further! ' : 'Add customer city data for better targeting.'}`);
+        insights.push(`Top city: <b>${escapeHtml(topCity[0])}</b> (${topCity[1]} orders) · Top product: <b>${escapeHtml(topProd[0])}</b> (${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')}). ${topCity[0] !== 'Unknown' ? 'Run targeted promotions in '+escapeHtml(topCity[0])+' to grow further! ' : 'Add customer city data for better targeting.'}`);
       } else if(topProd){
-        insights.push(`Best seller: <b>${topProd[0]}</b> — ${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')} revenue. Feature this product on Instagram for more sales! `);
+        insights.push(`Best seller: <b>${escapeHtml(topProd[0])}</b> — ${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')} revenue. Feature this product on Instagram for more sales! `);
       }
 
       // Insight 3 — Customer loyalty
