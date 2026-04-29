@@ -2080,7 +2080,22 @@ async function sdUpdatePassword(){
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">District <span style="color:var(--danger)">*</span></label>
-        <input class="form-input" id="c_district" placeholder="e.g. Ernakulam">
+        <select class="form-select" id="c_district">
+          <option value="">-- Select District --</option>
+          <option>Ariyalur</option><option>Chengalpattu</option><option>Chennai</option>
+          <option>Coimbatore</option><option>Cuddalore</option><option>Dharmapuri</option>
+          <option>Dindigul</option><option>Erode</option><option>Kallakurichi</option>
+          <option>Kancheepuram</option><option>Kanyakumari</option><option>Karur</option>
+          <option>Krishnagiri</option><option>Madurai</option><option>Mayiladuthurai</option>
+          <option>Nagapattinam</option><option>Namakkal</option><option>Nilgiris</option>
+          <option>Perambalur</option><option>Pudukkottai</option><option>Ramanathapuram</option>
+          <option>Ranipet</option><option>Salem</option><option>Sivaganga</option>
+          <option>Tenkasi</option><option>Thanjavur</option><option>Theni</option>
+          <option>Thoothukudi</option><option>Tiruchirappalli</option><option>Tirunelveli</option>
+          <option>Tirupathur</option><option>Tiruppur</option><option>Tiruvallur</option>
+          <option>Tiruvannamalai</option><option>Tiruvarur</option><option>Vellore</option>
+          <option>Viluppuram</option><option>Virudhunagar</option>
+        </select>
       </div>
       <div class="form-group">
         <label class="form-label">Pincode <span style="color:var(--danger)">*</span></label>
@@ -2694,7 +2709,7 @@ const DB = {
     AppState.orders = orders;
     const uid = AppState._uid;
     if(!uid) return;
-    const rows = orders.map(o => { const { products, ...rest } = o; return { ...rest, user_id: uid }; });
+    const rows = orders.map(o => { const { products, ...rest } = o; return { ...rest, products: JSON.stringify(products||[]), user_id: uid }; });
     _supa.from('orders').upsert(rows, {onConflict:'id'}).then(({error}) => {
       if(error) console.error('Orders sync error:', error.message);
     });
