@@ -45,6 +45,7 @@ body{
   min-height:100vh;
   display:flex;
   font-size:13px;
+  zoom:1.2;
 }
 
 /* ── SIDEBAR ── */
@@ -1094,7 +1095,7 @@ function sdShowError(msg){
 function sdShowSuccess(msg){
   const el = document.getElementById('sdLoginSuccess');
   if(!el) return;
-  el.textContent = msg; el.style.display = 'block';
+  el.innerHTML = msg; el.style.display = 'block';
   const e = document.getElementById('sdLoginError');
   if(e) e.style.display = 'none';
 }
@@ -1126,6 +1127,8 @@ async function sdLoginWithEmail(){
   if(error){ sdShowError('' + (error.message || 'Login failed. Please try again.')); return; }
   AppState._email = data.user.email;
   AppState._uid   = data.user.id;
+  sdShowSuccess('✅ <strong>Welcome back!</strong> Signing you in...');
+  await new Promise(r => setTimeout(r, 900));
   window._sdHideLoginOverlay();
   document.querySelectorAll('.shop-name').forEach(el => el.textContent = getSettings().shopName || 'My Shop');
   document.querySelectorAll('.shop-handle').forEach(el => el.textContent = data.user.email);
@@ -1189,7 +1192,7 @@ async function sdSignupWithEmail(){
     if(settingsError){ console.error('Settings error:', settingsError.message); }
   }
 
-  sdShowSuccess('Account created successfully! Please check your email and confirm your address to Sign In. Once confirmed, click Sign In above to access your dashboard.');
+  sdShowSuccess('✅ <strong>Account Created Successfully!</strong><br><small style="font-size:11px;">Check your inbox — not there? Check spam folder.</small>');
 }
 
 async function sdLoginWithGoogle(){
@@ -2532,7 +2535,7 @@ window._sdShowLoginOverlay = function(reason){
   const msgs = {
     session_expired: '⏱️ Session expired. Please login again.',
     idle_timeout:    'Inactive — you have been logged out for security reasons.',
-    signed_out:      'Successfully logged out.',
+    signed_out:      '✅ You\'ve been signed out successfully.',
     config_error:    'Configuration error. Please contact your administrator.'
   };
   const reasonEl = document.getElementById('sdLoginReason');
@@ -5428,17 +5431,17 @@ document.getElementById('trialInfoModal').addEventListener('click', function(e){
       <div class="modal-header">
         <div>
           <div class="modal-title">🎧 Raise a Support Ticket</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px;">We'll get back to you within 24 hours</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px;">We'll get back to you within 48 hours</div>
         </div>
         <span class="modal-close" onclick="closeSupportTicket()">✕</span>
       </div>
       <div class="form-group">
         <label class="form-label">Your Name</label>
-        <input class="form-input" id="stName" type="text" placeholder="Enter your name" />
+        <input class="form-input" id="stName" type="text" placeholder="Enter your name" readonly style="cursor:not-allowed;opacity:0.7;" />
       </div>
       <div class="form-group">
         <label class="form-label">Email</label>
-        <input class="form-input" id="stEmail" type="email" placeholder="your@email.com" />
+        <input class="form-input" id="stEmail" type="email" placeholder="your@email.com" readonly style="cursor:not-allowed;opacity:0.7;" />
       </div>
       <div class="form-group">
         <label class="form-label">Category</label>
@@ -5451,14 +5454,6 @@ document.getElementById('trialInfoModal').addEventListener('click', function(e){
           <option value="feature">💡 Feature Request</option>
           <option value="other">🔖 Other</option>
         </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Priority</label>
-        <div class="ticket-priority-row" id="stPriorityRow">
-          <button type="button" class="ticket-priority-chip" data-priority="low" onclick="selectTicketPriority('low')">🟢 Low</button>
-          <button type="button" class="ticket-priority-chip" data-priority="medium" onclick="selectTicketPriority('medium')">🟡 Medium</button>
-          <button type="button" class="ticket-priority-chip" data-priority="high" onclick="selectTicketPriority('high')">🔴 High</button>
-        </div>
       </div>
       <div class="form-group">
         <label class="form-label">Subject</label>
@@ -5483,7 +5478,7 @@ document.getElementById('trialInfoModal').addEventListener('click', function(e){
       <div class="ticket-success-wrap">
         <div class="ticket-success-icon">✅</div>
         <div class="ticket-success-title">Ticket Submitted!</div>
-        <div class="ticket-success-sub">Your support ticket has been raised successfully.<br>Our team will respond within <strong>24 hours</strong>.</div>
+        <div class="ticket-success-sub">Your support ticket has been raised successfully.<br>Our team will respond within <strong>48 hours</strong>.</div>
         <div class="ticket-id-badge" id="stTicketIdBadge">#TKT-000000</div>
       </div>
       <div class="modal-footer" style="margin-top:20px;">
@@ -5507,8 +5502,6 @@ function openSupportTicket(){
   document.getElementById('supportTicketForm').style.display = '';
   document.getElementById('supportTicketSuccess').style.display = 'none';
   document.getElementById('stError').style.display = 'none';
-  _stPriority = '';
-  document.querySelectorAll('.ticket-priority-chip').forEach(function(c){ c.className='ticket-priority-chip'; });
   document.getElementById('supportTicketModal').classList.add('show');
 }
 
@@ -5532,8 +5525,8 @@ function submitSupportTicket(){
   var desc  = document.getElementById('stDescription').value.trim();
   var errEl = document.getElementById('stError');
 
-  if(!name || !email || !cat || !subj || !desc || !_stPriority){
-    errEl.textContent = '⚠️ Please fill all fields and select a priority.';
+  if(!name || !email || !cat || !subj || !desc){
+    errEl.textContent = '⚠️ Please fill all fields.';
     errEl.style.display = 'block';
     return;
   }
@@ -5554,7 +5547,6 @@ function submitSupportTicket(){
     name: name,
     email: email,
     category: cat,
-    priority: _stPriority,
     subject: subj,
     description: desc,
     status: 'open'
