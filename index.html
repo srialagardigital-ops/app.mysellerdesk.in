@@ -46,12 +46,6 @@ body{
   display:flex;
   font-size:13px;
 }
-#sdDashboardWrap{
-  zoom:1.2;
-  width:100%;
-  display:flex;
-  min-height:100vh;
-}
 
 /* ── SIDEBAR ── */
 .sidebar{
@@ -63,6 +57,12 @@ body{
   display:flex;flex-direction:column;
   z-index:100;
   overflow:hidden;
+  min-height:0;
+}
+.sidebar-nav{
+  flex:1;
+  overflow-y:auto;
+  min-height:0;
 }
 
 .sidebar-brand{
