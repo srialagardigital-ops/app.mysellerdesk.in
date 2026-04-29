@@ -1124,15 +1124,17 @@ async function sdSignupWithEmail(){
 
   // Save settings to Supabase immediately
   if(data.user){
-    await _supa.from('settings').upsert({
+    const { error: settingsError } = await _supa.from('settings').upsert({
       user_id: data.user.id,
       shop_name: shopName,
       phone: whatsapp,
+      address: address,
       district: district,
       pincode: pincode,
       onboarded: true,
       features: { cod: true, reports: true }
     }, { onConflict: 'user_id' });
+    if(settingsError){ console.error('Settings error:', settingsError.message); }
   }
 
   sdShowSuccess('✅ Account create ஆச்சு! உங்கள் email-ஐ confirm பண்ணுங்கள், பிறகு Sign In பண்ணலாம்.');
