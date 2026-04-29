@@ -2708,10 +2708,18 @@ const DB = {
   saveOrders(orders){
     AppState.orders = orders;
     const uid = AppState._uid;
-    if(!uid) return;
-    const rows = orders.map(o => { const { products, ...rest } = o; return { ...rest, products: JSON.stringify(products||[]), user_id: uid }; });
-    _supa.from('orders').upsert(rows, {onConflict:'id'}).then(({error}) => {
-      if(error) console.error('Orders sync error:', error.message);
+    if(!uid){ console.warn('saveOrders: no uid!'); return; }
+    const rows = orders.map(o => {
+      const { products, ...rest } = o;
+      return { ...rest, products: JSON.stringify(products||[]), user_id: uid };
+    });
+    _supa.from('orders').upsert(rows, {onConflict:'id'}).then(({data, error}) => {
+      if(error){
+        console.error('Orders sync error:', error.message, error.details, error.hint);
+        showToast('⚠️ Order save failed: ' + error.message);
+      } else {
+        console.log('Orders saved to Supabase:', rows.length, 'rows');
+      }
     });
   },
 
