@@ -1122,18 +1122,7 @@ async function sdLoginWithEmail(){
   const pass  = document.getElementById('sdLoginPass').value;
   if(!email || !pass){ sdShowError('Email and Password are required.'); return; }
   sdSetBtnLoading('sdSignInBtn', true, 'Sign In →');
-  let data, error;
-  try {
-    const timeoutPromise = new Promise((_, rej) => setTimeout(() => rej(new Error('Connection timed out. Please check your internet and try again.')), 15000));
-    const loginPromise = _supa.auth.signInWithPassword({ email, password: pass });
-    const result = await Promise.race([loginPromise, timeoutPromise]);
-    data = result.data;
-    error = result.error;
-  } catch(e) {
-    sdSetBtnLoading('sdSignInBtn', false, 'Sign In →');
-    sdShowError(e.message || 'Login failed. Please try again.');
-    return;
-  }
+  const { data, error } = await _supa.auth.signInWithPassword({ email, password: pass });
   sdSetBtnLoading('sdSignInBtn', false, 'Sign In →');
   if(error){ sdShowError('' + (error.message || 'Login failed. Please try again.')); return; }
   AppState._email = data.user.email;
@@ -2734,7 +2723,7 @@ const DB = {
         AppState.features = features;
       }
       // No settings row at all — brand new user
-    } else {
+    }
 
     // Plan verified from Supabase — cannot be tampered via browser console
     AppState.plan = planRes.data?.[0]?.plan || 'starter';
