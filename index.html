@@ -45,7 +45,12 @@ body{
   min-height:100vh;
   display:flex;
   font-size:13px;
+}
+#sdDashboardWrap{
   zoom:1.2;
+  width:100%;
+  display:flex;
+  min-height:100vh;
 }
 
 /* ── SIDEBAR ── */
@@ -2536,14 +2541,14 @@ window._sdShowLoginOverlay = function(reason){
   if(typeof sdSwitchTab === 'function') sdSwitchTab('login');
   overlay.style.display = 'flex';
   const wrap = document.getElementById('sdDashboardWrap');
-  if(wrap) wrap.style.visibility = 'hidden';
+  if(wrap){ wrap.style.visibility = 'hidden'; wrap.style.display = 'none'; }
 };
 
 window._sdHideLoginOverlay = function(){
   const overlay = document.getElementById('sdLoginOverlay');
   if(overlay) overlay.style.display = 'none';
   const wrap = document.getElementById('sdDashboardWrap');
-  if(wrap) wrap.style.visibility = 'visible';
+  if(wrap){ wrap.style.visibility = 'visible'; wrap.style.display = 'flex'; }
 };
 
 // ── Auth guard + idle logout ──
