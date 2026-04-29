@@ -1340,7 +1340,7 @@ async function sdUpdatePassword(){
       </div>
       <span class="plan-badge starter" id="sidebarPlanBadge" style="font-size:9px;padding:2px 6px;">Starter</span>
     </div>
-    <button onclick="logoutSellerDesk()" style="width:100%;margin-top:6px;padding:7px;border-radius:7px;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">
+    <button onclick="window.logoutSellerDesk && window.logoutSellerDesk()" style="width:100%;margin-top:6px;padding:7px;border-radius:7px;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">
       Logout
     </button>
   </div>
@@ -1534,12 +1534,35 @@ async function sdUpdatePassword(){
         </div>
       </div>
 
+    <!-- Recent Orders Table -->
+    <div class="table-card" style="margin-top:12px;">
+      <div class="table-head">
+        <div class="table-title">Recent Orders</div>
+        <div class="table-actions">
+          <div class="filter-tabs">
+            <button class="filter-tab active" onclick="setDashFilter('all',this)">All</button>
+            <button class="filter-tab" onclick="setDashFilter('pending',this)">Pending</button>
+            <button class="filter-tab" onclick="setDashFilter('dispatched',this)">Dispatched</button>
+            <button class="filter-tab" onclick="setDashFilter('delivered',this)">Delivered</button>
+          </div>
+          <div class="topbar-search-hidden" style="width:180px;">
+            <span style="color:var(--muted2);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <input placeholder="Search orders..." oninput="dashSearchQ=this.value.toLowerCase();refreshRecentOrders()">
+          </div>
+        </div>
+      </div>
+      <table>
+        <thead><tr>
+          <td style="width:40px;padding:10px 24px;"></td>
+          <th>Order ID</th><th>Date</th><th>Customer</th><th>Product</th><th>Status</th><th>Amount</th>
+        </tr></thead>
+        <tbody id="recentOrdersTbody"></tbody>
+      </table>
     </div>
 
-    
+    </div>
+
     <div class="tab-section" id="tab-orders">
-      </div>
-      
       <div class="stage-stepper" id="stageStepper"></div>
 
       <div class="table-card">
