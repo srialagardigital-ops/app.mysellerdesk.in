@@ -1119,7 +1119,7 @@ async function sdSignupWithEmail(){
   sdSetBtnLoading('sdSignUpBtn', false, 'Create Account →');
   if(error){ sdShowError('❌ ' + (error.message || 'Signup தோல்வியடைந்தது.')); return; }
   if(data.user && data.user.identities && data.user.identities.length === 0){
-    sdShowError('❌ இந்த email already registered. Sign In பண்ணுங்கள்.'); return;
+    sdShowError('❌ An account with this email already exists. Please Sign In instead.'); return;
   }
 
   // Save settings to Supabase immediately
@@ -1137,8 +1137,7 @@ async function sdSignupWithEmail(){
     if(settingsError){ console.error('Settings error:', settingsError.message); }
   }
 
-  sdShowSuccess('✅ Account create ஆச்சு! உங்கள் email-ஐ confirm பண்ணுங்கள், பிறகு Sign In பண்ணலாம்.');
-  setTimeout(() => sdSwitchTab('login'), 3000);
+  sdShowSuccess('✅ Account created successfully! Please check your email and confirm your address to Sign In. Once confirmed, click Sign In above to access your dashboard.');
 }
 
 async function sdLoginWithGoogle(){
