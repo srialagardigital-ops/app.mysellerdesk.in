@@ -521,6 +521,53 @@ tbody td{padding:13px 22px;font-size:13px;}
 .locked-toast.show{opacity:1;pointer-events:auto;}
 .locked-toast-btn{display:block;width:100%;margin-top:10px;padding:8px;background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;}
 
+/* ── SUPPORT TICKET FLOATING BUTTON ── */
+#supportFab{
+  position:fixed;bottom:24px;right:24px;z-index:997;
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),#2b72c7);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(55,138,221,0.4);
+  transition:all 0.2s;font-size:22px;
+  color:#fff;
+}
+#supportFab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(55,138,221,0.55);}
+#supportFabTooltip{
+  position:fixed;bottom:34px;right:86px;z-index:997;
+  background:var(--dark);color:#fff;
+  font-size:12px;font-weight:600;
+  padding:6px 12px;border-radius:8px;
+  white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity 0.2s;
+  box-shadow:0 2px 10px rgba(0,0,0,0.2);
+}
+#supportFabTooltip::after{
+  content:'';position:absolute;top:50%;right:-6px;
+  transform:translateY(-50%);
+  border:6px solid transparent;
+  border-left-color:var(--dark);border-right:none;
+}
+#supportFab:hover + #supportFabTooltip,
+#supportFab:focus + #supportFabTooltip{opacity:1;}
+
+/* Support ticket modal */
+#supportTicketModal .modal-box{width:500px;}
+.ticket-priority-row{display:flex;gap:8px;margin-bottom:6px;}
+.ticket-priority-chip{
+  padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;
+  border:1.5px solid var(--border);background:none;cursor:pointer;
+  color:var(--muted);transition:all 0.15s;font-family:inherit;
+}
+.ticket-priority-chip.selected-low{border-color:var(--success);color:var(--success);background:var(--success-bg);}
+.ticket-priority-chip.selected-medium{border-color:var(--warning);color:var(--warning);background:var(--warning-bg);}
+.ticket-priority-chip.selected-high{border-color:var(--danger);color:var(--danger);background:var(--danger-bg);}
+.ticket-success-wrap{text-align:center;padding:16px 0 8px;}
+.ticket-success-icon{font-size:48px;margin-bottom:12px;}
+.ticket-success-title{font-size:17px;font-weight:800;margin-bottom:6px;}
+.ticket-success-sub{font-size:13px;color:var(--muted);line-height:1.6;}
+.ticket-id-badge{display:inline-block;background:var(--accent-light);color:var(--accent);font-size:12px;font-weight:700;padding:4px 12px;border-radius:6px;margin-top:10px;font-family:'JetBrains Mono',monospace;}
+
 /* ── WATERMARK ── */
 .bill-watermark-wrap{position:relative;overflow:hidden;}
 .bill-watermark-wrap .wm-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:52px;font-weight:900;color:rgba(255,107,53,0.10);pointer-events:none;letter-spacing:4px;white-space:nowrap;z-index:2;}
@@ -1252,10 +1299,10 @@ async function sdUpdatePassword(){
   </div>
   <div class="sidebar-bottom">
     
-    <div class="upgrade-banner" id="upgradeBanner" onclick="openUpgradeModal()" style="margin:0 0 12px 0;">
-      <div class="upgrade-banner-title">Upgrade your plan</div>
-      <div class="upgrade-banner-sub">Growth ₹199/mo · Elite ₹1,999/yr — Unlimited orders, PDF, labels & more</div>
-      <button class="upgrade-banner-btn">View Plans →</button>
+    <div class="upgrade-banner" id="upgradeBanner" onclick="openTrialInfoModal()" style="margin:0 0 12px 0;">
+      <div class="upgrade-banner-title">🧪 Trial Access</div>
+      <div class="upgrade-banner-sub">Full features enabled · Monitored session</div>
+      <button class="upgrade-banner-btn">View Details →</button>
     </div>
     <div class="shop-info">
       <div class="shop-avatar" id="sidebarAvatar">K</div>
@@ -5323,6 +5370,212 @@ document.addEventListener('DOMContentLoaded', function(){
 
 </script>
 </div><!-- /#sdDashboardWrap -->
+
+<!-- ── TRIAL INFO MODAL ── -->
+<div class="modal-overlay" id="trialInfoModal">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">🧪 Trial Plan</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px;">MySellerDesk · Active Session</div>
+      </div>
+      <span class="modal-close" onclick="closeTrialInfoModal()">✕</span>
+    </div>
+    <div style="background:var(--accent-light);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;">You're on a Trial Plan</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.7;">
+        We have granted you unrestricted access to all features of MySellerDesk so you can explore the platform without any limitations.
+        <br><br>
+        During this period, our team actively monitors your session to ensure everything functions correctly for your shop.
+        <br><br>
+        <span style="color:var(--muted);">Trial access is temporary and may be revoked at any time at the discretion of the company. Once your trial concludes, you may select a plan that best suits your needs to continue.</span>
+      </div>
+    </div>
+    <div style="background:var(--warning-bg);border:1.5px solid #f0d080;border-radius:10px;padding:12px 16px;font-size:12px;color:var(--warning);line-height:1.6;">
+      ⚠️ <strong>Note:</strong> Trial access cannot be converted to a paid plan mid-cycle. Paid plans will be available once your trial period ends.
+    </div>
+    <div class="modal-footer" style="margin-top:18px;">
+      <button class="btn-primary" onclick="closeTrialInfoModal()">Got it</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openTrialInfoModal(){
+  document.getElementById('trialInfoModal').classList.add('show');
+}
+function closeTrialInfoModal(){
+  document.getElementById('trialInfoModal').classList.remove('show');
+}
+document.getElementById('trialInfoModal').addEventListener('click', function(e){
+  if(e.target === this) closeTrialInfoModal();
+});
+</script>
+
+
+<button id="supportFab" onclick="openSupportTicket()" title="Raise a support ticket">
+  🎧
+</button>
+<div id="supportFabTooltip">Raise a support ticket</div>
+
+<!-- ── SUPPORT TICKET MODAL ── -->
+<div class="modal-overlay" id="supportTicketModal">
+  <div class="modal-box">
+    <div id="supportTicketForm">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">🎧 Raise a Support Ticket</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px;">We'll get back to you within 24 hours</div>
+        </div>
+        <span class="modal-close" onclick="closeSupportTicket()">✕</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" id="stName" type="text" placeholder="Enter your name" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="stEmail" type="email" placeholder="your@email.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="stCategory">
+          <option value="">Select a category</option>
+          <option value="billing">💳 Billing & Payments</option>
+          <option value="orders">📦 Orders & Tracking</option>
+          <option value="account">👤 Account & Login</option>
+          <option value="bug">🐛 Bug / Technical Issue</option>
+          <option value="feature">💡 Feature Request</option>
+          <option value="other">🔖 Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Priority</label>
+        <div class="ticket-priority-row" id="stPriorityRow">
+          <button type="button" class="ticket-priority-chip" data-priority="low" onclick="selectTicketPriority('low')">🟢 Low</button>
+          <button type="button" class="ticket-priority-chip" data-priority="medium" onclick="selectTicketPriority('medium')">🟡 Medium</button>
+          <button type="button" class="ticket-priority-chip" data-priority="high" onclick="selectTicketPriority('high')">🔴 High</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <input class="form-input" id="stSubject" type="text" placeholder="Brief summary of the issue" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="stDescription" rows="4" placeholder="Describe your issue in detail..."></textarea>
+      </div>
+      <div id="stError" style="display:none;color:var(--danger);font-size:12px;margin-bottom:10px;padding:8px 12px;background:var(--danger-bg);border-radius:8px;"></div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeSupportTicket()">Cancel</button>
+        <button class="btn-primary" onclick="submitSupportTicket()">🚀 Submit Ticket</button>
+      </div>
+    </div>
+    <!-- Success State -->
+    <div id="supportTicketSuccess" style="display:none;">
+      <div class="modal-header">
+        <div class="modal-title">Support Ticket</div>
+        <span class="modal-close" onclick="closeSupportTicket()">✕</span>
+      </div>
+      <div class="ticket-success-wrap">
+        <div class="ticket-success-icon">✅</div>
+        <div class="ticket-success-title">Ticket Submitted!</div>
+        <div class="ticket-success-sub">Your support ticket has been raised successfully.<br>Our team will respond within <strong>24 hours</strong>.</div>
+        <div class="ticket-id-badge" id="stTicketIdBadge">#TKT-000000</div>
+      </div>
+      <div class="modal-footer" style="margin-top:20px;">
+        <button class="btn-primary" onclick="closeSupportTicket()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Support Ticket Logic ──
+var _stPriority = '';
+
+function openSupportTicket(){
+  // Pre-fill email if logged in
+  var email = (AppState && AppState._email) ? AppState._email : '';
+  var shop  = (AppState && AppState._shopName) ? AppState._shopName : '';
+  if(email) document.getElementById('stEmail').value = email;
+  if(shop)  document.getElementById('stName').value  = shop;
+  // Reset form
+  document.getElementById('supportTicketForm').style.display = '';
+  document.getElementById('supportTicketSuccess').style.display = 'none';
+  document.getElementById('stError').style.display = 'none';
+  _stPriority = '';
+  document.querySelectorAll('.ticket-priority-chip').forEach(function(c){ c.className='ticket-priority-chip'; });
+  document.getElementById('supportTicketModal').classList.add('show');
+}
+
+function closeSupportTicket(){
+  document.getElementById('supportTicketModal').classList.remove('show');
+}
+
+function selectTicketPriority(p){
+  _stPriority = p;
+  document.querySelectorAll('.ticket-priority-chip').forEach(function(c){
+    c.className = 'ticket-priority-chip';
+    if(c.dataset.priority === p) c.className = 'ticket-priority-chip selected-' + p;
+  });
+}
+
+function submitSupportTicket(){
+  var name  = document.getElementById('stName').value.trim();
+  var email = document.getElementById('stEmail').value.trim();
+  var cat   = document.getElementById('stCategory').value;
+  var subj  = document.getElementById('stSubject').value.trim();
+  var desc  = document.getElementById('stDescription').value.trim();
+  var errEl = document.getElementById('stError');
+
+  if(!name || !email || !cat || !subj || !desc || !_stPriority){
+    errEl.textContent = '⚠️ Please fill all fields and select a priority.';
+    errEl.style.display = 'block';
+    return;
+  }
+  var emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRx.test(email)){
+    errEl.textContent = '⚠️ Please enter a valid email address.';
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  // Generate ticket ID
+  var ticketId = 'TKT-' + Date.now().toString().slice(-6);
+
+  // Save to Supabase
+  _supa.from('support_tickets').insert({
+    ticket_id: ticketId,
+    name: name,
+    email: email,
+    category: cat,
+    priority: _stPriority,
+    subject: subj,
+    description: desc,
+    status: 'open'
+  });
+  document.getElementById('stTicketIdBadge').textContent = '#' + ticketId;
+
+  // Show success
+  document.getElementById('supportTicketForm').style.display = 'none';
+  document.getElementById('supportTicketSuccess').style.display = 'block';
+
+  // Reset form fields for next time
+  ['stName','stEmail','stSubject','stDescription'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('stCategory').value = '';
+  _stPriority = '';
+}
+
+// Close modal on overlay click
+document.getElementById('supportTicketModal').addEventListener('click', function(e){
+  if(e.target === this) closeSupportTicket();
+});
+</script>
+
 </body>
 </html>
 
