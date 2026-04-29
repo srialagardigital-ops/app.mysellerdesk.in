@@ -75,14 +75,14 @@ body{
 .brand-name span{color:var(--accent);}
 .brand-tag{font-size:10px;color:rgba(255,255,255,0.35);font-weight:500;letter-spacing:1px;text-transform:uppercase;}
 
-.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto;min-height:0;}
-.nav-label{font-size:10px;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:0 10px;margin:16px 0 6px;}
+.sidebar-nav{flex:1;padding:8px 10px;overflow-y:auto;min-height:0;}
+.nav-label{font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:0 8px;margin:8px 0 3px;}
 .nav-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border-radius:9px;
+  display:flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:7px;
   cursor:pointer;transition:all 0.15s;
-  font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);
-  margin-bottom:2px;
+  font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);
+  margin-bottom:1px;
 }
 .nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);}
 .nav-item.active{background:rgba(55,138,221,0.18);color:var(--accent);}
@@ -90,7 +90,7 @@ body{
 .nav-count{margin-left:auto;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;}
 
 .sidebar-bottom{
-  padding:12px 16px 16px;
+  padding:6px 10px 10px;
   border-top:1px solid rgba(255,255,255,0.08);
   flex-shrink:0;
   overflow:visible;
@@ -1306,20 +1306,22 @@ async function sdUpdatePassword(){
   </div>
   <div class="sidebar-bottom">
     
-    <div class="upgrade-banner" id="upgradeBanner" onclick="openTrialInfoModal()" style="margin:0 0 12px 0;">
-      <div class="upgrade-banner-title">🧪 Trial Access</div>
-      <div class="upgrade-banner-sub">Full features enabled · Monitored session</div>
-      <button class="upgrade-banner-btn">View Details →</button>
-    </div>
-    <div class="shop-info">
-      <div class="shop-avatar" id="sidebarAvatar">K</div>
-      <div style="flex:1;min-width:0;">
-        <div class="shop-name" id="sidebarShopName">My Shop</div>
-        <div class="shop-handle" id="sidebarHandle">@myshop</div>
+    <div class="upgrade-banner" id="upgradeBanner" onclick="openTrialInfoModal()" style="margin:0 0 8px 0;padding:10px 12px;cursor:pointer;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="upgrade-banner-title" style="margin:0;">🧪 Trial Access</div>
+        <span style="font-size:10px;color:rgba(255,255,255,0.5);font-weight:600;">Details →</span>
       </div>
-      <span class="plan-badge starter" id="sidebarPlanBadge">Starter</span>
+      <div class="upgrade-banner-sub" style="margin-top:3px;">Full features · Monitored session</div>
     </div>
-    <button onclick="logoutSellerDesk()" style="width:100%;margin-top:10px;padding:9px;border-radius:9px;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+    <div class="shop-info" style="gap:8px;">
+      <div class="shop-avatar" id="sidebarAvatar" style="width:28px;height:28px;font-size:11px;border-radius:7px;">K</div>
+      <div style="flex:1;min-width:0;">
+        <div class="shop-name" id="sidebarShopName" style="font-size:12px;">My Shop</div>
+        <div class="shop-handle" id="sidebarHandle" style="font-size:10px;">@myshop</div>
+      </div>
+      <span class="plan-badge starter" id="sidebarPlanBadge" style="font-size:9px;padding:2px 6px;">Starter</span>
+    </div>
+    <button onclick="logoutSellerDesk()" style="width:100%;margin-top:6px;padding:7px;border-radius:7px;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">
       Logout
     </button>
   </div>
