@@ -6,6 +6,12 @@
 <title>MySellerDesk — Instagram CRM</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23378add'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-size='16' font-weight='900' fill='white'%3ESD%3C/text%3E%3C/svg%3E">
 <script src="dashboard-page-config.js"></script>
+<script>
+// Safety fallback: if dashboard-page-config.js failed to define AppState, create a default
+if(typeof AppState === 'undefined'){
+  window.AppState = { plan: 'starter', _email: '', _shopName: '', _planExpired: false };
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -476,8 +482,8 @@ tbody td{padding:13px 22px;font-size:13px;}
 
 
 /* ── PLAN EXPIRED OVERLAY ── */
-#sdPlanExpiredOverlay{display:none;position:fixed;inset:0;z-index:9998;align-items:center;justify-content:center;}
-#sdPlanExpiredOverlay.show{display:flex;}
+#sdPlanExpiredOverlay{display:none;position:fixed;inset:0;z-index:9998;align-items:center;justify-content:center;pointer-events:none;}
+#sdPlanExpiredOverlay.show{display:flex;pointer-events:all;}
 .plan-expired-blur{position:absolute;inset:0;background:rgba(255,255,255,0.22);backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);pointer-events:none;}
 .plan-expired-card{position:relative;background:#fff;border-radius:16px;width:100%;max-width:360px;overflow:hidden;border:0.5px solid #c5d4ec;box-shadow:0 12px 48px rgba(14,32,64,0.16);}
 .pec-header{background:#0e2040;padding:18px 22px;display:flex;align-items:center;gap:10px;}
@@ -5530,16 +5536,19 @@ function submitSupportTicket(){
   // Generate ticket ID
   var ticketId = 'TKT-' + Date.now().toString().slice(-6);
 
-  // Save to Supabase
-  _supa.from('support_tickets').insert({
-    ticket_id: ticketId,
-    name: name,
-    email: email,
-    category: cat,
-    subject: subj,
-    description: desc,
-    status: 'open'
-  });
+  // Save to Supabase (guard against _supa not being defined)
+  if(typeof _supa !== 'undefined'){
+    _supa.from('support_tickets').insert({
+      ticket_id: ticketId,
+      name: name,
+      email: email,
+      category: cat,
+      subject: subj,
+      description: desc,
+      priority: _stPriority || 'medium',
+      status: 'open'
+    });
+  }
   document.getElementById('stTicketIdBadge').textContent = '#' + ticketId;
 
   // Show success
@@ -5559,9 +5568,6 @@ document.getElementById('supportTicketModal').addEventListener('click', function
   if(e.target === this) closeSupportTicket();
 });
 </script>
-
-</body>
-</html>
 
 <!-- ── PLAN EXPIRED OVERLAY ── -->
 <div id="sdPlanExpiredOverlay">
@@ -5609,43 +5615,31 @@ document.getElementById('supportTicketModal').addEventListener('click', function
     return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
   }
 
-  function getPlanStartDate(){
-    // Supabase user metadata or fallback to signup date
-    try {
-      const meta = _supa.auth.getSession().then(({data:{session}})=>{
-        if(!session) return;
-        const created = new Date(session.user.created_at);
-        initExpirySystem(created);
-      });
-    } catch(e){}
-  }
-
   window.initExpirySystem = function(signupDate){
-    const plan = AppState.plan || 'starter';
-    const planLabels = { starter:'Starter Plan', growth:'Growth Plan', elite:'Elite Plan' };
+    var plan = (typeof AppState !== 'undefined' && AppState.plan) ? AppState.plan : 'starter';
 
     // Duration in days per plan
-    const durations = { starter:30, growth:30, elite:365 };
-    const duration = durations[plan] || 30;
+    var durations = { starter:30, growth:30, elite:365 };
+    var duration = durations[plan] || 30;
 
-    const startDate = new Date(signupDate);
-    const expiryDate = new Date(startDate);
+    var startDate = new Date(signupDate);
+    var expiryDate = new Date(startDate);
     expiryDate.setDate(expiryDate.getDate() + duration);
 
-    const deleteDate = new Date(expiryDate);
+    var deleteDate = new Date(expiryDate);
     deleteDate.setDate(deleteDate.getDate() + 30);
 
-    const today = new Date();
+    var today = new Date();
     today.setHours(0,0,0,0);
     expiryDate.setHours(0,0,0,0);
 
-    const daysLeft = Math.ceil((expiryDate - today) / (1000*60*60*24));
-    const daysToDelete = Math.ceil((deleteDate - today) / (1000*60*60*24));
+    var daysLeft = Math.ceil((expiryDate - today) / (1000*60*60*24));
+    var daysToDelete = Math.ceil((deleteDate - today) / (1000*60*60*24));
 
     // Update topbar plan badge with days left
-    const tbadge = document.getElementById('topbarPlanBadge');
-    const badgeLabels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
-    const prefix = badgeLabels[plan] || 'STARTER';
+    var tbadge = document.getElementById('topbarPlanBadge');
+    var badgeLabels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
+    var prefix = badgeLabels[plan] || 'STARTER';
 
     if(tbadge){
       if(daysLeft <= 0){
@@ -5661,24 +5655,29 @@ document.getElementById('supportTicketModal').addEventListener('click', function
   };
 
   function showPlanExpiredOverlay(plan, startDate, expiryDate, deleteDate, daysToDelete){
-    const planLabels = { starter:'Starter Plan', growth:'Growth Plan', elite:'Elite Plan' };
+    var planLabels = { starter:'Starter Plan', growth:'Growth Plan', elite:'Elite Plan' };
     document.getElementById('pecPlanName').textContent = planLabels[plan] || 'Starter Plan';
     document.getElementById('pecStartDate').textContent = fmtDate(startDate);
     document.getElementById('pecExpiredDate').textContent = fmtDate(expiryDate);
     document.getElementById('pecDeleteDate').textContent = fmtDate(deleteDate);
     document.getElementById('pecDaysLeft').textContent = Math.max(0, daysToDelete) + ' days';
     document.getElementById('pecDeleteDateInline').textContent = fmtDate(deleteDate);
-    AppState._planExpired = true;
+    if(typeof AppState !== 'undefined') AppState._planExpired = true;
     document.getElementById('sdPlanExpiredOverlay').classList.add('show');
   }
 
   // Hook into ensureAccess — run after login
   document.addEventListener('DOMContentLoaded', function(){
-    _supa.auth.getSession().then(function({data:{session}}){
+    if(typeof _supa === 'undefined') return;
+    _supa.auth.getSession().then(function(res){
+      var session = res && res.data && res.data.session;
       if(!session) return;
-      const created = new Date(session.user.created_at);
+      var created = new Date(session.user.created_at);
       window.initExpirySystem(created);
     });
   });
 })();
 </script>
+
+</body>
+</html>
