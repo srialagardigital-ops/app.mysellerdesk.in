@@ -851,14 +851,67 @@ tbody td{padding:13px 22px;font-size:13px;}
       <div id="sdFormSignup" style="display:none;">
 
         <div style="margin-bottom:14px;">
-          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email</label>
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Shop Name *</label>
+          <input id="sdSignupShopName" type="text" placeholder="உங்கள் Shop பெயர்" autocomplete="organization"
+            style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
+            onkeydown="if(event.key==='Enter')document.getElementById('sdSignupWhatsapp').focus()">
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">WhatsApp Number *</label>
+          <input id="sdSignupWhatsapp" type="tel" placeholder="9876543210" maxlength="10"
+            style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
+            onkeydown="if(event.key==='Enter')document.getElementById('sdSignupAddress').focus()">
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Shop Address *</label>
+          <input id="sdSignupAddress" type="text" placeholder="கடை முகவரி"
+            style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div>
+            <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">District *</label>
+            <select id="sdSignupDistrict"
+              style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;appearance:none;"
+              onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'">
+              <option value="">Select District</option>
+              <option>Ariyalur</option><option>Chengalpattu</option><option>Chennai</option>
+              <option>Coimbatore</option><option>Cuddalore</option><option>Dharmapuri</option>
+              <option>Dindigul</option><option>Erode</option><option>Kallakurichi</option>
+              <option>Kancheepuram</option><option>Kanyakumari</option><option>Karur</option>
+              <option>Krishnagiri</option><option>Madurai</option><option>Mayiladuthurai</option>
+              <option>Nagapattinam</option><option>Namakkal</option><option>Nilgiris</option>
+              <option>Perambalur</option><option>Pudukkottai</option><option>Ramanathapuram</option>
+              <option>Ranipet</option><option>Salem</option><option>Sivaganga</option>
+              <option>Tenkasi</option><option>Thanjavur</option><option>Theni</option>
+              <option>Thoothukudi</option><option>Tiruchirappalli</option><option>Tirunelveli</option>
+              <option>Tirupathur</option><option>Tiruppur</option><option>Tiruvallur</option>
+              <option>Tiruvannamalai</option><option>Tiruvarur</option><option>Vellore</option>
+              <option>Viluppuram</option><option>Virudhunagar</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Pincode *</label>
+            <input id="sdSignupPincode" type="text" placeholder="626004" maxlength="6"
+              style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'">
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Email *</label>
           <input id="sdSignupEmail" type="email" placeholder="you@example.com" autocomplete="email"
             style="width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
             onkeydown="if(event.key==='Enter')document.getElementById('sdSignupPass').focus()">
         </div>
         <div style="margin-bottom:14px;position:relative;">
-          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password</label>
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password *</label>
           <input id="sdSignupPass" type="password" placeholder="••••••••" autocomplete="new-password"
             style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
@@ -866,7 +919,7 @@ tbody td{padding:13px 22px;font-size:13px;}
           <span onclick="sdTogglePass('sdSignupPass',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;font-size:16px;color:#8aaac8;user-select:none;">👁️</span>
         </div>
         <div style="margin-bottom:22px;position:relative;">
-          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Confirm Password</label>
+          <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Confirm Password *</label>
           <input id="sdSignupPassConfirm" type="password" placeholder="••••••••" autocomplete="new-password"
             style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
@@ -1031,19 +1084,57 @@ async function sdLoginWithEmail(){
 
 async function sdSignupWithEmail(){
   sdClearMessages();
-  const email   = document.getElementById('sdSignupEmail').value.trim();
-  const pass    = document.getElementById('sdSignupPass').value;
-  const confirm = document.getElementById('sdSignupPassConfirm').value;
-  if(!email || !pass){ sdShowError('Email மற்றும் Password தேவை.'); return; }
+  const shopName = document.getElementById('sdSignupShopName').value.trim();
+  const whatsapp = document.getElementById('sdSignupWhatsapp').value.trim();
+  const address  = document.getElementById('sdSignupAddress').value.trim();
+  const district = document.getElementById('sdSignupDistrict').value;
+  const pincode  = document.getElementById('sdSignupPincode').value.trim();
+  const email    = document.getElementById('sdSignupEmail').value.trim();
+  const pass     = document.getElementById('sdSignupPass').value;
+  const confirm  = document.getElementById('sdSignupPassConfirm').value;
+
+  if(!shopName){ sdShowError('❌ Shop Name தேவை.'); return; }
+  if(!whatsapp || whatsapp.length < 10){ sdShowError('❌ சரியான WhatsApp Number தேவை.'); return; }
+  if(!address){ sdShowError('❌ Shop Address தேவை.'); return; }
+  if(!district){ sdShowError('❌ District select பண்ணுங்கள்.'); return; }
+  if(!pincode || pincode.length < 6){ sdShowError('❌ சரியான Pincode தேவை.'); return; }
+  if(!email || !pass){ sdShowError('❌ Email மற்றும் Password தேவை.'); return; }
   if(pass.length < 6){ sdShowError('❌ Password குறைந்தது 6 characters வேண்டும்.'); return; }
   if(pass !== confirm){ sdShowError('❌ Password match ஆகவில்லை. மீண்டும் try பண்ணுங்கள்.'); return; }
-  sdSetBtnLoading('sdSignUpBtn', true, 'Create Account →');
-  const { data, error } = await _supa.auth.signUp({ email, password: pass });
+
+  sdSetBtnLoading('sdSignUpBtn', true, 'Creating Account...');
+  const { data, error } = await _supa.auth.signUp({
+    email,
+    password: pass,
+    options: {
+      data: {
+        shop_name: shopName,
+        phone: whatsapp,
+        address: address,
+        district: district,
+        pincode: pincode
+      }
+    }
+  });
   sdSetBtnLoading('sdSignUpBtn', false, 'Create Account →');
   if(error){ sdShowError('❌ ' + (error.message || 'Signup தோல்வியடைந்தது.')); return; }
   if(data.user && data.user.identities && data.user.identities.length === 0){
     sdShowError('❌ இந்த email already registered. Sign In பண்ணுங்கள்.'); return;
   }
+
+  // Save settings to Supabase immediately
+  if(data.user){
+    await _supa.from('settings').upsert({
+      user_id: data.user.id,
+      shop_name: shopName,
+      phone: whatsapp,
+      district: district,
+      pincode: pincode,
+      onboarded: true,
+      features: { cod: true, reports: true }
+    }, { onConflict: 'user_id' });
+  }
+
   sdShowSuccess('✅ Account create ஆச்சு! உங்கள் email-ஐ confirm பண்ணுங்கள், பிறகு Sign In பண்ணலாம்.');
   setTimeout(() => sdSwitchTab('login'), 3000);
 }
