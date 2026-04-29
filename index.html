@@ -32,7 +32,7 @@
   --danger-bg:#fdf0f0;
   --purple:#7c5cbf;
   --purple-bg:#f3f0fa;
-  --sidebar-w:240px;
+  --sidebar-w:210px;
   --radius:12px;
   --shadow:0 1px 3px rgba(26,22,20,0.08), 0 4px 16px rgba(26,22,20,0.04);
   --shadow-lg:0 8px 32px rgba(26,22,20,0.12);
@@ -44,7 +44,7 @@ body{
   color:var(--text);
   min-height:100vh;
   display:flex;
-  font-size:14px;
+  font-size:13px;
 }
 
 /* ── SIDEBAR ── */
@@ -121,7 +121,7 @@ body{
   background:var(--surface);
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;
-  padding:0 28px;gap:16px;
+  padding:0 20px;gap:14px;
   position:sticky;top:0;z-index:50;
 }
 .topbar-title{font-size:16px;font-weight:700;letter-spacing:-0.3px;}
@@ -144,20 +144,20 @@ body{
 .topbar-btn:hover{background:#2b72c7;}
 
 /* ── CONTENT ── */
-.content{padding:24px 28px;flex:1;width:100%;min-width:0;}
+.content{padding:18px 22px;flex:1;width:100%;min-width:0;}
 .tab-section{display:none;width:100%;}
 .tab-section.active{display:block;width:100%;}
 
 /* ── STATS ROW ── */
 .stats-row{
   display:grid;grid-template-columns:repeat(5,1fr);
-  gap:14px;margin-bottom:24px;width:100%;
+  gap:10px;margin-bottom:18px;width:100%;
 }
 .stat-card{
   background:var(--surface);
   border:none;
-  border-radius:18px;
-  padding:20px 20px 18px;
+  border-radius:14px;
+  padding:16px 16px 14px;
   box-shadow:0 2px 12px rgba(14,32,64,0.07);
   position:relative;
   overflow:hidden;
@@ -179,7 +179,7 @@ body{
 .stat-badge{font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;}
 .stat-badge.up{background:var(--success-bg);color:var(--success);}
 .stat-badge.down{background:var(--danger-bg);color:var(--danger);}
-.stat-val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;color:var(--dark);}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;color:var(--dark);}
 .stat-label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0.2px;}
 .stat-card-info{font-size:11px;color:var(--muted2);margin-top:10px;display:flex;align-items:center;gap:5px;}
 .stat-card-info span{font-weight:600;}
@@ -331,12 +331,12 @@ tbody td{padding:13px 22px;font-size:13px;}
 .bill-row.total{font-weight:700;font-size:14px;margin-top:8px;}
 
 /* ── DASHBOARD CHARTS ── */
-.charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:22px;width:100%;}
+.charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:18px;width:100%;}
 .chart-card{
   background:var(--surface);
   border:none;
-  border-radius:18px;
-  padding:24px 26px;
+  border-radius:14px;
+  padding:18px 20px;
   box-shadow:0 2px 12px rgba(14,32,64,0.07);
 }
 .chart-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;}
@@ -573,16 +573,17 @@ tbody td{padding:13px 22px;font-size:13px;}
 .bill-watermark-wrap .wm-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:52px;font-weight:900;color:rgba(255,107,53,0.10);pointer-events:none;letter-spacing:4px;white-space:nowrap;z-index:2;}
 
 /* ── STAGE PROGRESS STEPPER ── */
-.stage-stepper{display:flex;align-items:center;gap:0;margin-bottom:20px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 20px;box-shadow:var(--shadow);overflow-x:auto;}
-.stage-step{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px;position:relative;}
-.stage-step:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 14px);width:calc(100% - 28px);height:2px;background:var(--border2);}
+.stage-stepper{display:flex;align-items:flex-start;gap:0;margin-bottom:20px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 12px;box-shadow:var(--shadow);overflow-x:auto;}
+.stage-step{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;min-width:60px;position:relative;}
+.stage-step:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 15px);width:calc(100% - 30px);height:2px;background:var(--border2);}
 .stage-step.done::after{background:var(--success);}
-.stage-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid var(--border);background:var(--surface2);z-index:1;}
+.stage-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid var(--border);background:var(--surface2);z-index:1;flex-shrink:0;}
 .stage-step.done .stage-dot{background:var(--success-bg);border-color:var(--success);}
-.stage-step.current .stage-dot{background:var(--accent-light);border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,107,53,0.15);}
-.stage-lbl{font-size:9px;font-weight:600;color:var(--muted2);text-align:center;line-height:1.3;}
+.stage-step.current .stage-dot{background:var(--accent-light);border-color:var(--accent);box-shadow:0 0 0 3px rgba(55,138,221,0.15);}
+.stage-lbl{font-size:9px;font-weight:600;color:var(--muted2);text-align:center;line-height:1.4;word-break:break-word;max-width:60px;}
 .stage-step.done .stage-lbl{color:var(--success);}
 .stage-step.current .stage-lbl{color:var(--accent);font-weight:800;}
+.stage-count{font-size:10px;font-weight:700;color:var(--muted);}
 
 /* ── ORDER LIMIT BAR ── */
 .orders-limit-bar{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:13px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;}
@@ -1533,7 +1534,6 @@ async function sdUpdatePassword(){
             <span style="font-size:12px;font-weight:700;" id="orderLimitText">0 / 20</span>
           </div>
           <div class="limit-bar-track"><div class="limit-bar-fill" id="orderLimitFill" style="width:0%;background:var(--accent);"></div></div>
-          <div style="font-size:11px;color:var(--muted);margin-top:5px;">Free plan: 20 orders/month. <span style="color:#f59e0b;cursor:pointer;font-weight:600;" onclick="openUpgradeModal()">Upgrade for unlimited →</span></div>
         </div>
       </div>
       
