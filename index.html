@@ -5594,6 +5594,9 @@ function submitSupportTicket(){
       description: desc,
       priority: _stPriority || 'medium',
       status: 'open'
+    }).then(function(res){
+      if(res.error){ console.error('Ticket save error:', res.error.message); }
+      else { console.log('Ticket saved:', ticketId); }
     });
   }
   document.getElementById('stTicketIdBadge').textContent = '#' + ticketId;
