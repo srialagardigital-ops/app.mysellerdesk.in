@@ -5535,7 +5535,9 @@ var _stPriority = '';
 function openSupportTicket(){
   // Pre-fill email if logged in
   var email = (AppState && AppState._email) ? AppState._email : '';
-  var shop  = (AppState && AppState._shopName) ? AppState._shopName : '';
+  var shop  = (AppState && AppState.settings && AppState.settings.shopName)
+              ? AppState.settings.shopName
+              : (AppState && AppState._shopName) ? AppState._shopName : '';
   if(email) document.getElementById('stEmail').value = email;
   if(shop)  document.getElementById('stName').value  = shop;
   // Reset form
