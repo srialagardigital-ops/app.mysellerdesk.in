@@ -5586,12 +5586,10 @@ function submitSupportTicket(){
   // Save to Supabase (guard against _supa not being defined)
   if(typeof _supa !== 'undefined'){
     _supa.from('support_tickets').insert({
-      ticket_id: ticketId,
-      name: name,
-      email: email,
-      category: cat,
+      title: subj,
       subject: subj,
-      description: desc,
+      message: desc,
+      issue: cat + ': ' + subj,
       priority: _stPriority || 'medium',
       status: 'open'
     }).then(function(res){
