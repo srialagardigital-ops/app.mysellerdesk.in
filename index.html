@@ -4342,24 +4342,30 @@ function showToast(msg){
 // ══ SETTINGS ══
 
 function applySettings(s){
+  if(!s) return;
+  var shopName = s.shopName || 'My Shop';
+  // Helper: null-safe textContent setter
+  function setText(id, val){ var el = document.getElementById(id); if(el) el.textContent = val; }
   // Sidebar
-  document.getElementById('sidebarAvatar').textContent = s.shopName.charAt(0).toUpperCase();
-  document.getElementById('sidebarShopName').textContent = s.shopName;
-  document.getElementById('sidebarHandle').textContent = s.instagram || s.shopName;
+  setText('sidebarAvatar', shopName.charAt(0).toUpperCase());
+  setText('sidebarShopName', shopName);
+  setText('sidebarHandle', s.instagram || shopName);
   // Profile card
   const avatarEl = document.getElementById('profile_avatar');
-  if(s.logo){
-    avatarEl.innerHTML = '<img src="'+s.logo+'" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" />';
-  } else {
-    avatarEl.textContent = s.shopName.charAt(0).toUpperCase();
+  if(avatarEl){
+    if(s.logo){
+      avatarEl.innerHTML = '<img src="'+s.logo+'" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" />';
+    } else {
+      avatarEl.textContent = shopName.charAt(0).toUpperCase();
+    }
   }
-  document.getElementById('profile_shopname').textContent = s.shopName;
-  document.getElementById('profile_tagline').textContent = s.tagline || '';
-  document.getElementById('profile_phone').textContent = s.phone || '—';
-  document.getElementById('profile_district').textContent = s.district || '—';
-  document.getElementById('profile_pincode').textContent = s.pincode || '—';
-  document.getElementById('profile_address').textContent = s.address || '—';
-  document.getElementById('profile_billnote').textContent = s.billnote || '—';
+  setText('profile_shopname', shopName);
+  setText('profile_tagline', s.tagline || '');
+  setText('profile_phone', s.phone || '—');
+  setText('profile_district', s.district || '—');
+  setText('profile_pincode', s.pincode || '—');
+  setText('profile_address', s.address || '—');
+  setText('profile_billnote', s.billnote || '—');
   const profileEmailEl = document.getElementById('profile_email');
   if(profileEmailEl) profileEmailEl.textContent = AppState._email || '—';
   // Social media buttons with real SVG logos
