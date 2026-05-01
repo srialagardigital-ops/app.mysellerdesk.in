@@ -1940,6 +1940,11 @@ async function sdUpdatePassword(){
             <label class="form-label">Shop Name</label>
             <input class="form-input" id="s_shopname" placeholder="Kavya Crafts">
           </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Email (Login ID)</label>
+            <input class="form-input" id="s_email_display" type="email" placeholder="you@example.com" disabled style="background:var(--surface2);color:var(--muted);cursor:not-allowed;opacity:0.75;">
+            <div style="font-size:11px;color:var(--muted2);margin-top:4px;">&#128274; Email cannot be changed after signup.</div>
+          </div>
           <div class="form-row">
             <div class="form-group" style="margin:0">
               <label class="form-label">Phone Number</label>
@@ -1947,7 +1952,22 @@ async function sdUpdatePassword(){
             </div>
             <div class="form-group" style="margin:0">
               <label class="form-label">District</label>
-              <input class="form-input" id="s_district" placeholder="Ernakulam">
+              <select class="form-select" id="s_district">
+                <option value="">Select District</option>
+                <option>Ariyalur</option><option>Chengalpattu</option><option>Chennai</option>
+                <option>Coimbatore</option><option>Cuddalore</option><option>Dharmapuri</option>
+                <option>Dindigul</option><option>Erode</option><option>Kallakurichi</option>
+                <option>Kancheepuram</option><option>Kanyakumari</option><option>Karur</option>
+                <option>Krishnagiri</option><option>Madurai</option><option>Mayiladuthurai</option>
+                <option>Nagapattinam</option><option>Namakkal</option><option>Nilgiris</option>
+                <option>Perambalur</option><option>Pudukkottai</option><option>Ramanathapuram</option>
+                <option>Ranipet</option><option>Salem</option><option>Sivaganga</option>
+                <option>Tenkasi</option><option>Thanjavur</option><option>Theni</option>
+                <option>Thoothukudi</option><option>Tiruchirappalli</option><option>Tirunelveli</option>
+                <option>Tirupathur</option><option>Tiruppur</option><option>Tiruvallur</option>
+                <option>Tiruvannamalai</option><option>Tiruvarur</option><option>Vellore</option>
+                <option>Viluppuram</option><option>Virudhunagar</option>
+              </select>
             </div>
           </div>
           <div class="form-row">
@@ -2038,6 +2058,10 @@ async function sdUpdatePassword(){
               <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;grid-column:span 3;">
                 <div style="font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Bill Notes</div>
                 <div style="font-size:12px;color:var(--muted);line-height:1.5;" id="profile_billnote">—</div>
+              </div>
+              <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;grid-column:span 3;">
+                <div style="font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">&#128274; Email (Login ID)</div>
+                <div style="font-size:13px;font-weight:600;color:var(--muted);" id="profile_email">—</div>
               </div>
             </div>
           </div>
@@ -2648,7 +2672,7 @@ async function saveFeatures(f){
   const uid = AppState._uid;
   if(!uid) return;
   const dbRow = { ...settingsToDb(AppState.settings || {}), features: f, user_id: uid, id: uid };
-  await _supa.from('settings').upsert(dbRow, { onConflict: 'id' });
+  await _supa.from('settings').upsert(dbRow, { onConflict: 'user_id' });
 }
 
 // ── camelCase <-> snake_case mapping for Supabase settings table ──
@@ -4256,6 +4280,8 @@ function applySettings(s){
   document.getElementById('profile_pincode').textContent = s.pincode || '—';
   document.getElementById('profile_address').textContent = s.address || '—';
   document.getElementById('profile_billnote').textContent = s.billnote || '—';
+  const profileEmailEl = document.getElementById('profile_email');
+  if(profileEmailEl) profileEmailEl.textContent = AppState._email || '—';
   // Social media buttons with real SVG logos
   const socialEl = document.getElementById('profile_socials');
   if(socialEl){
@@ -4278,6 +4304,8 @@ function loadSettingsForm(){
 function openEditProfile(){
   const s = getSettings();
   document.getElementById('s_shopname').value = s.shopName;
+  const emailEl = document.getElementById('s_email_display');
+  if(emailEl) emailEl.value = AppState._email || '';
   document.getElementById('s_phone').value = s.phone || '';
   document.getElementById('s_district').value = s.district || '';
   document.getElementById('s_pincode').value = s.pincode || '';
@@ -4378,7 +4406,7 @@ function saveSettingsFromModal(){
   closeEditProfile();
   if(uid){
     const dbRow = { ...settingsToDb({...s, onboarded: true}), features: AppState.features, user_id: uid, id: uid };
-    _supa.from('settings').upsert(dbRow, {onConflict:'id'}).then(({ error }) => {
+    _supa.from('settings').upsert(dbRow, {onConflict:'user_id'}).then(({ error }) => {
       if(error){
         console.error('Settings save error:', error);
         showToast('Save failed: ' + error.message);
