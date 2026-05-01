@@ -2774,6 +2774,20 @@ function settingsFromDb(row){
   };
 }
 
+// ── Safe DOM helper — prevents null crash on missing elements ──
+function safeText(id, val){
+  var el = document.getElementById(id);
+  if(el) el.textContent = val;
+}
+function safeHtml(id, val){
+  var el = document.getElementById(id);
+  if(el) el.innerHTML = val;
+}
+function safeStyle(id, prop, val){
+  var el = document.getElementById(id);
+  if(el) el.style[prop] = val;
+}
+
 // ── XSS helper — always use for user-supplied data in innerHTML ──
 function escapeHtml(str){
   if(str === null || str === undefined) return '';
@@ -3061,8 +3075,8 @@ function showTab(name, el){
     reports:   ['Reports','Business insights & analytics.'],
   };
   if(titles[name]){
-    document.getElementById('topbarTitle').textContent = titles[name][0];
-    document.getElementById('topbarSub').textContent = titles[name][1];
+    safeText('topbarTitle', titles[name][0]);
+    safeText('topbarSub', titles[name][1]);
   }
   if(name === 'settings') loadSettingsForm();
   if(name === 'reports') refreshReports();
@@ -3129,10 +3143,10 @@ function refreshStats(){
   const todayBadge = document.getElementById('todayBadge');
   if(todayBadge) todayBadge.textContent = todayCount > 0 ? `↑ Today: ${todayCount}` : '↑ Today';
 
-  document.getElementById('totalOrdersStat').textContent = total;
-  document.getElementById('totalRevenueStat').textContent = '₹' + revenue.toLocaleString('en-IN');
-  document.getElementById('dispatchedStat').textContent = dispatched + delivered;
-  document.getElementById('pendingStat').textContent = pending;
+  safeText('totalOrdersStat', total);
+  safeText('totalRevenueStat', '₹' + revenue.toLocaleString('en-IN'));
+  safeText('dispatchedStat', dispatched + delivered);
+  safeText('pendingStat', pending);
   const cs = document.getElementById('totalCustomersStat');
   if(cs) cs.textContent = customers;
   const rb = document.getElementById('returningBuyersStat');
@@ -3141,7 +3155,7 @@ function refreshStats(){
 
 function updatePendingCount(){
   const pending = DB.getOrders().filter(o => o.status === 'pending').length;
-  document.getElementById('pendingCount').textContent = pending;
+  safeText('pendingCount', pending);
 }
 
 // ══ WORKFLOW STAGES ══
@@ -3468,10 +3482,10 @@ function refreshCharts(mode){
   const target = 20000;
   const progPct = Math.min(100, Math.round((revenue/target)*100));
 
-  document.getElementById('gaugePct').textContent = pct + '%';
-  document.getElementById('gaugeRevenue').textContent = '₹' + revenue.toLocaleString('en-IN');
+  safeText('gaugePct', pct + '%');
+  safeText('gaugeRevenue', '₹' + revenue.toLocaleString('en-IN'));
   document.getElementById('gaugeBar').style.width = progPct + '%';
-  document.getElementById('gaugeTarget').textContent = '₹' + target.toLocaleString('en-IN');
+  safeText('gaugeTarget', '₹' + target.toLocaleString('en-IN'));
 
   // Draw gauge arc SVG
   const svg = document.getElementById('gaugeSvg');
@@ -3675,9 +3689,9 @@ function refreshPayments(){
   const allOrders = DB.getOrders();
   const paid = allOrders.filter(o => o.payment === 'paid').reduce((s,o) => s + (Number(o.amount)||0), 0);
   const unpaid = allOrders.filter(o => o.payment !== 'paid').reduce((s,o) => s + (Number(o.amount)||0), 0);
-  document.getElementById('paidStat').textContent = '₹' + paid.toLocaleString('en-IN');
-  document.getElementById('unpaidStat').textContent = '₹' + unpaid.toLocaleString('en-IN');
-  document.getElementById('totalPayStat').textContent = '₹' + (paid+unpaid).toLocaleString('en-IN');
+  safeText('paidStat', '₹' + paid.toLocaleString('en-IN'));
+  safeText('unpaidStat', '₹' + unpaid.toLocaleString('en-IN'));
+  safeText('totalPayStat', '₹' + (paid+unpaid).toLocaleString('en-IN'));
 
   const q = (document.getElementById('paymentSearchInput')?.value || '').toLowerCase().trim();
   let orders = allOrders;
@@ -4585,24 +4599,28 @@ const PAY_LINKS = {
 function updatePlanUI(){
   const plan = getPlan();
   const paid = isPaid();
+  const labels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
+  const planClass = plan === 'elite' ? 'elite' : plan === 'growth' ? 'growth' : 'starter';
 
   // Sidebar badge
   const badge = document.getElementById('sidebarPlanBadge');
-  const labels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
-  badge.textContent = labels[plan] || 'STARTER';
-  badge.className = 'plan-badge ' + (plan === 'elite' ? 'elite' : plan === 'growth' ? 'growth' : 'starter');
+  if(badge){
+    badge.textContent = labels[plan] || 'STARTER';
+    badge.className = 'plan-badge ' + planClass;
+  }
 
   // Topbar badge
   const tbadge = document.getElementById('topbarPlanBadge');
-  tbadge.textContent = labels[plan] || 'STARTER';
-  tbadge.className = 'plan-badge ' + (plan === 'elite' ? 'elite' : plan === 'growth' ? 'growth' : 'starter');
-  tbadge.style.cursor = paid ? 'default' : 'pointer';
-  tbadge.onclick = paid ? null : openUpgradeModal;
+  if(tbadge){
+    tbadge.textContent = labels[plan] || 'STARTER';
+    tbadge.className = 'plan-badge ' + planClass;
+    tbadge.style.cursor = paid ? 'default' : 'pointer';
+    tbadge.onclick = paid ? null : openUpgradeModal;
+  }
 
   // Upgrade banner
-  document.getElementById('upgradeBanner').style.display = paid ? 'none' : 'block';
-
-  // Order limit bar removed
+  const banner = document.getElementById('upgradeBanner');
+  if(banner) banner.style.display = paid ? 'none' : 'block';
 }
 
 // Show admin-assigned performance badge (Diamond / Gold / Silver / Prime) in sidebar + topbar
@@ -4650,7 +4668,7 @@ function updateOrderLimitBar(){
     return parseInt(parts[1]) === now.getMonth()+1 && parseInt(parts[2]) === now.getFullYear();
   }).length;
   const pct = Math.min(100, (thisMonth / FREE_ORDER_LIMIT) * 100);
-  document.getElementById('orderLimitText').textContent = `${thisMonth} / ${FREE_ORDER_LIMIT}`;
+  safeText('orderLimitText', thisMonth + ' / ' + FREE_ORDER_LIMIT);
   const fill = document.getElementById('orderLimitFill');
   fill.style.width = pct + '%';
   fill.style.background = pct >= 90 ? 'var(--danger)' : pct >= 70 ? 'var(--warning)' : 'var(--accent)';
