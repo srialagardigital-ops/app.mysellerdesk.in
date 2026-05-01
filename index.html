@@ -823,12 +823,36 @@ tbody td{padding:15px 26px;font-size:14px;}
 <div id="sdLoginOverlay" style="display:flex;position:fixed;inset:0;z-index:9999;background:#f0f4ff;align-items:center;justify-content:center;">
 
   <!-- Promo side panel (left) -->
-  <div style="position:absolute;left:0;top:0;bottom:0;width:42%;background:linear-gradient(160deg,#06112b 0%,#0e2040 45%,#0d2d5a 80%,#1a4a8a 100%);display:flex;flex-direction:column;justify-content:center;padding:36px 38px;overflow:hidden;pointer-events:none;">
+  <div style="position:absolute;left:0;top:0;bottom:0;width:50%;background:linear-gradient(160deg,#06112b 0%,#0e2040 45%,#0d2d5a 80%,#1a4a8a 100%);display:flex;flex-direction:column;justify-content:center;padding:36px 38px;overflow:hidden;pointer-events:all;">
 
     <!-- Decorative circles -->
     <div style="position:absolute;width:380px;height:380px;border-radius:50%;border:1px solid rgba(55,138,221,0.08);top:-100px;left:-120px;"></div>
     <div style="position:absolute;width:260px;height:260px;border-radius:50%;border:1px solid rgba(55,138,221,0.06);bottom:-60px;right:-80px;"></div>
     <div style="position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,0.12) 0%,transparent 70%);top:30%;right:-40px;"></div>
+
+    <!-- Banner Upload Area -->
+    <div id="sdBannerUploadWrap" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;background:transparent;pointer-events:none;">
+      <!-- Banner image (hidden by default) -->
+      <img id="sdBannerImg" src="" alt="Admin Banner" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;pointer-events:none;">
+      <!-- Overlay gradient on top of banner -->
+      <div id="sdBannerGradient" style="display:none;position:absolute;inset:0;background:linear-gradient(160deg,rgba(6,17,43,0.75) 0%,rgba(14,32,64,0.6) 50%,rgba(26,74,138,0.55) 100%);z-index:2;pointer-events:none;"></div>
+      <!-- Upload button (always visible for admin) -->
+      <div id="sdBannerUploadBtn" onclick="document.getElementById('sdBannerFileInput').click()" style="position:absolute;top:16px;right:16px;z-index:20;background:rgba(255,255,255,0.12);border:1.5px dashed rgba(255,255,255,0.4);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:7px;cursor:pointer;transition:all 0.2s;pointer-events:all;backdrop-filter:blur(6px);" onmouseenter="this.style.background='rgba(55,138,221,0.3)';this.style.borderColor='rgba(55,138,221,0.8)';" onmouseleave="this.style.background='rgba(255,255,255,0.12)';this.style.borderColor='rgba(255,255,255,0.4)';">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span id="sdBannerUploadLabel" style="font-size:11px;font-weight:700;color:#fff;letter-spacing:0.3px;">Upload Banner</span>
+      </div>
+      <!-- Hidden file input -->
+      <input id="sdBannerFileInput" type="file" accept="image/*" style="display:none;" onchange="sdLoadBanner(this)">
+      <!-- Remove button (shown after upload) -->
+      <div id="sdBannerRemoveBtn" onclick="sdRemoveBanner()" style="display:none;position:absolute;top:16px;left:16px;z-index:20;background:rgba(201,64,64,0.75);border:1.5px solid rgba(201,64,64,0.9);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:5px;cursor:pointer;pointer-events:all;backdrop-filter:blur(4px);" onmouseenter="this.style.background='rgba(201,64,64,0.95)';" onmouseleave="this.style.background='rgba(201,64,64,0.75)';">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        <span style="font-size:10px;font-weight:700;color:#fff;">Remove</span>
+      </div>
+      <!-- Drop hint (shown when no banner) -->
+      <div id="sdBannerDropHint" style="position:absolute;bottom:60px;left:0;right:0;text-align:center;pointer-events:none;z-index:5;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.25);font-weight:500;letter-spacing:0.3px;">Admin: Click "Upload Banner" to add your image</div>
+      </div>
+    </div>
 
     <!-- Logo -->
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
@@ -910,7 +934,7 @@ tbody td{padding:15px 26px;font-size:14px;}
   </div>
 
   <!-- Right side - white card -->
-  <div id="sdLoginCard" style="position:absolute;right:0;top:0;bottom:0;width:58%;display:flex;align-items:center;justify-content:center;padding:40px;">
+  <div id="sdLoginCard" style="position:absolute;right:0;top:0;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;padding:40px 40px 60px 40px;">
     <div style="width:100%;max-width:400px;">
 
       <!-- Title -->
@@ -1096,6 +1120,12 @@ tbody td{padding:15px 26px;font-size:14px;}
       </div>
 
     </div>
+
+    <!-- Copyright Footer -->
+    <div style="position:absolute;bottom:18px;left:0;right:0;text-align:center;">
+      <span style="font-size:11px;color:#aabdd4;font-weight:500;">© 2025 MySellerDesk · Made with ❤️ for Tamilnadu sellers.</span>
+    </div>
+
   </div>
 </div>
 
@@ -1110,6 +1140,63 @@ tbody td{padding:15px 26px;font-size:14px;}
   #sdLoginCard{position:relative!important;width:100%!important;left:0!important;right:0!important;padding:24px!important;background:#fff!important;min-height:100vh!important;align-items:flex-start!important;padding-top:60px!important;}
 }
 </style>
+
+<script>
+// ── ADMIN BANNER UPLOAD ──
+function sdLoadBanner(input){
+  if(!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var img = document.getElementById('sdBannerImg');
+    var gradient = document.getElementById('sdBannerGradient');
+    var removeBtn = document.getElementById('sdBannerRemoveBtn');
+    var dropHint = document.getElementById('sdBannerDropHint');
+    var uploadLabel = document.getElementById('sdBannerUploadLabel');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    gradient.style.display = 'block';
+    removeBtn.style.display = 'flex';
+    if(dropHint) dropHint.style.display = 'none';
+    if(uploadLabel) uploadLabel.textContent = 'Change Banner';
+    // Save to localStorage for persistence
+    try { localStorage.setItem('sd_admin_banner', e.target.result); } catch(err){}
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
+function sdRemoveBanner(){
+  document.getElementById('sdBannerImg').src = '';
+  document.getElementById('sdBannerImg').style.display = 'none';
+  document.getElementById('sdBannerGradient').style.display = 'none';
+  document.getElementById('sdBannerRemoveBtn').style.display = 'none';
+  var dropHint = document.getElementById('sdBannerDropHint');
+  var uploadLabel = document.getElementById('sdBannerUploadLabel');
+  if(dropHint) dropHint.style.display = 'block';
+  if(uploadLabel) uploadLabel.textContent = 'Upload Banner';
+  try { localStorage.removeItem('sd_admin_banner'); } catch(err){}
+}
+
+// Restore saved banner on load
+(function(){
+  try {
+    var saved = localStorage.getItem('sd_admin_banner');
+    if(saved){
+      var img = document.getElementById('sdBannerImg');
+      var gradient = document.getElementById('sdBannerGradient');
+      var removeBtn = document.getElementById('sdBannerRemoveBtn');
+      var dropHint = document.getElementById('sdBannerDropHint');
+      var uploadLabel = document.getElementById('sdBannerUploadLabel');
+      if(img){ img.src = saved; img.style.display = 'block'; }
+      if(gradient) gradient.style.display = 'block';
+      if(removeBtn) removeBtn.style.display = 'flex';
+      if(dropHint) dropHint.style.display = 'none';
+      if(uploadLabel) uploadLabel.textContent = 'Change Banner';
+    }
+  } catch(err){}
+})();
+</script>
 
 <script>
 // ══ LOGIN OVERLAY FUNCTIONS ══
