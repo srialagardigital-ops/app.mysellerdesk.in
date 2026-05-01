@@ -2852,6 +2852,11 @@ const DB = {
     // Update UI now that plan is confirmed
     updatePlanUI();
     applyFeatures();
+
+    // Init expiry system now that plan + session are both confirmed
+    if(typeof window.initExpirySystem === 'function'){
+      window.initExpirySystem(user.created_at);
+    }
     // Show admin-assigned performance badge in sidebar
     updateSellerBadgeUI(AppState.sellerBadge);
 
@@ -5584,6 +5589,11 @@ async function toggleFeature(name, enabled){
     applyTopbarIdentity();
     window._sdHideLoginOverlay();
     await DB.loadFromSupabase();
+    // After DB load, settings are now available — re-apply shop name to topbar
+    if(AppState.settings && AppState.settings.shopName){
+      AppState._shopName = AppState.settings.shopName;
+      applyTopbarIdentity();
+    }
   }
 
   bridgeAuthFromUrl();
@@ -5921,16 +5931,8 @@ document.getElementById('supportTicketModal').addEventListener('click', function
     document.getElementById('sdPlanExpiredOverlay').classList.add('show');
   }
 
-  // Hook into ensureAccess — run after login
-  document.addEventListener('DOMContentLoaded', function(){
-    if(typeof _supa === 'undefined') return;
-    _supa.auth.getSession().then(function(res){
-      var session = res && res.data && res.data.session;
-      if(!session) return;
-      var created = new Date(session.user.created_at);
-      window.initExpirySystem(created);
-    });
-  });
+  // initExpirySystem is now called from DB.loadFromSupabase() after plan is confirmed
+  // This ensures plan type and session are both available before computing expiry
 })();
 </script>
 
