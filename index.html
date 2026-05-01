@@ -475,7 +475,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 
 /* ── PLAN BADGE ── */
 .plan-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:0.5px;text-transform:uppercase;}
-.plan-badge.starter{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);}
+.plan-badge.starter{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;}
 .plan-badge.growth{background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;}
 .plan-badge.elite{background:linear-gradient(90deg,var(--purple),#9b6fe0);color:#fff;}
 
@@ -1378,6 +1378,18 @@ async function sdUpdatePassword(){
   <div style="height:16px;flex-shrink:0;"></div>
   <!-- Performance Badge storage (hidden, used by JS only) -->
   <div id="sidebarPerfBadge" style="display:none"></div>
+  <!-- Plan Badge + Upgrade Banner -->
+  <div style="padding:10px 12px;flex-shrink:0;">
+    <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:11px;color:rgba(255,255,255,0.35);font-weight:600;">PLAN</span>
+      <span id="sidebarPlanBadge" class="plan-badge starter">STARTER</span>
+    </div>
+    <div id="upgradeBanner" class="upgrade-banner" onclick="openUpgradeModal()" style="display:none;">
+      <div class="upgrade-banner-title">🚀 Upgrade Your Plan</div>
+      <div class="upgrade-banner-sub">Unlock PDF, shipping labels & unlimited orders</div>
+      <button class="upgrade-banner-btn" type="button">View Plans →</button>
+    </div>
+  </div>
 </nav>
 
 
