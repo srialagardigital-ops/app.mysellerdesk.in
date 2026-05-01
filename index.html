@@ -1394,6 +1394,8 @@ async function sdUpdatePassword(){
       </div>
       <span class="plan-badge starter" id="sidebarPlanBadge" style="font-size:9px;padding:2px 6px;">Starter</span>
     </div>
+    <!-- Performance Badge from Admin -->
+    <div id="sidebarPerfBadge" style="display:none;margin:4px 0 0 0;padding:5px 10px;border-radius:8px;font-size:10px;font-weight:700;text-align:center;letter-spacing:0.3px"></div>
     <button onclick="window.logoutSellerDesk && window.logoutSellerDesk()" style="width:100%;margin-top:6px;padding:7px;border-radius:7px;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">
       Logout
     </button>
@@ -2857,6 +2859,8 @@ const DB = {
       const {user_id, id, created_at, features, ...rawRow} = settingsRes.data[0];
       const s = settingsFromDb(rawRow);
       AppState.settings = s;
+      // Store badge from admin-assigned column
+      AppState.sellerBadge = settingsRes.data[0].badge || null;
       // features loaded from Supabase — never from localStorage
       if(features && typeof features === 'object'){
         AppState.features = features;
@@ -2870,6 +2874,8 @@ const DB = {
     // Update UI now that plan is confirmed
     updatePlanUI();
     applyFeatures();
+    // Show admin-assigned performance badge in sidebar
+    updateSellerBadgeUI(AppState.sellerBadge);
 
     // Apply settings (shop name, logo, topbar profile etc.)
     if(AppState.settings && typeof applySettings === 'function'){
@@ -4608,6 +4614,25 @@ function updatePlanUI(){
   document.getElementById('upgradeBanner').style.display = paid ? 'none' : 'block';
 
   // Order limit bar removed
+}
+
+// Show admin-assigned performance badge (Diamond / Gold / Silver / Prime) in sidebar
+function updateSellerBadgeUI(badge){
+  const el = document.getElementById('sidebarPerfBadge');
+  if(!el) return;
+  if(!badge){ el.style.display='none'; return; }
+  const map = {
+    diamond: { label:'💎 Diamond Seller', bg:'#dbeafe', color:'#1d4ed8', border:'#93c5fd' },
+    gold:    { label:'🥇 Gold Seller',    bg:'#fef3c7', color:'#92400e', border:'#f59e0b' },
+    silver:  { label:'🥈 Silver Seller',  bg:'#e5e7eb', color:'#374151', border:'#cbd5e1' },
+    prime:   { label:'⭐ Prime Seller',   bg:'#f3e8ff', color:'#6d28d9', border:'#c4b5fd' },
+  };
+  const m = map[String(badge).toLowerCase()] || map['prime'];
+  el.style.display = 'block';
+  el.style.background = m.bg;
+  el.style.color = m.color;
+  el.style.border = '1px solid ' + m.border;
+  el.textContent = m.label;
 }
 
 function updateOrderLimitBar(){
