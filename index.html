@@ -2815,10 +2815,21 @@ function getSettings(){
 function getPlan(){
   // Plan is set only by Supabase on login — re-read from AppState
   const p = AppState.plan || 'starter';
-  return ['starter','growth','elite'].includes(p) ? p : 'starter';
+  // Accept any non-empty plan key from plan_configs as "paid"
+  if(['starter','growth','elite'].includes(p)) return p;
+  // If admin assigned a custom plan key, treat as 'growth' (paid)
+  if(p && p !== 'starter') return 'growth';
+  return 'starter';
 }
-function isPaid(){ return true; } // Trial: all features unlocked
-function isPro(){  return true; } // Trial: all features unlocked
+function isPaid(){
+  // Check real plan from Supabase subscription
+  const p = AppState.plan || 'starter';
+  // If plan expired, not paid
+  if(AppState._planExpired) return false;
+  // Any non-starter plan = paid
+  return p !== 'starter';
+}
+function isPro(){ return isPaid(); }
 
 // ══ DATABASE LAYER ══
 const DB = {
@@ -2836,7 +2847,7 @@ const DB = {
       _supa.from('customers').select('*').eq('user_id', user.id),
       _supa.from('products').select('*').eq('user_id', user.id),
       _supa.from('settings').select('*').eq('user_id', user.id).limit(1),
-      _supa.from('subscriptions').select('plan').eq('user_id', user.id).limit(1),
+      _supa.from('subscriptions').select('plan,is_active,expires_at').eq('user_id', user.id).eq('is_active', true).order('started_at', {ascending: false}).limit(1),
     ]);
 
     AppState.orders    = ordersRes.data    || [];
@@ -2859,7 +2870,16 @@ const DB = {
     }
 
     // Plan verified from Supabase — cannot be tampered via browser console
-    AppState.plan = planRes.data?.[0]?.plan || 'starter';
+    const subRow = planRes.data?.[0];
+    AppState.plan = subRow?.plan || 'starter';
+    // Check expiry
+    if(subRow?.expires_at){
+      const expiry = new Date(subRow.expires_at);
+      AppState._planExpired = expiry < new Date();
+      if(AppState._planExpired) AppState.plan = 'starter'; // treat expired as starter
+    } else if(!subRow) {
+      AppState._planExpired = false;
+    }
 
     // Update UI now that plan is confirmed
     updatePlanUI();
@@ -4597,20 +4617,22 @@ const PAY_LINKS = {
 function updatePlanUI(){
   const plan = getPlan();
   const paid = isPaid();
-  const labels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
+  // Support any plan key — show uppercase of key
+  const knownLabels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
+  const planLabel = knownLabels[plan] || (AppState.plan ? AppState.plan.toUpperCase() : 'STARTER');
   const planClass = plan === 'elite' ? 'elite' : plan === 'growth' ? 'growth' : 'starter';
 
   // Sidebar badge
   const badge = document.getElementById('sidebarPlanBadge');
   if(badge){
-    badge.textContent = labels[plan] || 'STARTER';
+    badge.textContent = planLabel;
     badge.className = 'plan-badge ' + planClass;
   }
 
   // Topbar badge
   const tbadge = document.getElementById('topbarPlanBadge');
   if(tbadge){
-    tbadge.textContent = labels[plan] || 'STARTER';
+    tbadge.textContent = planLabel;
     tbadge.className = 'plan-badge ' + planClass;
     tbadge.style.cursor = paid ? 'default' : 'pointer';
     tbadge.onclick = paid ? null : openUpgradeModal;
