@@ -2856,7 +2856,9 @@ const DB = {
       const s = settingsFromDb(rawRow);
       AppState.settings = s;
       // Store badge from admin-assigned column
-      AppState.sellerBadge = settingsRes.data[0].badge || null;
+      const rawBadge = settingsRes.data[0].badge || null;
+      AppState.sellerBadge = rawBadge;
+      console.log('[Badge Debug] settings row badge value:', rawBadge, '| full row keys:', Object.keys(settingsRes.data[0]));
       // features loaded from Supabase — never from localStorage
       if(features && typeof features === 'object'){
         AppState.features = features;
