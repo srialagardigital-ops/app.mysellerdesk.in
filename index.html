@@ -4621,38 +4621,12 @@ function updatePlanUI(){
   if(banner) banner.style.display = paid ? 'none' : 'block';
 }
 
-// Show admin-assigned performance badge (Diamond / Gold / Silver / Prime) in sidebar + topbar
+// Performance badge UI — hidden (disabled)
 function updateSellerBadgeUI(badge){
   const sidebarEl = document.getElementById('sidebarPerfBadge');
   const topbarEl  = document.getElementById('topbarBadgeChip');
-  if(!badge){
-    if(sidebarEl) sidebarEl.style.display='none';
-    if(topbarEl)  topbarEl.style.display='none';
-    return;
-  }
-  const map = {
-    diamond: { label:'💎 Diamond', bg:'#dbeafe', color:'#1d4ed8', border:'#93c5fd' },
-    gold:    { label:'🥇 Gold',    bg:'#fef3c7', color:'#92400e', border:'#f59e0b' },
-    silver:  { label:'🥈 Silver',  bg:'#e5e7eb', color:'#374151', border:'#cbd5e1' },
-    prime:   { label:'⭐ Prime',   bg:'#f3e8ff', color:'#7c3aed', border:'#c4b5fd' },
-  };
-  const m = map[String(badge).toLowerCase()] || map['prime'];
-  // Sidebar bottom chip
-  if(sidebarEl){
-    sidebarEl.style.display = 'block';
-    sidebarEl.style.background = m.bg;
-    sidebarEl.style.color = m.color;
-    sidebarEl.style.border = '1px solid ' + m.border;
-    sidebarEl.textContent = m.label;
-  }
-  // Topbar profile button badge (below shop name)
-  if(topbarEl){
-    topbarEl.style.display = 'inline-block';
-    topbarEl.style.background = m.bg;
-    topbarEl.style.color = m.color;
-    topbarEl.style.border = '1px solid ' + m.border;
-    topbarEl.textContent = m.label;
-  }
+  if(sidebarEl) sidebarEl.style.display='none';
+  if(topbarEl)  topbarEl.style.display='none';
 }
 
 function updateOrderLimitBar(){
