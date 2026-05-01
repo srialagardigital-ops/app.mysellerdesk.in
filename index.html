@@ -2871,6 +2871,14 @@ const DB = {
     updatePlanUI();
     applyFeatures();
 
+    // Apply settings (shop name, logo, topbar profile etc.)
+    if(AppState.settings && typeof applySettings === 'function'){
+      applySettings(AppState.settings);
+    }
+    if(typeof updateTopbarProfile === 'function'){
+      updateTopbarProfile(AppState.settings || {});
+    }
+
     // Render all dashboard data immediately after login
     if(typeof refreshAll === 'function') refreshAll();
   },
