@@ -4629,10 +4629,12 @@ const PAY_LINKS = {
 function updatePlanUI(){
   const plan = getPlan();
   const paid = isPaid();
-  // Support any plan key — show uppercase of key
+  // Use raw plan key for label (e.g. 'trial-plan' → 'TRIAL-PLAN')
+  const rawPlan = AppState.plan || 'starter';
   const knownLabels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
-  const planLabel = knownLabels[plan] || (AppState.plan ? AppState.plan.toUpperCase() : 'STARTER');
-  const planClass = plan === 'elite' ? 'elite' : plan === 'growth' ? 'growth' : 'starter';
+  const planLabel = paid ? (knownLabels[plan] || rawPlan.toUpperCase()) : 'STARTER';
+  // planClass: paid users get 'growth' styling minimum
+  const planClass = !paid ? 'starter' : (plan === 'elite' ? 'elite' : 'growth');
 
   // Sidebar badge
   const badge = document.getElementById('sidebarPlanBadge');
