@@ -2094,51 +2094,22 @@ async function sdUpdatePassword(){
 
     <div class="tab-section" id="tab-settings">
       <div style="max-width:560px;">
-        
-        <div class="table-card" style="margin-bottom:20px;">
-          <div class="table-head">
-            <div class="table-title">Shop Profile</div>
-            <button class="btn-secondary" style="padding:6px 16px;font-size:12px;" onclick="openEditProfile()">Edit</button>
-          </div>
-          <div style="padding:22px;">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-              <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#5ba0e8);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#fff;flex-shrink:0;" id="profile_avatar">M</div>
-              <div>
-                <div style="font-size:18px;font-weight:800;letter-spacing:-0.4px;" id="profile_shopname">My Shop</div>
-                <div style="font-size:12px;color:var(--muted2);margin-top:3px;font-style:italic;" id="profile_tagline"></div>
-                <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;" id="profile_socials"></div>
-              </div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
-              <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;">
-                <div style="font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Phone</div>
-                <div style="font-size:13px;font-weight:600;color:var(--text);" id="profile_phone">—</div>
-              </div>
-              <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;">
-                <div style="font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">District</div>
-                <div style="font-size:13px;font-weight:600;color:var(--text);" id="profile_district">—</div>
-              </div>
-              <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;">
-                <div style="font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Pincode</div>
-                <div style="font-size:13px;font-weight:600;color:var(--text);" id="profile_pincode">—</div>
-              </div>
-              <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;grid-column:span 3;">
-                <div style="font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Address</div>
-                <div style="font-size:13px;font-weight:600;color:var(--text);" id="profile_address">—</div>
-              </div>
-              <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;grid-column:span 3;">
-                <div style="font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Bill Notes</div>
-                <div style="font-size:12px;color:var(--muted);line-height:1.5;" id="profile_billnote">—</div>
-              </div>
-              <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;grid-column:span 3;">
-                <div style="font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">&#128274; Email (Login ID)</div>
-                <div style="font-size:13px;font-weight:600;color:var(--muted);" id="profile_email">—</div>
-              </div>
-            </div>
-          </div>
+
+        <!-- Hidden profile elements kept for JS compatibility -->
+        <div style="display:none;">
+          <div id="profile_avatar"></div>
+          <div id="profile_shopname"></div>
+          <div id="profile_tagline"></div>
+          <div id="profile_socials"></div>
+          <div id="profile_phone"></div>
+          <div id="profile_district"></div>
+          <div id="profile_pincode"></div>
+          <div id="profile_address"></div>
+          <div id="profile_billnote"></div>
+          <div id="profile_email"></div>
         </div>
 
-        <div class="table-card" style="margin-top:20px;">
+        <div class="table-card" style="margin-top:0;">
           <div class="table-head">
             <div class="table-title">Features</div>
             <div class="table-sub">Enable or disable modules for your workflow</div>
@@ -2173,30 +2144,182 @@ async function sdUpdatePassword(){
           </div>
         </div>
 
-        <!-- ── ORDER ID FORMAT CARD ── -->
+        <!-- ── ORDER & BILLING CARD ── -->
         <div class="table-card" style="margin-top:20px;">
           <div class="table-head">
             <div>
-              <div class="table-title">Order ID Format</div>
-              <div class="table-sub">Customize how your order numbers appear</div>
+              <div class="table-title">📋 Order &amp; Billing</div>
+              <div class="table-sub">Customize order defaults and billing preferences</div>
             </div>
           </div>
-          <div style="padding:22px;">
-            <label class="form-label">Order ID Prefix <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
-            <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;">
-              <input class="form-input" id="setting_order_prefix" placeholder="e.g. SRI, MSD, SHOP" maxlength="8"
-                style="text-transform:uppercase;letter-spacing:1px;font-weight:700;width:180px;flex-shrink:0;"
-                oninput="updateOrderPrefixPreview(this.value)">
-              <div style="font-size:13px;color:var(--muted);">Preview: <strong id="order_prefix_preview" style="color:var(--accent);font-family:'JetBrains Mono',monospace;">#1001</strong></div>
+          <div style="padding:22px;display:flex;flex-direction:column;gap:18px;">
+
+            <!-- Order ID Prefix -->
+            <div>
+              <label class="form-label">Order ID Prefix <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+              <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;">
+                <input class="form-input" id="setting_order_prefix" placeholder="e.g. SRI, MSD, SHOP" maxlength="8"
+                  style="text-transform:uppercase;letter-spacing:1px;font-weight:700;width:180px;flex-shrink:0;"
+                  oninput="updateOrderPrefixPreview(this.value)">
+                <div style="font-size:13px;color:var(--muted);">Preview: <strong id="order_prefix_preview" style="color:var(--accent);font-family:'JetBrains Mono',monospace;">#1001</strong></div>
+              </div>
+              <div style="font-size:12px;color:var(--muted2);margin-top:6px;line-height:1.6;">
+                Leave blank for plain <code style="background:var(--surface2);padding:1px 5px;border-radius:4px;">#1001</code> or add prefix for <code style="background:var(--surface2);padding:1px 5px;border-radius:4px;">#SRI-1001</code> style.
+              </div>
             </div>
-            <div style="font-size:12px;color:var(--muted2);margin-top:8px;line-height:1.6;">
-              Leave blank for plain numbers like <code style="background:var(--surface2);padding:1px 5px;border-radius:4px;">#1001</code>.
-              Add a prefix to get <code style="background:var(--surface2);padding:1px 5px;border-radius:4px;">#SRI-1001</code> style IDs.
+
+            <!-- Default Payment -->
+            <div>
+              <label class="form-label">Default Payment Method</label>
+              <select class="form-select" id="setting_default_payment" style="margin-top:6px;">
+                <option value="paid">Paid</option>
+                <option value="pending">Pending (COD)</option>
+              </select>
             </div>
-            <div style="margin-top:14px;display:flex;gap:8px;align-items:center;">
-              <button class="btn-primary" style="padding:8px 20px;font-size:13px;" onclick="saveOrderPrefix()">Save Prefix</button>
-              <span id="order_prefix_saved_msg" style="display:none;font-size:12px;color:var(--success);font-weight:600;">✓ Saved!</span>
+
+            <!-- GST Number -->
+            <div>
+              <label class="form-label">GST Number <span style="color:var(--muted);font-weight:400;">(optional — shown on bill)</span></label>
+              <input class="form-input" id="setting_gst" placeholder="e.g. 33AABCU9603R1ZX" maxlength="15" style="margin-top:6px;text-transform:uppercase;">
             </div>
+
+            <!-- Bill Footer -->
+            <div>
+              <label class="form-label">Bill Footer Message</label>
+              <textarea class="form-textarea" id="setting_bill_footer" placeholder="e.g. Thank you for your order! Returns accepted within 7 days." style="margin-top:6px;min-height:60px;"></textarea>
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="btn-primary" style="padding:8px 20px;font-size:13px;" onclick="saveBillingSettings()">Save</button>
+              <span id="billing_saved_msg" style="display:none;font-size:12px;color:var(--success);font-weight:600;">✓ Saved!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SHIPPING CARD ── -->
+        <div class="table-card" style="margin-top:20px;">
+          <div class="table-head">
+            <div>
+              <div class="table-title">🚚 Shipping</div>
+              <div class="table-sub">Default shipping preferences</div>
+            </div>
+          </div>
+          <div style="padding:22px;display:flex;flex-direction:column;gap:18px;">
+
+            <!-- Default Courier -->
+            <div>
+              <label class="form-label">Default Courier</label>
+              <select class="form-select" id="setting_default_courier" style="margin-top:6px;">
+                <option value="">— None —</option>
+                <option value="ST Courier">ST Courier</option>
+                <option value="Professional">Professional</option>
+                <option value="DTDC">DTDC</option>
+                <option value="Delhivery">Delhivery</option>
+                <option value="India Post">India Post</option>
+                <option value="Bluedart">Bluedart</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- Default Shipping Charge -->
+            <div>
+              <label class="form-label">Default Shipping Charge (₹)</label>
+              <input class="form-input" id="setting_shipping_charge" type="number" min="0" placeholder="e.g. 60" style="margin-top:6px;width:160px;">
+              <div style="font-size:12px;color:var(--muted2);margin-top:6px;">This will be auto-filled when creating a shipping label.</div>
+            </div>
+
+            <!-- Sender Name on Label -->
+            <div>
+              <label class="form-label">Sender Name on Label</label>
+              <input class="form-input" id="setting_sender_name" placeholder="Name that appears as sender on shipping label" style="margin-top:6px;">
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="btn-primary" style="padding:8px 20px;font-size:13px;" onclick="saveShippingSettings()">Save</button>
+              <span id="shipping_saved_msg" style="display:none;font-size:12px;color:var(--success);font-weight:600;">✓ Saved!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── BUSINESS CARD ── -->
+        <div class="table-card" style="margin-top:20px;">
+          <div class="table-head">
+            <div>
+              <div class="table-title">🏪 Business</div>
+              <div class="table-sub">Your business details</div>
+            </div>
+          </div>
+          <div style="padding:22px;display:flex;flex-direction:column;gap:18px;">
+
+            <!-- Business Type -->
+            <div>
+              <label class="form-label">Business Type</label>
+              <select class="form-select" id="setting_business_type" style="margin-top:6px;">
+                <option value="">— Select —</option>
+                <option value="reseller">Reseller</option>
+                <option value="brand">Brand / Manufacturer</option>
+                <option value="dropshipper">Dropshipper</option>
+                <option value="retailer">Retailer</option>
+                <option value="wholesaler">Wholesaler</option>
+              </select>
+            </div>
+
+            <!-- Business Name (Legal) -->
+            <div>
+              <label class="form-label">Legal Business Name <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+              <input class="form-input" id="setting_legal_name" placeholder="e.g. Sri Alagar Traders" style="margin-top:6px;">
+            </div>
+
+            <!-- Website -->
+            <div>
+              <label class="form-label">Website <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+              <input class="form-input" id="setting_website" placeholder="e.g. https://mysellerdesk.in" type="url" style="margin-top:6px;">
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="btn-primary" style="padding:8px 20px;font-size:13px;" onclick="saveBusinessSettings()">Save</button>
+              <span id="business_saved_msg" style="display:none;font-size:12px;color:var(--success);font-weight:600;">✓ Saved!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ACCOUNT CARD ── -->
+        <div class="table-card" style="margin-top:20px;margin-bottom:32px;">
+          <div class="table-head">
+            <div>
+              <div class="table-title">🔐 Account</div>
+              <div class="table-sub">Manage your login and account security</div>
+            </div>
+          </div>
+          <div style="padding:22px;display:flex;flex-direction:column;gap:18px;">
+
+            <!-- Email display -->
+            <div>
+              <label class="form-label">Login Email</label>
+              <div style="margin-top:6px;display:flex;align-items:center;gap:10px;">
+                <input class="form-input" id="setting_account_email" style="color:var(--muted);background:var(--surface2);" readonly>
+                <span style="font-size:11px;background:var(--success-bg);color:var(--success);border-radius:6px;padding:3px 10px;font-weight:700;white-space:nowrap;">🔒 Locked</span>
+              </div>
+            </div>
+
+            <!-- Change Password -->
+            <div>
+              <label class="form-label">Change Password</label>
+              <div style="margin-top:6px;display:flex;flex-direction:column;gap:8px;">
+                <input class="form-input" id="setting_new_password" type="password" placeholder="New password (min 6 chars)">
+                <input class="form-input" id="setting_confirm_password" type="password" placeholder="Confirm new password">
+              </div>
+              <div id="pw_change_msg" style="display:none;font-size:12px;margin-top:6px;font-weight:600;"></div>
+              <button class="btn-secondary" style="margin-top:10px;padding:8px 18px;font-size:13px;" onclick="changePassword()">Update Password</button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div style="border-top:1.5px solid var(--danger-bg);padding-top:18px;">
+              <div style="font-size:13px;font-weight:700;color:var(--danger);margin-bottom:6px;">⚠️ Danger Zone</div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Deleting your account will permanently remove all your orders, customers, and data. This cannot be undone.</div>
+              <button onclick="confirmDeleteAccount()" style="background:none;border:1.5px solid var(--danger);color:var(--danger);border-radius:9px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Delete My Account</button>
+            </div>
+
           </div>
         </div>
 
@@ -2630,6 +2753,15 @@ async function sdUpdatePassword(){
 // SUPABASE MIGRATION (run once in SQL editor):
 //   ALTER TABLE settings ADD COLUMN IF NOT EXISTS features JSONB DEFAULT '{"cod":true,"reports":true}'::jsonb;
 //   ALTER TABLE settings ADD COLUMN IF NOT EXISTS order_prefix TEXT DEFAULT '';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS default_payment TEXT DEFAULT 'paid';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS gst TEXT DEFAULT '';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS bill_footer TEXT DEFAULT '';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS default_courier TEXT DEFAULT '';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS shipping_charge TEXT DEFAULT '';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS sender_name TEXT DEFAULT '';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS business_type TEXT DEFAULT '';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS legal_name TEXT DEFAULT '';
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS website TEXT DEFAULT '';
 //
 // ── Single Supabase client — cookie-based for cross-subdomain session ──
 const _sdCookieAdapter = {
@@ -2787,12 +2919,21 @@ function settingsToDb(s){
     instagram:  s.instagram,
     facebook:   s.facebook,
     youtube:    s.youtube,
-    bill_note:    s.billnote,
-    upi:          s.upi,
-    logo:         s.logo,
-    onboarded:    s.onboarded,
-    signature:    s.signature,
-    order_prefix: s.orderPrefix,
+    bill_note:      s.billnote,
+    upi:            s.upi,
+    logo:           s.logo,
+    onboarded:      s.onboarded,
+    signature:      s.signature,
+    order_prefix:   s.orderPrefix,
+    default_payment: s.defaultPayment,
+    gst:            s.gst,
+    bill_footer:    s.billFooter,
+    default_courier: s.defaultCourier,
+    shipping_charge: s.shippingCharge,
+    sender_name:    s.senderName,
+    business_type:  s.businessType,
+    legal_name:     s.legalName,
+    website:        s.website,
   };
 }
 function settingsFromDb(row){
@@ -2809,9 +2950,18 @@ function settingsFromDb(row){
     billnote:  row.bill_note  || row.billnote  || '',
     upi:       row.upi        || '',
     logo:      row.logo       || '',
-    onboarded:    row.onboarded  || false,
-    signature:    row.signature  || '',
-    orderPrefix:  row.order_prefix || '',
+    onboarded:      row.onboarded       || false,
+    signature:      row.signature       || '',
+    orderPrefix:    row.order_prefix    || '',
+    defaultPayment: row.default_payment || 'paid',
+    gst:            row.gst             || '',
+    billFooter:     row.bill_footer     || '',
+    defaultCourier: row.default_courier || '',
+    shippingCharge: row.shipping_charge || '',
+    senderName:     row.sender_name     || '',
+    businessType:   row.business_type   || '',
+    legalName:      row.legal_name      || '',
+    website:        row.website         || '',
   };
 }
 
@@ -4458,12 +4608,8 @@ function applySettings(s){
   }
   // Update topbar profile chip
   updateTopbarProfile(s);
-  // Populate order prefix input if on settings tab
-  const prefixInput = document.getElementById('setting_order_prefix');
-  if(prefixInput && s.orderPrefix !== undefined){
-    prefixInput.value = (s.orderPrefix || '').toUpperCase();
-    updateOrderPrefixPreview(s.orderPrefix || '');
-  }
+  // Populate settings page inputs
+  _populateSettingsPage(s);
 }
 
 function updateTopbarProfile(s){
@@ -4664,22 +4810,123 @@ function updateOrderPrefixPreview(val){
   if(preview) preview.textContent = prefix ? '#' + prefix + '-1001' : '#1001';
 }
 
-async function saveOrderPrefix(){
-  const input = document.getElementById('setting_order_prefix');
-  if(!input) return;
-  const prefix = input.value.toUpperCase().trim();
+function _showSavedMsg(id){
+  const msg = document.getElementById(id);
+  if(msg){ msg.style.display = 'inline'; setTimeout(() => { msg.style.display = 'none'; }, 2500); }
+}
+
+async function _saveSettingsFields(fields, savedMsgId){
   if(!AppState.settings) AppState.settings = {};
-  AppState.settings.orderPrefix = prefix;
+  Object.assign(AppState.settings, fields);
   const uid = AppState._uid;
   if(uid){
     const dbRow = { ...settingsToDb({...AppState.settings}), features: AppState.features, user_id: uid, id: uid };
     const { error } = await _supa.from('settings').upsert(dbRow, { onConflict: 'user_id' });
-    if(error){ showToast('Save failed: ' + error.message); return; }
+    if(error){ showToast('Save failed: ' + error.message); return false; }
   }
-  // Show saved message
-  const msg = document.getElementById('order_prefix_saved_msg');
-  if(msg){ msg.style.display = 'inline'; setTimeout(() => { msg.style.display = 'none'; }, 2500); }
-  showToast(prefix ? 'Order prefix set to ' + prefix + ' ✅' : 'Prefix cleared — using plain numbers');
+  _showSavedMsg(savedMsgId);
+  return true;
+}
+
+async function saveBillingSettings(){
+  const prefix = (document.getElementById('setting_order_prefix').value || '').toUpperCase().trim();
+  const fields = {
+    orderPrefix:    prefix,
+    defaultPayment: document.getElementById('setting_default_payment').value,
+    gst:            document.getElementById('setting_gst').value.toUpperCase().trim(),
+    billFooter:     document.getElementById('setting_bill_footer').value.trim(),
+  };
+  const ok = await _saveSettingsFields(fields, 'billing_saved_msg');
+  if(ok){
+    updateOrderPrefixPreview(prefix);
+    showToast('Billing settings saved ✅');
+  }
+}
+
+async function saveShippingSettings(){
+  const fields = {
+    defaultCourier:  document.getElementById('setting_default_courier').value,
+    shippingCharge:  document.getElementById('setting_shipping_charge').value,
+    senderName:      document.getElementById('setting_sender_name').value.trim(),
+  };
+  const ok = await _saveSettingsFields(fields, 'shipping_saved_msg');
+  if(ok) showToast('Shipping settings saved ✅');
+}
+
+async function saveBusinessSettings(){
+  const fields = {
+    businessType: document.getElementById('setting_business_type').value,
+    legalName:    document.getElementById('setting_legal_name').value.trim(),
+    website:      document.getElementById('setting_website').value.trim(),
+  };
+  const ok = await _saveSettingsFields(fields, 'business_saved_msg');
+  if(ok) showToast('Business settings saved ✅');
+}
+
+async function changePassword(){
+  const pw  = document.getElementById('setting_new_password').value;
+  const pw2 = document.getElementById('setting_confirm_password').value;
+  const msg = document.getElementById('pw_change_msg');
+  msg.style.display = 'block';
+  if(!pw || pw.length < 6){ msg.style.color = 'var(--danger)'; msg.textContent = '⚠️ Password must be at least 6 characters.'; return; }
+  if(pw !== pw2){ msg.style.color = 'var(--danger)'; msg.textContent = '⚠️ Passwords do not match.'; return; }
+  const { error } = await _supa.auth.updateUser({ password: pw });
+  if(error){ msg.style.color = 'var(--danger)'; msg.textContent = '⚠️ ' + error.message; return; }
+  msg.style.color = 'var(--success)';
+  msg.textContent = '✓ Password updated successfully!';
+  document.getElementById('setting_new_password').value = '';
+  document.getElementById('setting_confirm_password').value = '';
+  setTimeout(() => { msg.style.display = 'none'; }, 3000);
+}
+
+function confirmDeleteAccount(){
+  if(!confirm('Are you sure you want to DELETE your account?\n\nAll orders, customers, and data will be permanently removed.\n\nThis CANNOT be undone!')) return;
+  if(!confirm('Last chance — this is permanent. Delete my account?')) return;
+  _deleteAccount();
+}
+
+async function _deleteAccount(){
+  showToast('Deleting account...');
+  const uid = AppState._uid;
+  if(uid){
+    await _supa.from('orders').delete().eq('user_id', uid);
+    await _supa.from('customers').delete().eq('user_id', uid);
+    await _supa.from('settings').delete().eq('user_id', uid);
+    await _supa.from('products').delete().eq('user_id', uid);
+  }
+  await _supa.auth.signOut();
+  showToast('Account deleted. Goodbye! 👋');
+  setTimeout(() => { location.reload(); }, 1500);
+}
+
+function _populateSettingsPage(s){
+  if(!s) return;
+  // Billing
+  var pfx = document.getElementById('setting_order_prefix');
+  if(pfx){ pfx.value = (s.orderPrefix || '').toUpperCase(); updateOrderPrefixPreview(s.orderPrefix || ''); }
+  var dp = document.getElementById('setting_default_payment');
+  if(dp) dp.value = s.defaultPayment || 'paid';
+  var gst = document.getElementById('setting_gst');
+  if(gst) gst.value = s.gst || '';
+  var bf = document.getElementById('setting_bill_footer');
+  if(bf) bf.value = s.billFooter || '';
+  // Shipping
+  var dc = document.getElementById('setting_default_courier');
+  if(dc) dc.value = s.defaultCourier || '';
+  var sc = document.getElementById('setting_shipping_charge');
+  if(sc) sc.value = s.shippingCharge || '';
+  var sn = document.getElementById('setting_sender_name');
+  if(sn) sn.value = s.senderName || '';
+  // Business
+  var bt = document.getElementById('setting_business_type');
+  if(bt) bt.value = s.businessType || '';
+  var ln = document.getElementById('setting_legal_name');
+  if(ln) ln.value = s.legalName || '';
+  var ws = document.getElementById('setting_website');
+  if(ws) ws.value = s.website || '';
+  // Account
+  var ae = document.getElementById('setting_account_email');
+  if(ae) ae.value = AppState._email || '';
 }
 
 
