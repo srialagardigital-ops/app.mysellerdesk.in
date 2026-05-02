@@ -2172,6 +2172,34 @@ async function sdUpdatePassword(){
             </div>
           </div>
         </div>
+
+        <!-- ── ORDER ID FORMAT CARD ── -->
+        <div class="table-card" style="margin-top:20px;">
+          <div class="table-head">
+            <div>
+              <div class="table-title">Order ID Format</div>
+              <div class="table-sub">Customize how your order numbers appear</div>
+            </div>
+          </div>
+          <div style="padding:22px;">
+            <label class="form-label">Order ID Prefix <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+            <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;">
+              <input class="form-input" id="setting_order_prefix" placeholder="e.g. SRI, MSD, SHOP" maxlength="8"
+                style="text-transform:uppercase;letter-spacing:1px;font-weight:700;width:180px;flex-shrink:0;"
+                oninput="updateOrderPrefixPreview(this.value)">
+              <div style="font-size:13px;color:var(--muted);">Preview: <strong id="order_prefix_preview" style="color:var(--accent);font-family:'JetBrains Mono',monospace;">#1001</strong></div>
+            </div>
+            <div style="font-size:12px;color:var(--muted2);margin-top:8px;line-height:1.6;">
+              Leave blank for plain numbers like <code style="background:var(--surface2);padding:1px 5px;border-radius:4px;">#1001</code>.
+              Add a prefix to get <code style="background:var(--surface2);padding:1px 5px;border-radius:4px;">#SRI-1001</code> style IDs.
+            </div>
+            <div style="margin-top:14px;display:flex;gap:8px;align-items:center;">
+              <button class="btn-primary" style="padding:8px 20px;font-size:13px;" onclick="saveOrderPrefix()">Save Prefix</button>
+              <span id="order_prefix_saved_msg" style="display:none;font-size:12px;color:var(--success);font-weight:600;">✓ Saved!</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -2601,6 +2629,7 @@ async function sdUpdatePassword(){
 //
 // SUPABASE MIGRATION (run once in SQL editor):
 //   ALTER TABLE settings ADD COLUMN IF NOT EXISTS features JSONB DEFAULT '{"cod":true,"reports":true}'::jsonb;
+//   ALTER TABLE settings ADD COLUMN IF NOT EXISTS order_prefix TEXT DEFAULT '';
 //
 // ── Single Supabase client — cookie-based for cross-subdomain session ──
 const _sdCookieAdapter = {
@@ -2758,11 +2787,12 @@ function settingsToDb(s){
     instagram:  s.instagram,
     facebook:   s.facebook,
     youtube:    s.youtube,
-    bill_note:  s.billnote,
-    upi:        s.upi,
-    logo:       s.logo,
-    onboarded:  s.onboarded,
-    signature:  s.signature,
+    bill_note:    s.billnote,
+    upi:          s.upi,
+    logo:         s.logo,
+    onboarded:    s.onboarded,
+    signature:    s.signature,
+    order_prefix: s.orderPrefix,
   };
 }
 function settingsFromDb(row){
@@ -2779,8 +2809,9 @@ function settingsFromDb(row){
     billnote:  row.bill_note  || row.billnote  || '',
     upi:       row.upi        || '',
     logo:      row.logo       || '',
-    onboarded: row.onboarded  || false,
-    signature: row.signature  || '',
+    onboarded:    row.onboarded  || false,
+    signature:    row.signature  || '',
+    orderPrefix:  row.order_prefix || '',
   };
 }
 
@@ -2972,11 +3003,12 @@ const DB = {
     const orders = this.getOrders();
     const idx = orders.findIndex(o => o.id === id);
     if(idx === -1) return null;
-    // Generate next order ID
+    // Generate next order ID with optional prefix
     const confirmed = orders.filter(o => o.orderId);
     const nums = confirmed.map(o => parseInt((o.orderId||'').replace(/\D/g,''))||0);
     const nextNum = (nums.length ? Math.max(...nums) : 1000) + 1;
-    orders[idx].orderId = String(nextNum);
+    const prefix = (AppState.settings && AppState.settings.orderPrefix) ? AppState.settings.orderPrefix.toUpperCase().trim() : '';
+    orders[idx].orderId = prefix ? prefix + '-' + String(nextNum) : String(nextNum);
     orders[idx].stage = 'order_confirm';
     orders[idx].status = 'pending';
     this.saveOrders(orders);
@@ -4426,6 +4458,12 @@ function applySettings(s){
   }
   // Update topbar profile chip
   updateTopbarProfile(s);
+  // Populate order prefix input if on settings tab
+  const prefixInput = document.getElementById('setting_order_prefix');
+  if(prefixInput && s.orderPrefix !== undefined){
+    prefixInput.value = (s.orderPrefix || '').toUpperCase();
+    updateOrderPrefixPreview(s.orderPrefix || '');
+  }
 }
 
 function updateTopbarProfile(s){
@@ -4619,7 +4657,32 @@ function saveSettingsFromModal(){
   }
 }
 
-// ══ PLAN SYSTEM ══
+// ── Order ID Prefix ──
+function updateOrderPrefixPreview(val){
+  const prefix = val.toUpperCase().trim();
+  const preview = document.getElementById('order_prefix_preview');
+  if(preview) preview.textContent = prefix ? '#' + prefix + '-1001' : '#1001';
+}
+
+async function saveOrderPrefix(){
+  const input = document.getElementById('setting_order_prefix');
+  if(!input) return;
+  const prefix = input.value.toUpperCase().trim();
+  if(!AppState.settings) AppState.settings = {};
+  AppState.settings.orderPrefix = prefix;
+  const uid = AppState._uid;
+  if(uid){
+    const dbRow = { ...settingsToDb({...AppState.settings}), features: AppState.features, user_id: uid, id: uid };
+    const { error } = await _supa.from('settings').upsert(dbRow, { onConflict: 'user_id' });
+    if(error){ showToast('Save failed: ' + error.message); return; }
+  }
+  // Show saved message
+  const msg = document.getElementById('order_prefix_saved_msg');
+  if(msg){ msg.style.display = 'inline'; setTimeout(() => { msg.style.display = 'none'; }, 2500); }
+  showToast(prefix ? 'Order prefix set to ' + prefix + ' ✅' : 'Prefix cleared — using plain numbers');
+}
+
+
 const FREE_ORDER_LIMIT = 20;
 const PAY_LINKS = {
   growth: 'https://rzp.io/rzp/jj0WEzr8', // 👈 Add your Razorpay Growth payment link here
