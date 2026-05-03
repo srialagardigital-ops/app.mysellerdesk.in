@@ -924,7 +924,17 @@ tbody td{padding:15px 26px;font-size:14px;}
 <div id="sdLoginOverlay" style="display:flex;position:fixed;inset:0;z-index:9999;background:#f0f4ff;align-items:center;justify-content:center;">
 
   <!-- Promo side panel (left) -->
-  <div style="position:absolute;left:0;top:0;bottom:0;width:42%;background:linear-gradient(160deg,#06112b 0%,#0e2040 45%,#0d2d5a 80%,#1a4a8a 100%);display:flex;flex-direction:column;justify-content:center;padding:36px 38px;overflow:hidden;pointer-events:none;">
+  <div id="sdLoginLeftPanel" style="position:absolute;left:0;top:0;bottom:0;width:42%;background:linear-gradient(160deg,#06112b 0%,#0e2040 45%,#0d2d5a 80%,#1a4a8a 100%);display:flex;flex-direction:column;justify-content:center;padding:36px 38px;overflow:hidden;pointer-events:none;">
+
+    <!-- Banner image layer (shown when admin uploads a banner) -->
+    <div id="sdLoginBannerImg" style="display:none;position:absolute;inset:0;z-index:0;">
+      <img id="sdLoginBannerImgTag" src="" alt="Login Banner" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <!-- Subtle dark overlay so text stays readable if needed -->
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.18);"></div>
+    </div>
+
+    <!-- Default promotional content (hidden when admin banner is active) -->
+    <div id="sdLoginDefaultContent" style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;width:100%;">
 
     <!-- Decorative circles -->
     <div style="position:absolute;width:380px;height:380px;border-radius:50%;border:1px solid rgba(55,138,221,0.08);top:-100px;left:-120px;"></div>
@@ -1008,7 +1018,9 @@ tbody td{padding:15px 26px;font-size:14px;}
 
     <!-- Footer -->
     <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:10px;color:rgba(255,255,255,0.18);font-weight:500;">© 2026 MySellerDesk. All rights reserved.</div>
-  </div>
+
+    </div><!-- /sdLoginDefaultContent -->
+  </div><!-- /sdLoginLeftPanel -->
 
   <!-- Right side - white card -->
   <div id="sdLoginCard" style="position:absolute;right:0;top:0;bottom:0;width:58%;display:flex;align-items:center;justify-content:center;padding:40px;">
@@ -1211,6 +1223,55 @@ tbody td{padding:15px 26px;font-size:14px;}
   #sdLoginCard{position:relative!important;width:100%!important;left:0!important;right:0!important;padding:24px!important;background:#fff!important;min-height:100vh!important;align-items:flex-start!important;padding-top:60px!important;}
 }
 </style>
+
+<script>
+// ── Login Banner Loader — fetch admin-uploaded banner from Supabase ──
+(function(){
+  async function loadLoginBanner(){
+    // Wait for _supa to be ready (defined later in the file)
+    var tries = 0;
+    while(typeof _supa === 'undefined' && tries < 30){
+      await new Promise(r => setTimeout(r, 100));
+      tries++;
+    }
+    if(typeof _supa === 'undefined') return;
+    try {
+      var { data, error } = await _supa
+        .from('site_settings')
+        .select('login_banner_url')
+        .limit(1)
+        .single();
+      if(error || !data || !data.login_banner_url) return;
+      var url = data.login_banner_url.trim();
+      if(!url) return;
+      // Show banner image, hide default content
+      var imgWrap = document.getElementById('sdLoginBannerImg');
+      var imgTag  = document.getElementById('sdLoginBannerImgTag');
+      var defCont = document.getElementById('sdLoginDefaultContent');
+      if(imgWrap && imgTag){
+        imgTag.src = url;
+        imgTag.onload = function(){
+          imgWrap.style.display = 'block';
+          if(defCont) defCont.style.display = 'none';
+        };
+        imgTag.onerror = function(){
+          // Image failed to load — keep default content visible
+          imgWrap.style.display = 'none';
+          if(defCont) defCont.style.display = 'flex';
+        };
+      }
+    } catch(e){
+      console.warn('Login banner fetch failed:', e);
+    }
+  }
+  // Run as soon as DOM is ready
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', loadLoginBanner);
+  } else {
+    loadLoginBanner();
+  }
+})();
+</script>
 
 <script>
 // ══ LOGIN OVERLAY FUNCTIONS ══
