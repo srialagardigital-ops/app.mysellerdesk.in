@@ -1233,6 +1233,9 @@ tbody td{padding:15px 26px;font-size:14px;}
   var _loginBannerIdx = 0;
   var _loginBannerTimer = null;
 
+  // Active layer: 'A' or 'B' — we alternate between the two img elements
+  var _activeLayer = 'A';
+
   window.loadLoginBanner = async function loadLoginBanner(){
     // Wait for _supa to be ready
     var tries = 0;
@@ -1259,8 +1262,12 @@ tbody td{padding:15px 26px;font-size:14px;}
       var defCont = document.getElementById('sdLoginDefaultContent');
       if(imgWrap) imgWrap.style.display = 'block';
       if(defCont) defCont.style.display = 'none';
+      // Preload all banner images silently so slides are instant
+      _loginBanners.forEach(function(b){ var p = new Image(); p.src = b.url; });
       // Show first banner
       showLoginBanner(0);
+      // Render dots
+      renderLoginBannerDots();
       // Slideshow if multiple banners
       if(_loginBanners.length > 1){
         _loginBannerTimer = setInterval(function(){
@@ -1268,8 +1275,6 @@ tbody td{padding:15px 26px;font-size:14px;}
           showLoginBanner(_loginBannerIdx);
         }, 4000);
       }
-      // Render dots
-      renderLoginBannerDots();
     } catch(e){
       console.warn('Login banner fetch failed:', e);
     }
@@ -1278,36 +1283,40 @@ tbody td{padding:15px 26px;font-size:14px;}
   function showLoginBanner(idx){
     var b = _loginBanners[idx];
     if(!b) return;
-    var imgTag = document.getElementById('sdLoginBannerImgTag');
-    if(imgTag){
-      // Remove old listeners to prevent stale callbacks from firing
-      imgTag.onload = null;
-      imgTag.onerror = null;
 
-      // Fade out first
-      imgTag.style.transition = 'opacity 0.3s';
-      imgTag.style.opacity = '0';
+    // Dual-layer crossfade: incoming layer gets new src and fades IN,
+    // outgoing layer fades OUT — no flash, no blank frame.
+    var incomingId = 'sdLoginBannerImg' + (_activeLayer === 'A' ? 'B' : 'A');
+    var outgoingId = 'sdLoginBannerImg' + _activeLayer;
+    var incoming   = document.getElementById(incomingId);
+    var outgoing   = document.getElementById(outgoingId);
 
-      // Preload new image before swapping src
-      var tempImg = new Image();
-      tempImg.onload = function(){
-        imgTag.onload = null;
-        imgTag.onerror = null;
-        imgTag.src = b.url;
-        // Force reflow so transition fires correctly
-        void imgTag.offsetWidth;
-        imgTag.style.transition = 'opacity 0.5s';
-        imgTag.style.opacity = '1';
+    if(incoming && outgoing){
+      // Load new image into the hidden (inactive) layer first
+      incoming.onload  = null;
+      incoming.onerror = null;
+      incoming.src = b.url;
+      incoming.onload = function(){
+        incoming.onload  = null;
+        incoming.onerror = null;
+        // Bring incoming on top and fade it in
+        incoming.style.zIndex = '1';
+        incoming.style.opacity = '1';
+        // Fade out the old layer
+        outgoing.style.opacity = '0';
+        outgoing.style.zIndex  = '0';
+        // Swap active layer tracking
+        _activeLayer = (_activeLayer === 'A') ? 'B' : 'A';
       };
-      tempImg.onerror = function(){
-        // This banner failed — try next or show default
+      incoming.onerror = function(){
+        // Bad URL — show default content
         var imgWrap = document.getElementById('sdLoginBannerImg');
         var defCont = document.getElementById('sdLoginDefaultContent');
         if(imgWrap) imgWrap.style.display = 'none';
         if(defCont) defCont.style.display = 'flex';
       };
-      tempImg.src = b.url;
     }
+
     // Update dots
     document.querySelectorAll('.sd-login-dot').forEach(function(d, i){
       d.style.opacity = i === idx ? '1' : '0.4';
@@ -1342,8 +1351,8 @@ tbody td{padding:15px 26px;font-size:14px;}
     window.loadLoginBanner();
   }
   window.addEventListener('load', function(){
-    var imgTag = document.getElementById('sdLoginBannerImgTag');
-    if(!imgTag || !imgTag.src || imgTag.src === window.location.href) window.loadLoginBanner();
+    var imgA = document.getElementById('sdLoginBannerImgA');
+    if(!imgA || !imgA.src || imgA.src === window.location.href) window.loadLoginBanner();
   });
 })();
 </script>
