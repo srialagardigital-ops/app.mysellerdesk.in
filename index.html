@@ -5084,10 +5084,10 @@ function updateSellerBadgeUI(badge){
     return;
   }
   const map = {
-    diamond: { label:'💎 Diamond', bg:'#dbeafe', color:'#1d4ed8', border:'#93c5fd' },
-    gold:    { label:'🥇 Gold',    bg:'#fef3c7', color:'#92400e', border:'#f59e0b' },
-    silver:  { label:'🥈 Silver',  bg:'#e5e7eb', color:'#374151', border:'#cbd5e1' },
-    prime:   { label:'⭐ Prime',   bg:'#f3e8ff', color:'#7c3aed', border:'#c4b5fd' },
+    diamond: { label:'💎 Rank: Diamond', bg:'#dbeafe', color:'#1d4ed8', border:'#93c5fd' },
+    gold:    { label:'🥇 Rank: Gold',    bg:'#fef3c7', color:'#92400e', border:'#f59e0b' },
+    silver:  { label:'🥈 Rank: Silver',  bg:'#e5e7eb', color:'#374151', border:'#cbd5e1' },
+    prime:   { label:'⭐ Rank: Prime',   bg:'#f3e8ff', color:'#7c3aed', border:'#c4b5fd' },
   };
   const m = map[String(badge).toLowerCase()] || map['prime'];
   // Topbar profile badge only
