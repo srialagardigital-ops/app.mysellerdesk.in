@@ -1280,16 +1280,33 @@ tbody td{padding:15px 26px;font-size:14px;}
     if(!b) return;
     var imgTag = document.getElementById('sdLoginBannerImgTag');
     if(imgTag){
+      // Remove old listeners to prevent stale callbacks from firing
+      imgTag.onload = null;
+      imgTag.onerror = null;
+
+      // Fade out first
+      imgTag.style.transition = 'opacity 0.3s';
       imgTag.style.opacity = '0';
-      imgTag.src = b.url;
-      imgTag.onload = function(){ imgTag.style.transition='opacity 0.5s'; imgTag.style.opacity='1'; };
-      imgTag.onerror = function(){
+
+      // Preload new image before swapping src
+      var tempImg = new Image();
+      tempImg.onload = function(){
+        imgTag.onload = null;
+        imgTag.onerror = null;
+        imgTag.src = b.url;
+        // Force reflow so transition fires correctly
+        void imgTag.offsetWidth;
+        imgTag.style.transition = 'opacity 0.5s';
+        imgTag.style.opacity = '1';
+      };
+      tempImg.onerror = function(){
         // This banner failed — try next or show default
         var imgWrap = document.getElementById('sdLoginBannerImg');
         var defCont = document.getElementById('sdLoginDefaultContent');
         if(imgWrap) imgWrap.style.display = 'none';
         if(defCont) defCont.style.display = 'flex';
       };
+      tempImg.src = b.url;
     }
     // Update dots
     document.querySelectorAll('.sd-login-dot').forEach(function(d, i){
