@@ -1481,9 +1481,19 @@ async function sdUpdatePassword(){
   <div id="sidebarPerfBadge" style="display:none"></div>
   <!-- Plan Badge + Upgrade Banner -->
   <div style="padding:10px 12px;flex-shrink:0;">
-    <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+    <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;">
       <span style="font-size:11px;color:rgba(255,255,255,0.35);font-weight:600;">PLAN</span>
       <span id="sidebarPlanBadge" class="plan-badge starter">STARTER</span>
+    </div>
+    <div id="sidebarPlanExpiry" style="display:none;margin-bottom:8px;border-radius:8px;padding:8px 10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <span id="sidebarExpiryLabel" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;"></span>
+        <span id="sidebarExpiryDays" style="font-size:12px;font-weight:800;font-family:'JetBrains Mono',monospace;"></span>
+      </div>
+      <div style="width:100%;height:4px;border-radius:3px;background:rgba(255,255,255,0.1);overflow:hidden;">
+        <div id="sidebarExpiryBar" style="height:100%;border-radius:3px;transition:width 0.4s;"></div>
+      </div>
+      <div id="sidebarExpiryDate" style="font-size:10px;margin-top:4px;opacity:0.6;"></div>
     </div>
     <div id="upgradeBanner" class="upgrade-banner" onclick="openUpgradeModal()" style="display:none;">
       <div class="upgrade-banner-title">🚀 Upgrade Your Plan</div>
@@ -5167,7 +5177,7 @@ const SELLER_ALL_FEATURES = [
   { key:'whatsapp_messaging',  label:'WhatsApp Messaging' },
   { key:'revenue_analytics',   label:'Revenue & Sales Analytics' },
   { key:'product_performance', label:'Product Performance Tracking' },
-  { key:'export_reports',      label:'Export Reports (Excel / PDF)' },
+  { key:'export_reports',      label:'Export Reports (Excel/PDF)' },
   { key:'priority_support',    label:'Priority Support' },
 ];
 
@@ -5188,21 +5198,28 @@ function buildPlanCardHTML(cfg, currentPlan){
     subtitle: cfg.footnote || '', popular: cfg.is_popular || false
   };
 
-  // Parse features from DB (array of {label,enabled} or feature keys)
+  // Parse features from DB
   let enabledKeys = [];
   try {
     const raw = Array.isArray(cfg.features) ? cfg.features : JSON.parse(cfg.features || '[]');
-    // Support both {label,enabled} format and key string format
     if(raw.length && typeof raw[0] === 'object' && 'label' in raw[0]){
-      // Map labels back to keys
-      raw.forEach(f => {
-        if(f.enabled !== false){
-          const match = SELLER_ALL_FEATURES.find(sf => sf.label === f.label);
-          if(match) enabledKeys.push(match.key);
+      // DB has {label, enabled} format — map by position (index) to SELLER_ALL_FEATURES keys
+      raw.forEach((f, idx) => {
+        if(f.enabled === true || f.enabled === 'true'){
+          // Try label match first
+          const byLabel = SELLER_ALL_FEATURES.find(sf =>
+            sf.label.toLowerCase().replace(/[^a-z]/g,'') === (f.label||'').toLowerCase().replace(/[^a-z]/g,'')
+          );
+          if(byLabel){
+            enabledKeys.push(byLabel.key);
+          } else if(SELLER_ALL_FEATURES[idx]){
+            // Fallback: match by position
+            enabledKeys.push(SELLER_ALL_FEATURES[idx].key);
+          }
         }
       });
     } else {
-      enabledKeys = raw;
+      enabledKeys = raw; // already keys array
     }
   } catch(e){ enabledKeys = []; }
 
@@ -6510,20 +6527,64 @@ document.getElementById('supportTicketModal').addEventListener('click', function
     var daysLeft = Math.ceil((expiryDate - today) / (1000*60*60*24));
     var daysToDelete = Math.ceil((deleteDate - today) / (1000*60*60*24));
 
-    // Update topbar plan badge with days left
+    // ── Topbar plan badge: show start date → remaining days ──
     var tbadge = document.getElementById('topbarPlanBadge');
     var badgeLabels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
     var prefix = badgeLabels[plan] || 'STARTER';
+    var startStr = startDate.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
 
     if(tbadge){
       if(daysLeft <= 0){
         tbadge.textContent = prefix + ' · Expired';
-        // Show expired overlay
         showPlanExpiredOverlay(plan, startDate, expiryDate, deleteDate, daysToDelete);
       } else if(daysLeft <= 3){
-        tbadge.textContent = prefix + ' · ' + daysLeft + ' day' + (daysLeft===1?'':'s') + ' left · Renew';
+        tbadge.textContent = prefix + ' · ' + startStr + ' → ' + daysLeft + 'd left ⚠️';
       } else {
-        tbadge.textContent = prefix + ' · ' + daysLeft + ' days left';
+        tbadge.textContent = prefix + ' · ' + startStr + ' → ' + daysLeft + ' days left';
+      }
+    }
+
+    // ── Sidebar plan expiry panel ──
+    var sidebarExpiry = document.getElementById('sidebarPlanExpiry');
+    if(sidebarExpiry){
+      // Plan colour config
+      var planColors = {
+        starter: { bg:'rgba(100,116,139,0.15)', labelColor:'#94a3b8', daysColor:'#cbd5e1', barColor:'#64748b' },
+        growth:  { bg:'rgba(245,158,11,0.15)',  labelColor:'#f59e0b', daysColor:'#fcd34d', barColor:'#f59e0b' },
+        elite:   { bg:'rgba(124,92,191,0.15)',  labelColor:'#a78bfa', daysColor:'#c4b5fd', barColor:'#7c5cbf' }
+      };
+      var knownPlans = ['starter','growth','elite'];
+      var planKey = knownPlans.includes(plan) ? plan : 'growth';
+      var colors = planColors[planKey];
+
+      // Override to red if expiring soon or expired
+      if(daysLeft <= 0){
+        colors = { bg:'rgba(201,64,64,0.2)', labelColor:'#f87171', daysColor:'#fca5a5', barColor:'#c94040' };
+      } else if(daysLeft <= 5){
+        colors = { bg:'rgba(212,140,14,0.2)', labelColor:'#fbbf24', daysColor:'#fde68a', barColor:'#d48c0e' };
+      }
+
+      var pct = daysLeft <= 0 ? 0 : Math.min(100, Math.round((daysLeft / duration) * 100));
+
+      sidebarExpiry.style.display = 'block';
+      sidebarExpiry.style.background = colors.bg;
+
+      var labelEl = document.getElementById('sidebarExpiryLabel');
+      if(labelEl){ labelEl.textContent = daysLeft <= 0 ? 'Plan Expired' : 'Plan Active'; labelEl.style.color = colors.labelColor; }
+
+      var daysEl = document.getElementById('sidebarExpiryDays');
+      if(daysEl){
+        daysEl.textContent = daysLeft <= 0 ? '0 days' : daysLeft + (daysLeft===1?' day':' days') + ' left';
+        daysEl.style.color = colors.daysColor;
+      }
+
+      var barEl = document.getElementById('sidebarExpiryBar');
+      if(barEl){ barEl.style.width = pct + '%'; barEl.style.background = colors.barColor; }
+
+      var dateEl = document.getElementById('sidebarExpiryDate');
+      if(dateEl){
+        dateEl.textContent = 'Started ' + fmtDate(startDate) + ' · Ends ' + fmtDate(expiryDate);
+        dateEl.style.color = colors.labelColor;
       }
     }
   };
