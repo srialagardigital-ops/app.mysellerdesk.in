@@ -924,104 +924,17 @@ tbody td{padding:15px 26px;font-size:14px;}
 <div id="sdLoginOverlay" style="display:flex;position:fixed;inset:0;z-index:9999;background:#f0f4ff;align-items:center;justify-content:center;">
 
   <!-- Promo side panel (left) -->
-  <div id="sdLoginLeftPanel" style="position:absolute;left:0;top:0;bottom:0;width:42%;background:linear-gradient(160deg,#06112b 0%,#0e2040 45%,#0d2d5a 80%,#1a4a8a 100%);display:flex;flex-direction:column;justify-content:center;padding:36px 38px;overflow:hidden;pointer-events:none;">
+  <div id="sdLoginLeftPanel" style="position:absolute;left:0;top:0;bottom:0;width:42%;background:#0a0f1e;overflow:hidden;pointer-events:none;">
 
-    <!-- Banner image layer (shown when admin uploads a banner) -->
-    <div id="sdLoginBannerImg" style="display:none;position:absolute;inset:0;z-index:0;">
-      <img id="sdLoginBannerImgTag" src="" alt="Login Banner" style="width:100%;height:100%;object-fit:cover;display:block;opacity:0;">
-      <!-- Subtle dark overlay so text stays readable if needed -->
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.18);"></div>
+    <!-- Banner image layer -->
+    <div id="sdLoginBannerImg" style="position:absolute;inset:0;z-index:0;">
+      <img id="sdLoginBannerImgA" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity 0.8s ease;z-index:0;">
+      <img id="sdLoginBannerImgB" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity 0.8s ease;z-index:0;">
       <!-- Slideshow dots -->
       <div id="sdLoginBannerDots" style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:6px;align-items:center;z-index:2;pointer-events:all;"></div>
     </div>
 
-    <!-- Default promotional content (hidden when admin banner is active) -->
-    <div id="sdLoginDefaultContent" style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;width:100%;">
-
-    <!-- Decorative circles -->
-    <div style="position:absolute;width:380px;height:380px;border-radius:50%;border:1px solid rgba(55,138,221,0.08);top:-100px;left:-120px;"></div>
-    <div style="position:absolute;width:260px;height:260px;border-radius:50%;border:1px solid rgba(55,138,221,0.06);bottom:-60px;right:-80px;"></div>
-    <div style="position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,0.12) 0%,transparent 70%);top:30%;right:-40px;"></div>
-
-    <!-- Logo -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
-      <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#378add,#1a5fa8);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(55,138,221,0.4);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
-      <div>
-        <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px;line-height:1;">My<span style="color:#5ba0e8;">Seller</span><span style="color:#fff;">Desk</span></div>
-
-      </div>
-    </div>
-
-    <!-- Trial Plan badge -->
-    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(55,138,221,0.2);border:1.5px solid rgba(55,138,221,0.5);border-radius:30px;padding:6px 16px;margin-bottom:24px;width:fit-content;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5ba0e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/></svg>
-      <span style="font-size:12px;font-weight:700;color:#5ba0e8;letter-spacing:0.5px;">Trial Plan</span>
-    </div>
-
-    <!-- Main headline -->
-    <div style="margin-bottom:24px;">
-      <div style="font-size:38px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.1;">Try பண்ணி பாருங்க —</div>
-      <div style="font-size:38px;font-weight:900;letter-spacing:-1.5px;line-height:1.1;">
-        <span style="color:#5ba0e8;">Free</span><span style="color:#fff;">-யா!</span>
-      </div>
-    </div>
-
-    <!-- Feature cards -->
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;">
-        <div style="width:36px;height:36px;border-radius:50%;background:rgba(55,138,221,0.2);border:1.5px solid rgba(55,138,221,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5ba0e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-        </div>
-        <div style="font-size:13px;font-weight:600;color:#fff;">எந்த charge-உம் இல்லை</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;">
-        <div style="width:36px;height:36px;border-radius:50%;background:rgba(55,138,221,0.2);border:1.5px solid rgba(55,138,221,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5ba0e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
-        </div>
-        <div style="font-size:13px;font-weight:600;color:#fff;">எந்த limit-உம் இல்லை</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;">
-        <div style="width:36px;height:36px;border-radius:50%;background:rgba(55,138,221,0.2);border:1.5px solid rgba(55,138,221,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5ba0e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <div style="font-size:13px;font-weight:600;color:#fff;">Limited time மட்டும்</div>
-      </div>
-    </div>
-
-    <!-- CTA Button -->
-    <div style="background:linear-gradient(135deg,#378add,#5ba0e8);border-radius:14px;padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;box-shadow:0 6px 24px rgba(55,138,221,0.45);">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/></svg>
-      <span style="font-size:15px;font-weight:800;color:#fff;letter-spacing:0.2px;">இப்பவே Start பண்ணுங்க! →</span>
-    </div>
-
-    <!-- Warning -->
-    <div style="background:rgba(212,140,14,0.12);border:1.5px solid rgba(212,140,14,0.35);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:22px;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f0b429" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      <span style="font-size:12px;font-weight:700;color:#f0b429;">Limited time மட்டும் — miss பண்ணாதீங்க!</span>
-    </div>
-
-    <!-- Trust badges -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
-      <div style="text-align:center;">
-        <div style="margin-bottom:3px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:600;line-height:1.3;">Secure<br>&amp; Safe</div>
-      </div>
-      <div style="width:1px;height:30px;background:rgba(255,255,255,0.1);"></div>
-      <div style="text-align:center;">
-        <div style="margin-bottom:3px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg></div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:600;line-height:1.3;">Cloud<br>Based</div>
-      </div>
-      <div style="width:1px;height:30px;background:rgba(255,255,255,0.1);"></div>
-      <div style="text-align:center;">
-        <div style="margin-bottom:3px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg></div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:600;line-height:1.3;">24/7<br>Support</div>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:10px;color:rgba(255,255,255,0.18);font-weight:500;">© 2026 MySellerDesk. All rights reserved.</div>
-
-    </div><!-- /sdLoginDefaultContent -->
+    <!-- Default HTML content removed — plain dark screen until images load -->
   </div><!-- /sdLoginLeftPanel -->
 
   <!-- Right side - white card -->
@@ -1227,17 +1140,14 @@ tbody td{padding:15px 26px;font-size:14px;}
 </style>
 
 <script>
-// ── Login Banner Loader — fetch admin banners from app_settings (dashboard_banners) ──
+// ── Login Banner Loader ──
 (function(){
   var _loginBanners = [];
   var _loginBannerIdx = 0;
   var _loginBannerTimer = null;
-
-  // Active layer: 'A' or 'B' — we alternate between the two img elements
   var _activeLayer = 'A';
 
   window.loadLoginBanner = async function loadLoginBanner(){
-    // Wait for _supa to be ready
     var tries = 0;
     while((typeof _supa === 'undefined' || !_supa) && tries < 80){
       await new Promise(r => setTimeout(r, 150));
@@ -1254,68 +1164,49 @@ tbody td{padding:15px 26px;font-size:14px;}
       var banners = [];
       try { banners = JSON.parse(res.data.value); } catch(e){ return; }
       if(!Array.isArray(banners)) return;
-      // Filter only banners with a valid URL
       _loginBanners = banners.filter(function(b){ return b.url && b.url.trim(); });
       if(!_loginBanners.length) return;
-      // Show banner layer, hide default content
-      var imgWrap = document.getElementById('sdLoginBannerImg');
-      var defCont = document.getElementById('sdLoginDefaultContent');
-      if(imgWrap) imgWrap.style.display = 'block';
-      if(defCont) defCont.style.display = 'none';
-      // Preload all banner images silently so slides are instant
-      _loginBanners.forEach(function(b){ var p = new Image(); p.src = b.url; });
-      // Show first banner
-      showLoginBanner(0);
-      // Render dots
-      renderLoginBannerDots();
-      // Slideshow if multiple banners
-      if(_loginBanners.length > 1){
-        _loginBannerTimer = setInterval(function(){
-          _loginBannerIdx = (_loginBannerIdx + 1) % _loginBanners.length;
-          showLoginBanner(_loginBannerIdx);
-        }, 4000);
-      }
+
+      // Show first image, then start slideshow
+      showLoginBanner(0, function(){
+        renderLoginBannerDots();
+        if(_loginBanners.length > 1){
+          _loginBannerTimer = setInterval(function(){
+            _loginBannerIdx = (_loginBannerIdx + 1) % _loginBanners.length;
+            showLoginBanner(_loginBannerIdx);
+          }, 4000);
+        }
+      });
     } catch(e){
       console.warn('Login banner fetch failed:', e);
     }
-  }
+  };
 
-  function showLoginBanner(idx){
+  function showLoginBanner(idx, onFirstLoad){
     var b = _loginBanners[idx];
     if(!b) return;
 
-    // Dual-layer crossfade: incoming layer gets new src and fades IN,
-    // outgoing layer fades OUT — no flash, no blank frame.
-    var incomingId = 'sdLoginBannerImg' + (_activeLayer === 'A' ? 'B' : 'A');
-    var outgoingId = 'sdLoginBannerImg' + _activeLayer;
-    var incoming   = document.getElementById(incomingId);
-    var outgoing   = document.getElementById(outgoingId);
+    // Inactive layer gets the new image
+    var inId  = 'sdLoginBannerImg' + (_activeLayer === 'A' ? 'B' : 'A');
+    var outId = 'sdLoginBannerImg' + _activeLayer;
+    var inEl  = document.getElementById(inId);
+    var outEl = document.getElementById(outId);
+    if(!inEl || !outEl) return;
 
-    if(incoming && outgoing){
-      // Load new image into the hidden (inactive) layer first
-      incoming.onload  = null;
-      incoming.onerror = null;
-      incoming.src = b.url;
-      incoming.onload = function(){
-        incoming.onload  = null;
-        incoming.onerror = null;
-        // Bring incoming on top and fade it in
-        incoming.style.zIndex = '1';
-        incoming.style.opacity = '1';
-        // Fade out the old layer
-        outgoing.style.opacity = '0';
-        outgoing.style.zIndex  = '0';
-        // Swap active layer tracking
-        _activeLayer = (_activeLayer === 'A') ? 'B' : 'A';
-      };
-      incoming.onerror = function(){
-        // Bad URL — show default content
-        var imgWrap = document.getElementById('sdLoginBannerImg');
-        var defCont = document.getElementById('sdLoginDefaultContent');
-        if(imgWrap) imgWrap.style.display = 'none';
-        if(defCont) defCont.style.display = 'flex';
-      };
-    }
+    inEl.onload = inEl.onerror = null;
+    inEl.src = b.url;
+    inEl.onload = function(){
+      inEl.onload = inEl.onerror = null;
+      // Bring new layer on top, fade in
+      inEl.style.zIndex  = '1';
+      inEl.style.opacity = '1';
+      // Fade out old layer
+      outEl.style.opacity = '0';
+      outEl.style.zIndex  = '0';
+      // Swap tracker
+      _activeLayer = (_activeLayer === 'A') ? 'B' : 'A';
+      if(onFirstLoad){ onFirstLoad(); onFirstLoad = null; }
+    };
 
     // Update dots
     document.querySelectorAll('.sd-login-dot').forEach(function(d, i){
@@ -1333,7 +1224,6 @@ tbody td{padding:15px 26px;font-size:14px;}
     }).join('');
   }
 
-  // Expose for dot clicks
   window._sdShowBanner = function(idx){
     clearInterval(_loginBannerTimer);
     showLoginBanner(idx);
