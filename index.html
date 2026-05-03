@@ -6569,8 +6569,10 @@ document.getElementById('supportTicketModal').addEventListener('click', function
       sidebarExpiry.style.display = 'block';
       sidebarExpiry.style.background = colors.bg;
 
+      var planNames = { starter:'STARTER PLAN', growth:'GROWTH PLAN', elite:'ELITE PLAN' };
+      var planDisplayName = planNames[planKey] || (plan.toUpperCase() + ' PLAN');
       var labelEl = document.getElementById('sidebarExpiryLabel');
-      if(labelEl){ labelEl.textContent = daysLeft <= 0 ? 'Plan Expired' : 'Plan Active'; labelEl.style.color = colors.labelColor; }
+      if(labelEl){ labelEl.textContent = daysLeft <= 0 ? planDisplayName + ' · EXPIRED' : planDisplayName; labelEl.style.color = colors.labelColor; }
 
       var daysEl = document.getElementById('sidebarExpiryDays');
       if(daysEl){
