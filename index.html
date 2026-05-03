@@ -928,9 +928,11 @@ tbody td{padding:15px 26px;font-size:14px;}
 
     <!-- Banner image layer (shown when admin uploads a banner) -->
     <div id="sdLoginBannerImg" style="display:none;position:absolute;inset:0;z-index:0;">
-      <img id="sdLoginBannerImgTag" src="" alt="Login Banner" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <img id="sdLoginBannerImgTag" src="" alt="Login Banner" style="width:100%;height:100%;object-fit:cover;display:block;opacity:0;">
       <!-- Subtle dark overlay so text stays readable if needed -->
       <div style="position:absolute;inset:0;background:rgba(0,0,0,0.18);"></div>
+      <!-- Slideshow dots -->
+      <div id="sdLoginBannerDots" style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:6px;align-items:center;z-index:2;pointer-events:all;"></div>
     </div>
 
     <!-- Default promotional content (hidden when admin banner is active) -->
@@ -1225,51 +1227,107 @@ tbody td{padding:15px 26px;font-size:14px;}
 </style>
 
 <script>
-// ── Login Banner Loader — fetch admin-uploaded banner from Supabase ──
+// ── Login Banner Loader — fetch admin banners from app_settings (dashboard_banners) ──
 (function(){
-  async function loadLoginBanner(){
-    // Wait for _supa to be ready (defined later in the file)
+  var _loginBanners = [];
+  var _loginBannerIdx = 0;
+  var _loginBannerTimer = null;
+
+  window.loadLoginBanner = async function loadLoginBanner(){
+    // Wait for _supa to be ready
     var tries = 0;
-    while(typeof _supa === 'undefined' && tries < 30){
-      await new Promise(r => setTimeout(r, 100));
+    while((typeof _supa === 'undefined' || !_supa) && tries < 80){
+      await new Promise(r => setTimeout(r, 150));
       tries++;
     }
-    if(typeof _supa === 'undefined') return;
+    if(typeof _supa === 'undefined' || !_supa) return;
     try {
-      var { data, error } = await _supa
-        .from('site_settings')
-        .select('login_banner_url')
-        .limit(1)
-        .single();
-      if(error || !data || !data.login_banner_url) return;
-      var url = data.login_banner_url.trim();
-      if(!url) return;
-      // Show banner image, hide default content
+      var res = await _supa
+        .from('app_settings')
+        .select('value')
+        .eq('key', 'dashboard_banners')
+        .maybeSingle();
+      if(res.error || !res.data || !res.data.value) return;
+      var banners = [];
+      try { banners = JSON.parse(res.data.value); } catch(e){ return; }
+      if(!Array.isArray(banners)) return;
+      // Filter only banners with a valid URL
+      _loginBanners = banners.filter(function(b){ return b.url && b.url.trim(); });
+      if(!_loginBanners.length) return;
+      // Show banner layer, hide default content
       var imgWrap = document.getElementById('sdLoginBannerImg');
-      var imgTag  = document.getElementById('sdLoginBannerImgTag');
       var defCont = document.getElementById('sdLoginDefaultContent');
-      if(imgWrap && imgTag){
-        imgTag.src = url;
-        imgTag.onload = function(){
-          imgWrap.style.display = 'block';
-          if(defCont) defCont.style.display = 'none';
-        };
-        imgTag.onerror = function(){
-          // Image failed to load — keep default content visible
-          imgWrap.style.display = 'none';
-          if(defCont) defCont.style.display = 'flex';
-        };
+      if(imgWrap) imgWrap.style.display = 'block';
+      if(defCont) defCont.style.display = 'none';
+      // Show first banner
+      showLoginBanner(0);
+      // Slideshow if multiple banners
+      if(_loginBanners.length > 1){
+        _loginBannerTimer = setInterval(function(){
+          _loginBannerIdx = (_loginBannerIdx + 1) % _loginBanners.length;
+          showLoginBanner(_loginBannerIdx);
+        }, 4000);
       }
+      // Render dots
+      renderLoginBannerDots();
     } catch(e){
       console.warn('Login banner fetch failed:', e);
     }
   }
-  // Run as soon as DOM is ready
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', loadLoginBanner);
-  } else {
-    loadLoginBanner();
+
+  function showLoginBanner(idx){
+    var b = _loginBanners[idx];
+    if(!b) return;
+    var imgTag = document.getElementById('sdLoginBannerImgTag');
+    if(imgTag){
+      imgTag.style.opacity = '0';
+      imgTag.src = b.url;
+      imgTag.onload = function(){ imgTag.style.transition='opacity 0.5s'; imgTag.style.opacity='1'; };
+      imgTag.onerror = function(){
+        // This banner failed — try next or show default
+        var imgWrap = document.getElementById('sdLoginBannerImg');
+        var defCont = document.getElementById('sdLoginDefaultContent');
+        if(imgWrap) imgWrap.style.display = 'none';
+        if(defCont) defCont.style.display = 'flex';
+      };
+    }
+    // Update dots
+    document.querySelectorAll('.sd-login-dot').forEach(function(d, i){
+      d.style.opacity = i === idx ? '1' : '0.4';
+      d.style.width   = i === idx ? '18px' : '7px';
+    });
+    _loginBannerIdx = idx;
   }
+
+  function renderLoginBannerDots(){
+    var dotsEl = document.getElementById('sdLoginBannerDots');
+    if(!dotsEl || _loginBanners.length <= 1) return;
+    dotsEl.innerHTML = _loginBanners.map(function(_, i){
+      return '<span class="sd-login-dot" onclick="window._sdShowBanner('+i+')" style="display:inline-block;height:7px;width:'+(i===0?'18px':'7px')+';border-radius:4px;background:#fff;opacity:'+(i===0?'1':'0.4')+';transition:all 0.3s;cursor:pointer;"></span>';
+    }).join('');
+  }
+
+  // Expose for dot clicks
+  window._sdShowBanner = function(idx){
+    clearInterval(_loginBannerTimer);
+    showLoginBanner(idx);
+    if(_loginBanners.length > 1){
+      _loginBannerTimer = setInterval(function(){
+        _loginBannerIdx = (_loginBannerIdx + 1) % _loginBanners.length;
+        showLoginBanner(_loginBannerIdx);
+      }, 4000);
+    }
+  };
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', window.loadLoginBanner);
+  } else {
+    window.loadLoginBanner();
+  }
+  window.addEventListener('load', function(){
+    var imgTag = document.getElementById('sdLoginBannerImgTag');
+    if(!imgTag || !imgTag.src || imgTag.src === window.location.href) window.loadLoginBanner();
+  });
 })();
 </script>
 
@@ -2960,6 +3018,9 @@ const _supa = window.supabase.createClient(
     }
   }
 );
+
+// ── Trigger login banner load now that _supa is ready ──
+if(typeof loadLoginBanner === 'function') loadLoginBanner();
 
 // ══ LOGIN OVERLAY SYSTEM ══
 // Defined after _supa so all callers (auth guard, idle timer) are in scope.
