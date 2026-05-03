@@ -2828,62 +2828,14 @@ async function sdUpdatePassword(){
 </div>
 
 <div class="modal-overlay" id="upgradeModal">
-  <div class="modal-box" style="width:780px;max-width:97vw;">
+  <div class="modal-box" style="width:900px;max-width:97vw;">
     <div class="modal-header">
       <div class="modal-title">Choose Your Plan</div>
       <span class="modal-close" onclick="closeModal('upgradeModal')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
     </div>
-    <div class="plan-cards" style="display:flex;gap:12px;">
-
-      <!-- STARTER -->
-      <div class="plan-card" id="planCardFree" style="flex:1;">
-        <div class="plan-name">Starter</div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-          <span style="font-size:11px;font-weight:700;background:#e8f5e9;color:#2d9e6b;padding:3px 9px;border-radius:20px;">30-day free trial</span>
-        </div>
-        <div class="plan-price" style="color:var(--muted);">₹0 <span>/ 30 days</span></div>
-        <div style="height:1px;background:var(--border);margin:12px 0;"></div>
-        <div class="plan-feature"><span class="tick">✓</span> Digital bill <em style="color:var(--muted);font-size:11px;">(with watermark)</em></div>
-        <div class="plan-feature"><span class="tick">✓</span> WhatsApp messaging</div>
-        <div class="plan-feature"><span class="tick">✓</span> Customer & product manage</div>
-        <div class="plan-feature"><span class="cross"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> PDF download & print</div>
-        <div class="plan-feature"><span class="cross"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> A5 Shipping label + QR</div>
-        <div class="plan-feature"><span class="cross"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Unlimited orders</div>
-        <button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.5;" disabled id="freePlanBtn">✓ Current Plan</button>
-        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">After 30 days, upgrade to continue</div>
-      </div>
-
-      <!-- GROWTH -->
-      <div class="plan-card pro-card" id="planCardPro" style="flex:1;">
-        <div class="plan-card-badge" style="background:linear-gradient(90deg,#f59e0b,#f97316);">Most Popular</div>
-        <div class="plan-name">Growth</div>
-        <div class="plan-price" style="color:#f59e0b;">₹199 <span>/ month</span></div>
-        <div style="height:1px;background:#f59e0b44;margin:12px 0;"></div>
-        <div class="plan-feature"><span class="tick">✓</span> <strong>Unlimited</strong> orders</div>
-        <div class="plan-feature"><span class="tick">✓</span> Bill — <strong>no watermark</strong></div>
-        <div class="plan-feature"><span class="tick">✓</span> <strong>PDF download</strong> & print</div>
-        <div class="plan-feature"><span class="tick">✓</span> <strong>A5 Shipping label</strong> + QR</div>
-        <div class="plan-feature"><span class="tick">✓</span> WhatsApp messaging</div>
-        <div class="plan-feature"><span class="tick">✓</span> Priority support</div>
-        <button class="btn-primary" style="width:100%;margin-top:14px;background:linear-gradient(90deg,#f59e0b,#f97316);" onclick="goToPay('growth')" id="proPlanBtn">Upgrade to Growth — ₹199/mo →</button>
-        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">Billed monthly · Cancel anytime</div>
-      </div>
-
-      <!-- ELITE -->
-      <div class="plan-card" id="planCardProplus" style="flex:1;border-color:var(--purple);background:linear-gradient(135deg,#f5f0ff,#fff);">
-        <div class="plan-card-badge" style="background:linear-gradient(90deg,var(--purple),#9b6fe0);">Elite</div>
-        <div class="plan-name" style="color:var(--purple);">Elite</div>
-        <div class="plan-price" style="color:var(--purple);">₹1,999 <span>/ year</span></div>
-        <div style="background:linear-gradient(90deg,var(--purple),#9b6fe0);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px 10px;border-radius:6px;margin-bottom:12px;">Save ₹389 vs monthly · Best value ₹167/mo</div>
-        <div class="plan-feature"><span class="tick">✓</span> <strong>Everything in Growth</strong></div>
-        <div class="plan-feature"><span class="tick">✓</span> <strong>1 full year</strong> access</div>
-        <div class="plan-feature"><span class="tick">✓</span> Unlimited orders & labels</div>
-        <div class="plan-feature"><span class="tick">✓</span> PDF & print — no watermark</div>
-        <div class="plan-feature"><span class="tick">✓</span> <strong>VIP support</strong></div>
-        <button class="btn-primary" style="width:100%;margin-top:14px;background:linear-gradient(90deg,var(--purple),#9b6fe0);" onclick="goToPay('elite')" id="proplusPlanBtn">Get Elite — ₹1,999/yr →</button>
-        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">One-time yearly payment · Best deal</div>
-      </div>
-
+    <!-- Dynamic plan cards loaded from admin plan_configs table -->
+    <div class="plan-cards" id="dynamicPlanCards" style="display:flex;gap:12px;min-height:200px;align-items:center;justify-content:center;">
+      <div style="color:var(--muted);font-size:14px;">Loading plans...</div>
     </div>
   </div>
 </div>
@@ -5177,33 +5129,133 @@ function showLockedToast(msg){
   window._lockedTimer = setTimeout(() => t.classList.remove('show'), 5500);
 }
 
-function openUpgradeModal(){
-  const plan = getPlan();
-  const freBtn = document.getElementById('freePlanBtn');
-  const proBtn = document.getElementById('proPlanBtn');
-  const ppBtn  = document.getElementById('proplusPlanBtn');
+// ── DYNAMIC PLAN CONFIGS FROM ADMIN ──
+let _cachedPlanConfigs = null;
 
-  freBtn.textContent = plan === 'starter' ? '✓ Current Plan' : 'Downgrade';
-  freBtn.disabled = plan === 'starter';
+async function fetchPlanConfigs(){
+  if(_cachedPlanConfigs) return _cachedPlanConfigs;
+  try {
+    const { data, error } = await _supa
+      .from('plan_configs')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true });
+    if(error || !data || data.length === 0) return null;
+    _cachedPlanConfigs = data;
+    return data;
+  } catch(e){
+    console.warn('plan_configs fetch failed:', e);
+    return null;
+  }
+}
 
-  if(plan === 'growth'){
-    proBtn.textContent = '✓ Current Plan';
-    proBtn.disabled = true;
-    ppBtn.textContent  = 'Upgrade to Elite — ₹1,999/yr →';
-    ppBtn.disabled = false;
-  } else if(plan === 'elite'){
-    proBtn.disabled = true;
-    proBtn.textContent = 'Included in Elite';
-    ppBtn.textContent  = '✓ Current Plan';
-    ppBtn.disabled = true;
+function buildPlanCardHTML(cfg, currentPlan){
+  const planKey   = cfg.plan_key || cfg.id;
+  const planName  = cfg.plan_name  || 'Plan';
+  const price     = cfg.price      != null ? cfg.price : 0;
+  const period    = cfg.period     || 'month';
+  const badge     = cfg.badge_label || '';
+  const badgeColor= cfg.badge_color || '#f59e0b';
+  const features  = Array.isArray(cfg.features) ? cfg.features : (cfg.features ? JSON.parse(cfg.features) : []);
+  const isFree    = price === 0;
+  const isCurrent = currentPlan === planKey;
+  const isMostPop = cfg.is_popular;
+  const accentColor = cfg.accent_color || (isFree ? 'var(--muted)' : isMostPop ? '#f59e0b' : 'var(--purple)');
+  const cardBg    = cfg.card_bg || (isMostPop ? 'linear-gradient(135deg,#fffbeb,#fff)' : isFree ? '' : 'linear-gradient(135deg,#f5f0ff,#fff)');
+  const cardBorder= cfg.card_border_color || (isMostPop ? '#f59e0b' : isFree ? 'var(--border)' : 'var(--purple)');
+
+  const CROSS_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+
+  const featuresHTML = features.map(f => {
+    const enabled = f.enabled !== false;
+    return `<div class="plan-feature">
+      <span class="${enabled?'tick':'cross'}">${enabled ? '✓' : CROSS_SVG}</span>
+      ${f.label || f}
+    </div>`;
+  }).join('');
+
+  let btnHTML = '';
+  if(isCurrent){
+    btnHTML = `<button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.6;" disabled>✓ Current Plan</button>`;
+  } else if(isFree){
+    btnHTML = `<button class="btn-secondary" style="width:100%;margin-top:14px;" disabled>Free Plan</button>`;
   } else {
-    proBtn.textContent = 'Upgrade to Growth — ₹199/mo →';
-    proBtn.disabled = false;
-    ppBtn.textContent  = 'Get Elite — ₹1,999/yr →';
-    ppBtn.disabled = false;
+    const btnColor = cfg.button_color || (isMostPop ? 'linear-gradient(90deg,#f59e0b,#f97316)' : `linear-gradient(90deg,var(--purple),#9b6fe0)`);
+    const btnLabel = cfg.button_label || `Get ${planName} — ₹${Number(price).toLocaleString()}/${period === 'year' ? 'yr' : 'mo'} →`;
+    btnHTML = `<button class="btn-primary" style="width:100%;margin-top:14px;background:${btnColor};" onclick="goToPay('${planKey}')">${btnLabel}</button>`;
   }
 
+  const footNote = cfg.footnote || '';
+
+  return `
+    <div class="plan-card ${isMostPop?'pro-card':''}" style="flex:1;border-color:${cardBorder};background:${cardBg};">
+      ${badge ? `<div class="plan-card-badge" style="background:${badgeColor};">${badge}</div>` : ''}
+      <div class="plan-name" style="color:${isFree?'inherit':accentColor};">${planName}</div>
+      <div class="plan-price" style="color:${accentColor};">₹${Number(price).toLocaleString()} <span>/ ${period}</span></div>
+      ${cfg.savings_label ? `<div style="background:${badgeColor};color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px 10px;border-radius:6px;margin-bottom:12px;">${cfg.savings_label}</div>` : '<div style="height:1px;background:var(--border);margin:12px 0;"></div>'}
+      ${featuresHTML}
+      ${btnHTML}
+      ${footNote ? `<div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">${footNote}</div>` : ''}
+    </div>`;
+}
+
+async function openUpgradeModal(){
   document.getElementById('upgradeModal').classList.add('show');
+  const container = document.getElementById('dynamicPlanCards');
+  container.innerHTML = '<div style="color:var(--muted);font-size:14px;padding:40px;">Loading plans...</div>';
+
+  const currentPlan = getPlan();
+
+  // Try to load from admin plan_configs
+  const configs = await fetchPlanConfigs();
+
+  if(configs && configs.length > 0){
+    container.innerHTML = configs.map(cfg => buildPlanCardHTML(cfg, currentPlan)).join('');
+  } else {
+    // Fallback: hardcoded plans if plan_configs table is empty or missing
+    container.innerHTML = `
+      <div class="plan-card" style="flex:1;">
+        <div class="plan-name">Starter</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:11px;font-weight:700;background:#e8f5e9;color:#2d9e6b;padding:3px 9px;border-radius:20px;">30-day free trial</span>
+        </div>
+        <div class="plan-price" style="color:var(--muted);">₹0 <span>/ 30 days</span></div>
+        <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+        <div class="plan-feature"><span class="tick">✓</span> Digital bill (with watermark)</div>
+        <div class="plan-feature"><span class="tick">✓</span> WhatsApp messaging</div>
+        <div class="plan-feature"><span class="tick">✓</span> Customer &amp; product manage</div>
+        <button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.5;" disabled>${currentPlan==='starter'?'✓ Current Plan':'Free Plan'}</button>
+        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">After 30 days, upgrade to continue</div>
+      </div>
+      <div class="plan-card pro-card" style="flex:1;">
+        <div class="plan-card-badge" style="background:linear-gradient(90deg,#f59e0b,#f97316);">Most Popular</div>
+        <div class="plan-name">Growth</div>
+        <div class="plan-price" style="color:#f59e0b;">₹199 <span>/ month</span></div>
+        <div style="height:1px;background:#f59e0b44;margin:12px 0;"></div>
+        <div class="plan-feature"><span class="tick">✓</span> <strong>Unlimited</strong> orders</div>
+        <div class="plan-feature"><span class="tick">✓</span> PDF download &amp; print</div>
+        <div class="plan-feature"><span class="tick">✓</span> A5 Shipping label + QR</div>
+        <div class="plan-feature"><span class="tick">✓</span> WhatsApp messaging</div>
+        <div class="plan-feature"><span class="tick">✓</span> Priority support</div>
+        ${currentPlan==='growth'
+          ? `<button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.6;" disabled>✓ Current Plan</button>`
+          : `<button class="btn-primary" style="width:100%;margin-top:14px;background:linear-gradient(90deg,#f59e0b,#f97316);" onclick="goToPay('growth')">Upgrade to Growth — ₹199/mo →</button>`}
+        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">Billed monthly · Cancel anytime</div>
+      </div>
+      <div class="plan-card" style="flex:1;border-color:var(--purple);background:linear-gradient(135deg,#f5f0ff,#fff);">
+        <div class="plan-card-badge" style="background:linear-gradient(90deg,var(--purple),#9b6fe0);">Elite</div>
+        <div class="plan-name" style="color:var(--purple);">Elite</div>
+        <div class="plan-price" style="color:var(--purple);">₹1,999 <span>/ year</span></div>
+        <div style="background:linear-gradient(90deg,var(--purple),#9b6fe0);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px 10px;border-radius:6px;margin-bottom:12px;">Best value ₹167/mo</div>
+        <div class="plan-feature"><span class="tick">✓</span> Everything in Growth</div>
+        <div class="plan-feature"><span class="tick">✓</span> 1 full year access</div>
+        <div class="plan-feature"><span class="tick">✓</span> VIP support</div>
+        ${currentPlan==='elite'
+          ? `<button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.6;" disabled>✓ Current Plan</button>`
+          : `<button class="btn-primary" style="width:100%;margin-top:14px;background:linear-gradient(90deg,var(--purple),#9b6fe0);" onclick="goToPay('elite')">Get Elite — ₹1,999/yr →</button>`}
+        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">One-time yearly payment · Best deal</div>
+      </div>`;
+  }
 }
 
 let _pendingPlanType = null;
@@ -5236,7 +5288,13 @@ function submitCustomerDetails(){
   sessionStorage.setItem('sd_upgrade_customer', JSON.stringify({ name, phone, email, plan: _pendingPlanType, ts: Date.now() }));
 
   // Build Razorpay link with prefill params
-  const base = PAY_LINKS[_pendingPlanType] || '#';
+  // First check plan_configs for payment_link, fallback to PAY_LINKS
+  let base = '#';
+  if(_cachedPlanConfigs){
+    const cfg = _cachedPlanConfigs.find(c => (c.plan_key||c.id) === _pendingPlanType);
+    if(cfg && cfg.payment_link) base = cfg.payment_link;
+  }
+  if(base === '#') base = PAY_LINKS[_pendingPlanType] || '#';
   const params = new URLSearchParams({ name, contact: phone, email });
   const payUrl = base + (base.includes('?') ? '&' : '?') + params.toString();
 
