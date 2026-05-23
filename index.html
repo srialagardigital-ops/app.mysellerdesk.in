@@ -2205,29 +2205,9 @@ async function sdUpdatePassword(){
             <label class="form-label">Bill Notes</label>
             <textarea class="form-textarea" id="s_billnote" placeholder="Please take a video while opening the parcel." style="min-height:55px;"></textarea>
           </div>
-          <div style="border-top:1.5px solid var(--border);padding-top:14px;margin-top:2px;">
-            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Social Media</div>
-            <div class="form-group" style="margin:0 0 10px 0;">
-              <label class="form-label" style="display:flex;align-items:center;gap:7px;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><defs><radialGradient id="ig1" cx="30%" cy="107%"><stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect width="24" height="24" rx="5" fill="url(#ig1)"/><path d="M12 7.2A4.8 4.8 0 1 0 12 16.8 4.8 4.8 0 0 0 12 7.2zm0 7.9a3.1 3.1 0 1 1 0-6.2 3.1 3.1 0 0 1 0 6.2zm5-8.1a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0z" fill="#fff"/></svg>
-                Instagram Username
-              </label>
-              <input class="form-input" id="s_instagram" placeholder="@kavya.crafts">
-            </div>
-            <div class="form-group" style="margin:0 0 10px 0;">
-              <label class="form-label" style="display:flex;align-items:center;gap:7px;">
-                <svg width="15" height="15" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#1877F2"/><path d="M16 8h-2a1 1 0 0 0-1 1v2h3l-.5 3H13v7h-3v-7H8v-3h2V9a4 4 0 0 1 4-4h2v3z" fill="#fff"/></svg>
-                Facebook Username
-              </label>
-              <input class="form-input" id="s_facebook" placeholder="kavya.crafts">
-            </div>
-            <div class="form-group" style="margin:0;">
-              <label class="form-label" style="display:flex;align-items:center;gap:7px;">
-                <svg width="15" height="15" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#FF0000"/><path d="M19.6 8s-.2-1.3-.8-1.9c-.7-.8-1.6-.8-2-.8C14.8 5.2 12 5.2 12 5.2s-2.8 0-4.8.1c-.4 0-1.3 0-2 .8-.6.6-.8 1.9-.8 1.9S4.2 9.4 4.2 11v1.4c0 1.6.2 3.1.2 3.1s.2 1.3.8 1.9c.7.8 1.7.7 2.2.8C8.8 18.4 12 18.4 12 18.4s2.8 0 4.8-.2c.4 0 1.3 0 2-.8.6-.6.8-1.9.8-1.9s.2-1.5.2-3.1V11c0-1.6-.2-3-.2-3zm-9 6.1V9.9l5.3 2.1-5.3 2.1z" fill="#fff"/></svg>
-                YouTube Channel
-              </label>
-              <input class="form-input" id="s_youtube" placeholder="@KavyaCrafts">
-            </div>
+          <!-- Social media fields hidden — not required -->
+          <div style="display:none;">
+            <input id="s_instagram"><input id="s_facebook"><input id="s_youtube">
           </div>
         </div>
 
@@ -4398,7 +4378,8 @@ function sendBillWhatsApp(){
   const s = getSettings();
   const msg = `Invoice from *${s.shopName}*\n\nHi ${o.name},\n\n• Product: ${o.product}\n• Amount: ₹${Number(o.amount).toLocaleString('en-IN')}\n• Payment: ${o.payment==='paid'?'Paid':'Pending (COD)'}\n• Date: ${o.date}\n• Order ID: ${o.orderId ? '#'+o.orderId : '(Enquiry)'}\n\nThank you for your order!\n\n*${s.shopName}*`;
   const phone = o.phone.replace(/\D/g,'');
-  window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  const waPhone = phone.startsWith('91') && phone.length === 12 ? phone : '91' + phone;
+  window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 // ══ SEND WHATSAPP (stage-based messages) ══
@@ -4510,7 +4491,8 @@ Next step: Expect your delivery within 2-3 days
   }
 
   const phone = order.phone.replace(/\D/g,'');
-  window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  const waPhone = phone.startsWith('91') && phone.length === 12 ? phone : '91' + phone;
+  window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 // ══ MARK DELIVERED / PAID ══
@@ -4542,7 +4524,8 @@ Your review means a lot to us!
 
 *${s.shopName}*`;
   const phone = order.phone.replace(/\D/g,'');
-  window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  const waPhone = phone.startsWith('91') && phone.length === 12 ? phone : '91' + phone;
+  window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 
@@ -4652,6 +4635,19 @@ function confirmDeleteProduct(id, name){
   }
 }
 
+// ── XSS-safe delete: reads id from data attribute, fetches name from DB ──
+function confirmDeleteProductSafe(btn){
+  const id = btn.getAttribute('data-del-id');
+  const p = DB.getProducts().find(p => p.id === id);
+  if(!p) return;
+  if(confirm('Delete "' + p.name + '"? This cannot be undone.')){
+    DB.deleteProduct(id);
+    closeProductDetail();
+    refreshAll();
+    showToast('Product deleted!');
+  }
+}
+
 function openProductDetail(id){
   const p = DB.getProducts().find(p => p.id === id);
   if(!p) return;
@@ -4682,7 +4678,7 @@ function openProductDetail(id){
     ${p.desc ? `<div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.7px;">Description</div><div style="font-size:13px;line-height:1.6;color:var(--text);background:var(--surface2);border-radius:8px;padding:10px 12px;margin-bottom:14px;">${p.desc}</div>` : ''}
     <div style="display:flex;gap:8px;">
       <button class="btn-primary" style="flex:1;padding:9px;" onclick="openEditProduct('${p.id}')">Edit</button>
-      <button class="btn-secondary" style="padding:9px 12px;border-color:var(--danger);color:var(--danger);" onclick="confirmDeleteProduct('${p.id}','${p.name.replace(/'/g,"\\\'")}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
+      <button class="btn-secondary" style="padding:9px 12px;border-color:var(--danger);color:var(--danger);" data-del-id="${p.id}" onclick="confirmDeleteProductSafe(this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
     </div>
   `;
   document.getElementById('productDetailPanel').style.display='block';
@@ -5033,12 +5029,32 @@ async function _deleteAccount(){
   showToast('Deleting account...');
   const uid = AppState._uid;
   if(uid){
+    // ── Step 1: Save basic details to deleted_users for admin records ──
+    const s = AppState.settings || {};
+    const { data: { user } } = await _supa.auth.getUser();
+    await _supa.from('deleted_users').insert({
+      user_id:    uid,
+      email:      (user && user.email) || AppState._email || '',
+      shop_name:  s.shopName  || '',
+      phone:      s.phone     || '',
+      district:   s.district  || '',
+      address:    s.address   || '',
+      plan:       AppState.plan || 'starter',
+      deleted_at: new Date().toISOString()
+    });
+
+    // ── Step 2: Delete all user data ──
     await _supa.from('orders').delete().eq('user_id', uid);
     await _supa.from('customers').delete().eq('user_id', uid);
-    await _supa.from('settings').delete().eq('user_id', uid);
     await _supa.from('products').delete().eq('user_id', uid);
+    await _supa.from('activity_logs').delete().eq('user_id', uid);
+    await _supa.from('support_tickets').delete().eq('user_id', uid);
+    await _supa.from('settings').delete().eq('user_id', uid);
   }
-  await _supa.auth.signOut();
+
+  // ── Step 3: Delete auth user (removes login permanently) ──
+  await _supa.rpc('delete_user');
+
   showToast('Account deleted. Goodbye! 👋');
   setTimeout(() => { location.reload(); }, 1500);
 }
@@ -6551,16 +6567,23 @@ document.getElementById('supportTicketModal').addEventListener('click', function
     var durations = { starter:30, growth:30, elite:365 };
     var duration = durations[plan] || 30;
 
+    // Convert UTC signup date to IST midnight to avoid timezone offset (UTC+5:30)
     var startDate = new Date(signupDate);
-    var expiryDate = new Date(startDate);
+    var IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+    var startIST = new Date(startDate.getTime() + IST_OFFSET_MS);
+    startIST = new Date(startIST.toISOString().slice(0,10)); // midnight IST
+
+    var expiryDate = new Date(startIST);
     expiryDate.setDate(expiryDate.getDate() + duration);
 
     var deleteDate = new Date(expiryDate);
     deleteDate.setDate(deleteDate.getDate() + 30);
 
-    var today = new Date();
-    today.setHours(0,0,0,0);
+    // today at IST midnight
+    var nowIST = new Date(Date.now() + IST_OFFSET_MS);
+    var today = new Date(nowIST.toISOString().slice(0,10));
     expiryDate.setHours(0,0,0,0);
+    startDate = startIST; // use IST-adjusted date for display
 
     var daysLeft = Math.ceil((expiryDate - today) / (1000*60*60*24));
     var daysToDelete = Math.ceil((deleteDate - today) / (1000*60*60*24));
