@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MySellerDesk â€” Instagram CRM</title>
+<title>MySellerDesk — Instagram CRM</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23378add'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-size='16' font-weight='900' fill='white'%3ESD%3C/text%3E%3C/svg%3E">
 <script src="dashboard-page-config.js"></script>
 <script>
@@ -53,7 +53,7 @@ body{
   font-size:18px;
 }
 
-/* â”€â”€ SIDEBAR â”€â”€ */
+/* ── SIDEBAR ── */
 .sidebar{
   width:var(--sidebar-w);
   height:100vh;
@@ -110,7 +110,7 @@ body{
 .shop-name{font-size:13px;font-weight:600;color:#fff;}
 .shop-handle{font-size:11px;color:rgba(255,255,255,0.35);}
 
-/* â”€â”€ MAIN â”€â”€ */
+/* ── MAIN ── */
 .main{
   margin-left:var(--sidebar-w);
   flex:1;
@@ -121,7 +121,7 @@ body{
   min-width:0;
 }
 
-/* â”€â”€ TOPBAR â”€â”€ */
+/* ── TOPBAR ── */
 .topbar{
   height:68px;
   background:var(--surface);
@@ -149,7 +149,7 @@ body{
 }
 .topbar-btn:hover{background:#2b72c7;}
 
-/* â”€â”€ CONTENT â”€â”€ */
+/* ── CONTENT ── */
 .content{padding:24px 28px;flex:1;width:100%;min-width:0;}
 .tab-section{display:none;width:100%;}
 .tab-section.active{display:block;width:100%;}
@@ -157,7 +157,7 @@ body{
 #tab-dashboard .stats-row{margin-bottom:14px;}
 #tab-dashboard .charts-row{margin-bottom:0;}
 
-/* â”€â”€ STATS ROW â”€â”€ */
+/* ── STATS ROW ── */
 .stats-row{
   display:grid;grid-template-columns:repeat(5,1fr);
   gap:12px;margin-bottom:22px;width:100%;
@@ -193,7 +193,7 @@ body{
 .stat-card-info{font-size:12px;color:var(--muted2);margin-top:12px;display:flex;align-items:center;gap:5px;}
 .stat-card-info span{font-weight:600;}
 
-/* â”€â”€ ORDER TABLE â”€â”€ */
+/* ── ORDER TABLE ── */
 .table-card{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--radius);overflow:hidden;
@@ -256,7 +256,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 }
 .wa-btn:hover{background:#1ea952;}
 
-/* â”€â”€ MODAL â”€â”€ */
+/* ── MODAL ── */
 .modal-overlay{
   display:none;position:fixed;inset:0;z-index:200;
   background:rgba(26,22,20,0.6);backdrop-filter:blur(6px);
@@ -319,7 +319,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 }
 .btn-secondary:hover{border-color:var(--text);color:var(--text);}
 
-/* â”€â”€ DISPATCH MODAL â”€â”€ */
+/* ── DISPATCH MODAL ── */
 .courier-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
 .courier-chip{
   padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;
@@ -328,7 +328,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 }
 .courier-chip.selected{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
 
-/* â”€â”€ BILL PREVIEW â”€â”€ */
+/* ── BILL PREVIEW ── */
 .bill-preview{
   background:var(--surface2);border:1.5px solid var(--border);
   border-radius:10px;padding:18px;font-size:12px;
@@ -339,7 +339,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 .bill-row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;}
 .bill-row.total{font-weight:700;font-size:14px;margin-top:8px;}
 
-/* â”€â”€ DASHBOARD CHARTS â”€â”€ */
+/* ── DASHBOARD CHARTS ── */
 .charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:18px;width:100%;}
 .chart-card{
   background:var(--surface);
@@ -397,7 +397,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 .legend-left-d{display:flex;align-items:center;color:var(--muted);font-weight:500;}
 .legend-val-d{font-weight:800;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dark);}
 
-/* â”€â”€ EMPTY STATE â”€â”€ */
+/* ── EMPTY STATE ── */
 .empty-state{
   text-align:center;padding:48px 20px;
   color:var(--muted);
@@ -406,7 +406,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 .empty-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
 .empty-sub{font-size:13px;color:var(--muted);}
 
-/* â”€â”€ TOAST â”€â”€ */
+/* ── TOAST ── */
 #toast{
   position:fixed;bottom:24px;right:24px;z-index:999;
   background:var(--dark);color:#fff;
@@ -418,18 +418,18 @@ tbody td{padding:15px 26px;font-size:14px;}
 }
 #toast.show{opacity:1;}
 
-/* â”€â”€ SCROLLBAR â”€â”€ */
+/* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 
-/* â”€â”€ PRODUCT TAG â”€â”€ */
+/* ── PRODUCT TAG ── */
 .product-tag{
   display:inline-block;background:var(--surface2);border:1px solid var(--border);
   border-radius:5px;padding:2px 7px;font-size:11px;color:var(--muted);
 }
 
-/* â”€â”€ SHIPPING LABEL â”€â”€ */
+/* ── SHIPPING LABEL ── */
 .label-a5{
   width:148mm;min-height:210mm;
   background:#fff;border:2px solid #222;
@@ -462,7 +462,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 .label-order-tag .oid{font-size:11px;color:var(--muted);margin-bottom:2px;}
 .label-order-tag .oval{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;color:var(--accent);}
 
-/* â”€â”€ BILL PRINT STYLES â”€â”€ */
+/* ── BILL PRINT STYLES ── */
 .bill-print-wrap{
   background:#fff;border-radius:10px;padding:24px;
   font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;
@@ -473,7 +473,7 @@ tbody td{padding:15px 26px;font-size:14px;}
   #printFrame{ display:block !important; position:fixed; inset:0; width:100vw; height:100vh; border:none; }
 }
 
-/* â”€â”€ PLAN BADGE â”€â”€ */
+/* ── PLAN BADGE ── */
 .plan-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:0.5px;text-transform:uppercase;}
 .plan-badge.starter{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;}
 .plan-badge.growth{background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;}
@@ -481,7 +481,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 
 
 
-/* â”€â”€ PLAN EXPIRED OVERLAY â”€â”€ */
+/* ── PLAN EXPIRED OVERLAY ── */
 #sdPlanExpiredOverlay{display:none;position:fixed;inset:0;z-index:9998;align-items:center;justify-content:center;pointer-events:none;}
 #sdPlanExpiredOverlay.show{display:flex;pointer-events:all;}
 .plan-expired-blur{position:absolute;inset:0;background:rgba(255,255,255,0.22);backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);pointer-events:none;}
@@ -513,7 +513,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 .upgrade-banner-sub{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.4;}
 .upgrade-banner-btn{margin-top:9px;width:100%;padding:7px;border-radius:7px;background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
 
-/* â”€â”€ UPGRADE MODAL â”€â”€ */
+/* ── UPGRADE MODAL ── */
 .plan-cards{display:flex;gap:12px;align-items:stretch;}
 .plan-card{border:2px solid var(--border);border-radius:14px;padding:20px 16px;flex:1;position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
 .plan-card.pro-card{border-color:#f59e0b;background:linear-gradient(135deg,#fffbeb,#fff);}
@@ -528,12 +528,12 @@ tbody td{padding:15px 26px;font-size:14px;}
 .plan-card .plan-btn-wrap{margin-top:auto;padding-top:14px;}
 .plan-card .plan-footnote{text-align:center;font-size:11px;color:var(--muted);margin-top:6px;line-height:1.3;}
 
-/* â”€â”€ LOCKED â”€â”€ */
+/* ── LOCKED ── */
 .locked-toast{position:fixed;bottom:70px;right:24px;z-index:998;background:linear-gradient(135deg,#0e2040,#2d1f0e);border:1.5px solid #f59e0b;color:#fff;padding:14px 18px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,0.3);max-width:260px;line-height:1.5;}
 .locked-toast.show{opacity:1;pointer-events:auto;}
 .locked-toast-btn{display:block;width:100%;margin-top:10px;padding:8px;background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;}
 
-/* â”€â”€ SUPPORT TICKET FLOATING BUTTON â”€â”€ */
+/* ── SUPPORT TICKET FLOATING BUTTON ── */
 #supportFab{
   position:fixed;bottom:24px;right:24px;z-index:997;
   width:52px;height:52px;border-radius:50%;
@@ -580,11 +580,11 @@ tbody td{padding:15px 26px;font-size:14px;}
 .ticket-success-sub{font-size:13px;color:var(--muted);line-height:1.6;}
 .ticket-id-badge{display:inline-block;background:var(--accent-light);color:var(--accent);font-size:12px;font-weight:700;padding:4px 12px;border-radius:6px;margin-top:10px;font-family:'JetBrains Mono',monospace;}
 
-/* â”€â”€ WATERMARK â”€â”€ */
+/* ── WATERMARK ── */
 .bill-watermark-wrap{position:relative;overflow:hidden;}
 .bill-watermark-wrap .wm-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:52px;font-weight:900;color:rgba(255,107,53,0.10);pointer-events:none;letter-spacing:4px;white-space:nowrap;z-index:2;}
 
-/* â”€â”€ STAGE PROGRESS STEPPER â”€â”€ */
+/* ── STAGE PROGRESS STEPPER ── */
 .stage-stepper{display:flex;align-items:flex-start;gap:0;margin-bottom:20px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 12px;box-shadow:var(--shadow);overflow-x:auto;}
 .stage-step{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;min-width:60px;position:relative;}
 .stage-step:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 15px);width:calc(100% - 30px);height:2px;background:var(--border2);}
@@ -597,12 +597,12 @@ tbody td{padding:15px 26px;font-size:14px;}
 .stage-step.current .stage-lbl{color:var(--accent);font-weight:800;}
 .stage-count{font-size:10px;font-weight:700;color:var(--muted);}
 
-/* â”€â”€ ORDER LIMIT BAR â”€â”€ */
+/* ── ORDER LIMIT BAR ── */
 .orders-limit-bar{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:13px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;}
 .limit-bar-track{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
 .limit-bar-fill{height:100%;border-radius:4px;transition:width 0.4s;}
 
-/* â”€â”€ FEATURE TOGGLES â”€â”€ */
+/* ── FEATURE TOGGLES ── */
 .feature-toggle-list{display:flex;flex-direction:column;gap:0;}
 .feature-toggle-item{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--border);}
 .feature-toggle-item:last-child{border-bottom:none;}
@@ -617,7 +617,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 .toggle-switch input:checked + .toggle-slider{background:var(--accent);}
 .toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px);}
 
-/* â”€â”€ SETTINGS PAGE â”€â”€ */
+/* ── SETTINGS PAGE ── */
 .settings-wrap{max-width:620px;display:flex;flex-direction:column;gap:0;}
 .settings-section{background:var(--surface);border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(14,32,64,0.07);margin-bottom:20px;}
 .settings-section-header{
@@ -715,11 +715,11 @@ tbody td{padding:15px 26px;font-size:14px;}
 
 
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════
    MOBILE RESPONSIVE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════ */
 
-/* â”€â”€ Mobile sidebar overlay â”€â”€ */
+/* ── Mobile sidebar overlay ── */
 .sidebar-overlay{
   display:none;position:fixed;inset:0;z-index:99;
   background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);
@@ -813,7 +813,7 @@ tbody td{padding:15px 26px;font-size:14px;}
   .upgrade-banner{margin:0 0 12px;}
 }
 
-/* Login page mobile â€” hide left decorative panel */
+/* Login page mobile — hide left decorative panel */
 @media(max-width:640px){
   #sdLoginOverlay > div:first-child{display:none !important;}
   #sdLoginCard{
@@ -860,7 +860,7 @@ tbody td{padding:15px 26px;font-size:14px;}
   .locked-toast{left:12px;right:12px;max-width:none;}
 }
 
-/* â”€â”€ TOPBAR PROFILE DROPDOWN â”€â”€ */
+/* ── TOPBAR PROFILE DROPDOWN ── */
 .topbar-profile{
   position:relative;
   display:flex;align-items:center;gap:10px;
@@ -918,9 +918,9 @@ tbody td{padding:15px 26px;font-size:14px;}
 </head>
 <body>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  LOGIN OVERLAY â€” shown when no session
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════════════════════════════
+  LOGIN OVERLAY — shown when no session
+══════════════════════════════════════ -->
 <div id="sdLoginOverlay" style="display:flex;position:fixed;inset:0;z-index:9999;background:#f0f4ff;align-items:center;justify-content:center;">
 
   <!-- Promo side panel (left) -->
@@ -934,7 +934,7 @@ tbody td{padding:15px 26px;font-size:14px;}
       <div id="sdLoginBannerDots" style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:6px;align-items:center;z-index:2;pointer-events:all;"></div>
     </div>
 
-    <!-- Default HTML content removed â€” plain dark screen until images load -->
+    <!-- Default HTML content removed — plain dark screen until images load -->
   </div><!-- /sdLoginLeftPanel -->
 
   <!-- Right side - white card -->
@@ -972,14 +972,14 @@ tbody td{padding:15px 26px;font-size:14px;}
         </div>
         <div style="margin-bottom:22px;position:relative;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password</label>
-          <input id="sdLoginPass" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="current-password"
+          <input id="sdLoginPass" type="password" placeholder="••••••••" autocomplete="current-password"
             style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
             onkeydown="if(event.key==='Enter')sdLoginWithEmail()">
           <span onclick="sdTogglePass('sdLoginPass',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;color:#8aaac8;user-select:none;display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8aaac8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
         </div>
         <button id="sdSignInBtn" onclick="sdLoginWithEmail()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#378add 0%,#5ba0e8 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.2px;transition:all 0.2s;box-shadow:0 4px 16px rgba(55,138,221,0.35);">
-          Sign In â†’
+          Sign In →
         </button>
         <div style="text-align:center;margin-top:16px;">
           <span style="font-size:12px;color:#8aaac8;">New user? </span>
@@ -1055,7 +1055,7 @@ tbody td{padding:15px 26px;font-size:14px;}
         </div>
         <div style="margin-bottom:14px;position:relative;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Password *</label>
-          <input id="sdSignupPass" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="new-password"
+          <input id="sdSignupPass" type="password" placeholder="••••••••" autocomplete="new-password"
             style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
             onkeydown="if(event.key==='Enter')document.getElementById('sdSignupPassConfirm').focus()">
@@ -1063,14 +1063,14 @@ tbody td{padding:15px 26px;font-size:14px;}
         </div>
         <div style="margin-bottom:22px;position:relative;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Confirm Password *</label>
-          <input id="sdSignupPassConfirm" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="new-password"
+          <input id="sdSignupPassConfirm" type="password" placeholder="••••••••" autocomplete="new-password"
             style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
             onkeydown="if(event.key==='Enter')sdSignupWithEmail()">
           <span onclick="sdTogglePass('sdSignupPassConfirm',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;color:#8aaac8;user-select:none;display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8aaac8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
         </div>
         <button id="sdSignUpBtn" onclick="sdSignupWithEmail()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#2d9e6b 0%,#38c77e 100%);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.2px;transition:all 0.2s;box-shadow:0 4px 16px rgba(45,158,107,0.3);">
-          Create Account â†’
+          Create Account →
         </button>
         <div style="text-align:center;margin-top:16px;">
           <span style="font-size:12px;color:#8aaac8;">Already have an account? </span>
@@ -1092,7 +1092,7 @@ tbody td{padding:15px 26px;font-size:14px;}
           Send Reset Link
         </button>
         <div style="text-align:center;margin-top:16px;">
-          <button onclick="sdSwitchTab('login')" style="font-size:12px;color:#378add;background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">â† Back to Sign In</button>
+          <button onclick="sdSwitchTab('login')" style="font-size:12px;color:#378add;background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:underline;">← Back to Sign In</button>
         </div>
       </div>
 
@@ -1104,14 +1104,14 @@ tbody td{padding:15px 26px;font-size:14px;}
         </div>
         <div style="margin-bottom:14px;position:relative;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">New Password</label>
-          <input id="sdNewPass" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="new-password"
+          <input id="sdNewPass" type="password" placeholder="••••••••" autocomplete="new-password"
             style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'">
           <span onclick="sdTogglePass('sdNewPass',this)" style="position:absolute;right:13px;bottom:12px;cursor:pointer;color:#8aaac8;user-select:none;display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8aaac8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
         </div>
         <div style="margin-bottom:22px;position:relative;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5a7499;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;">Confirm Password</label>
-          <input id="sdConfirmPass" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="new-password"
+          <input id="sdConfirmPass" type="password" placeholder="••••••••" autocomplete="new-password"
             style="width:100%;padding:11px 42px 11px 14px;border-radius:10px;border:1.5px solid #c5d4ec;background:#f8faff;color:#0e2040;font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#378add'" onblur="this.style.borderColor='#c5d4ec'"
             onkeydown="if(event.key==='Enter')sdUpdatePassword()">
@@ -1140,7 +1140,7 @@ tbody td{padding:15px 26px;font-size:14px;}
 </style>
 
 <script>
-// â”€â”€ Login Banner Loader â”€â”€
+// ── Login Banner Loader ──
 (function(){
   var _loginBanners = [];
   var _loginBannerIdx = 0;
@@ -1248,9 +1248,9 @@ tbody td{padding:15px 26px;font-size:14px;}
 </script>
 
 <script>
-// â•â• LOGIN OVERLAY FUNCTIONS â•â•
+// ══ LOGIN OVERLAY FUNCTIONS ══
 // NOTE: _supa is declared later in the file. These functions are called only
-// on user interaction (button clicks) â€” by that time _supa is fully ready.
+// on user interaction (button clicks) — by that time _supa is fully ready.
 
 function sdSwitchTab(tab){
   document.getElementById('sdFormLogin').style.display   = tab === 'login'   ? 'block' : 'none';
@@ -1258,7 +1258,7 @@ function sdSwitchTab(tab){
   document.getElementById('sdFormForgot').style.display  = tab === 'forgot'  ? 'block' : 'none';
   document.getElementById('sdFormNewPass').style.display = tab === 'newpass' ? 'block' : 'none';
 
-  // Tab bar â€” hide on forgot/newpass screens
+  // Tab bar — hide on forgot/newpass screens
   const tabBar = document.getElementById('sdAuthTabBar');
   if(tabBar) tabBar.style.display = (tab === 'forgot' || tab === 'newpass') ? 'none' : 'flex';
 
@@ -1313,28 +1313,28 @@ function sdTogglePass(inputId, icon){
   else{ inp.type = 'password'; icon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8aaac8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'; }
 }
 
-// â”€â”€ Called by buttons â€” _supa is ready by then â”€â”€
+// ── Called by buttons — _supa is ready by then ──
 async function sdLoginWithEmail(){
   sdClearMessages();
   const email = document.getElementById('sdLoginEmail').value.trim();
   const pass  = document.getElementById('sdLoginPass').value;
   if(!email || !pass){ sdShowError('Email and Password are required.'); return; }
-  sdSetBtnLoading('sdSignInBtn', true, 'Sign In â†’');
+  sdSetBtnLoading('sdSignInBtn', true, 'Sign In →');
   const { data, error } = await _supa.auth.signInWithPassword({ email, password: pass });
-  sdSetBtnLoading('sdSignInBtn', false, 'Sign In â†’');
+  sdSetBtnLoading('sdSignInBtn', false, 'Sign In →');
   if(error){ sdShowError('' + (error.message || 'Login failed. Please try again.')); return; }
   AppState._email = data.user.email;
   AppState._uid   = data.user.id;
-  sdShowSuccess('âœ… Welcome back! Signing you in...');
+  sdShowSuccess('✅ Welcome back! Signing you in...');
   await new Promise(r => setTimeout(r, 900));
   window._sdHideLoginOverlay();
 
-  // â”€â”€ Recover seller profile if the settings row is missing/incomplete. â”€â”€
+  // ── Recover seller profile if the settings row is missing/incomplete. ──
   // Root cause this fixes: when "Confirm email" is ON in Supabase Auth,
   // signUp() returns no active session, so the settings insert made at
   // signup time fails RLS (auth.uid() is null) and silently never lands.
   // The shop_name / whatsapp_number / district / address / pincode the
-  // person typed at signup are NOT lost though â€” Supabase stored them in
+  // person typed at signup are NOT lost though — Supabase stored them in
   // this user's auth metadata (options.data at signUp time). Now that we
   // have a real session (post-login), we read them back from metadata and
   // backfill the settings row, so the dashboard/admin view stops showing
@@ -1352,9 +1352,9 @@ async function sdLoginWithEmail(){
   if(av) av.textContent = (getSettings().shopName || 'S')[0].toUpperCase();
   updateTopbarProfile(getSettings());}
 
-// â”€â”€ Ensures a settings row exists for this user, backfilling from â”€â”€
+// ── Ensures a settings row exists for this user, backfilling from ──
 // auth user_metadata (captured at signup) if the row is missing or
-// missing key profile fields. Safe to call on every login â€” it's a no-op
+// missing key profile fields. Safe to call on every login — it's a no-op
 // once the settings row already has the data.
 async function ensureSellerProfile(user){
   if(!user) return;
@@ -1376,7 +1376,7 @@ async function ensureSellerProfile(user){
     || !existing.address
     || !existing.pincode;
 
-  if(!missingCore) return; // profile already complete â€” nothing to recover
+  if(!missingCore) return; // profile already complete — nothing to recover
 
   // Only backfill fields we actually have metadata for; never overwrite
   // a field the seller may have already edited with an empty value.
@@ -1392,7 +1392,7 @@ async function ensureSellerProfile(user){
     onboarded: true,
   };
 
-  // Nothing recoverable from metadata either (e.g. very old account) â€” skip.
+  // Nothing recoverable from metadata either (e.g. very old account) — skip.
   if(!recovered.shop_name && !recovered.whatsapp_number && !recovered.district && !recovered.address && !recovered.pincode) return;
 
   const { error: upsertErr } = await _supa.from('settings').upsert(recovered, { onConflict: 'user_id' });
@@ -1437,7 +1437,7 @@ async function sdSignupWithEmail(){
       }
     }
   });
-  sdSetBtnLoading('sdSignUpBtn', false, 'Create Account â†’');
+  sdSetBtnLoading('sdSignUpBtn', false, 'Create Account →');
   if(error){
     sdShowError('' + (error.message || 'Signup failed. Please try again.'));
     return;
@@ -1447,7 +1447,7 @@ async function sdSignupWithEmail(){
     return;
   }
 
-  // â”€â”€ Seller profile (settings row) is created automatically by the â”€â”€
+  // ── Seller profile (settings row) is created automatically by the ──
   // `on_auth_user_created` database trigger on auth.users, which reads
   // shop_name / whatsapp_number / district / address / pincode straight
   // from raw_user_meta_data (the options.data passed to signUp() above)
@@ -1456,11 +1456,11 @@ async function sdSignupWithEmail(){
   // signup, with or without email confirmation. No client-side insert or
   // rollback is needed here anymore.
   sdShowSuccess(data.session
-    ? 'âœ… Account created! Setting up your dashboard...'
-    : 'âœ… Account created! Please check your email and click the confirmation link, then sign in to continue.');
+    ? '✅ Account created! Setting up your dashboard...'
+    : '✅ Account created! Please check your email and click the confirmation link, then sign in to continue.');
 }
 
-// â”€â”€ Safe redirect URL builder â€” prevents open redirect via tampered APP_URL â”€â”€
+// ── Safe redirect URL builder — prevents open redirect via tampered APP_URL ──
 function getSafeRedirectUrl(){
   const cfg = window.SELLERDESK_CONFIG || {};
   try {
@@ -1582,9 +1582,9 @@ async function sdUpdatePassword(){
       <div id="sidebarExpiryDate" style="font-size:10px;margin-top:4px;opacity:0.6;"></div>
     </div>
     <div id="upgradeBanner" class="upgrade-banner" onclick="openUpgradeModal()" style="display:none;">
-      <div class="upgrade-banner-title">ðŸš€ Upgrade Your Plan</div>
+      <div class="upgrade-banner-title">🚀 Upgrade Your Plan</div>
       <div class="upgrade-banner-sub">Unlock PDF, shipping labels & unlimited orders</div>
-      <button class="upgrade-banner-btn" type="button">View Plans â†’</button>
+      <button class="upgrade-banner-btn" type="button">View Plans →</button>
     </div>
   </div>
 </nav>
@@ -1647,7 +1647,7 @@ async function sdUpdatePassword(){
                 <path d="M16 10a4 4 0 01-8 0"/>
               </svg>
             </div>
-            <span class="stat-badge up" id="todayBadge">â†‘ Today</span>
+            <span class="stat-badge up" id="todayBadge">↑ Today</span>
           </div>
           <div class="stat-val" id="totalOrdersStat">0</div>
           <div class="stat-label">Total Orders</div>
@@ -1668,7 +1668,7 @@ async function sdUpdatePassword(){
                 <path d="M16 3.13a4 4 0 010 7.75"/>
               </svg>
             </div>
-            <span class="stat-badge up">â†‘ Buyers</span>
+            <span class="stat-badge up">↑ Buyers</span>
           </div>
           <div class="stat-val" id="totalCustomersStat">0</div>
           <div class="stat-label">Total Customers</div>
@@ -1687,9 +1687,9 @@ async function sdUpdatePassword(){
                 <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
               </svg>
             </div>
-            <span class="stat-badge up">â†‘ Revenue</span>
+            <span class="stat-badge up">↑ Revenue</span>
           </div>
-          <div class="stat-val" id="totalRevenueStat">â‚¹0</div>
+          <div class="stat-val" id="totalRevenueStat">₹0</div>
           <div class="stat-label">Total Revenue</div>
           <div class="stat-card-info">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -1708,7 +1708,7 @@ async function sdUpdatePassword(){
                 <circle cx="18.5" cy="18.5" r="2.5"/>
               </svg>
             </div>
-            <span class="stat-badge up">â†‘ Active</span>
+            <span class="stat-badge up">↑ Active</span>
           </div>
           <div class="stat-val" id="dispatchedStat">0</div>
           <div class="stat-label">Dispatched</div>
@@ -1762,11 +1762,11 @@ async function sdUpdatePassword(){
               </div>
               <div>
                 <div style="font-size:12px;font-weight:600;color:#2d9e6b;">This Week Revenue</div>
-                <div style="font-size:20px;font-weight:900;color:#0e2040;letter-spacing:-0.5px;" id="weekRevenueAmt">â‚¹0</div>
+                <div style="font-size:20px;font-weight:900;color:#0e2040;letter-spacing:-0.5px;" id="weekRevenueAmt">₹0</div>
               </div>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:18px;font-weight:800;color:#2d9e6b;" id="weekRevenueChg">â†‘ 0%</div>
+              <div style="font-size:18px;font-weight:800;color:#2d9e6b;" id="weekRevenueChg">↑ 0%</div>
               <div style="font-size:11px;color:#5a7499;">vs last week</div>
             </div>
           </div>
@@ -1790,12 +1790,12 @@ async function sdUpdatePassword(){
           <div class="sales-meta">
             <div class="sales-meta-row">
               <span class="sales-meta-label">Sales</span>
-              <span class="sales-meta-val" id="gaugeRevenue">â‚¹0</span>
+              <span class="sales-meta-val" id="gaugeRevenue">₹0</span>
             </div>
             <div class="sales-prog-track"><div class="sales-prog-fill" id="gaugeBar" style="width:0%"></div></div>
             <div class="sales-meta-row" style="margin-top:4px;">
               <span class="sales-meta-label" style="font-size:11px;">Target</span>
-              <span class="sales-meta-label" style="font-size:11px;" id="gaugeTarget">â‚¹20,000</span>
+              <span class="sales-meta-label" style="font-size:11px;" id="gaugeTarget">₹20,000</span>
             </div>
           </div>
           <div style="margin-top:14px;" id="donutLegend"></div>
@@ -1913,17 +1913,17 @@ async function sdUpdatePassword(){
       <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
         <div class="stat-card">
           <div class="stat-top"><div class="stat-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d9e6b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
-          <div class="stat-val" id="paidStat">â‚¹0</div>
+          <div class="stat-val" id="paidStat">₹0</div>
           <div class="stat-label">Received</div>
         </div>
         <div class="stat-card">
           <div class="stat-top"><div class="stat-icon orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d48c0e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div></div>
-          <div class="stat-val" id="unpaidStat">â‚¹0</div>
+          <div class="stat-val" id="unpaidStat">₹0</div>
           <div class="stat-label">Pending</div>
         </div>
         <div class="stat-card">
           <div class="stat-top"><div class="stat-icon purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div></div>
-          <div class="stat-val" id="totalPayStat">â‚¹0</div>
+          <div class="stat-val" id="totalPayStat">₹0</div>
           <div class="stat-label">Total</div>
         </div>
       </div>
@@ -1953,7 +1953,7 @@ async function sdUpdatePassword(){
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px;">
         <div>
           <div style="font-size:22px;font-weight:900;letter-spacing:-0.5px;color:var(--dark);">Reports Dashboard</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Instagram Seller CRM â€” performance overview with comparison</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Instagram Seller CRM — performance overview with comparison</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <div class="filter-tabs">
@@ -1993,7 +1993,7 @@ async function sdUpdatePassword(){
               <div class="stat-icon orange">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
               </div>
-              <span class="stat-badge up" id="rpt_orders_badge">â†‘ 0%</span>
+              <span class="stat-badge up" id="rpt_orders_badge">↑ 0%</span>
             </div>
             <div class="stat-val" id="rpt_totalOrders">0</div>
             <div class="stat-label">Total Orders</div>
@@ -2003,9 +2003,9 @@ async function sdUpdatePassword(){
               <div class="stat-icon green">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d9e6b" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
               </div>
-              <span class="stat-badge up" id="rpt_rev_badge">â†‘ 0%</span>
+              <span class="stat-badge up" id="rpt_rev_badge">↑ 0%</span>
             </div>
-            <div class="stat-val" id="rpt_revenue">â‚¹0</div>
+            <div class="stat-val" id="rpt_revenue">₹0</div>
             <div class="stat-label">Revenue (Paid)</div>
           </div>
           <div class="stat-card">
@@ -2013,7 +2013,7 @@ async function sdUpdatePassword(){
               <div class="stat-icon blue">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#378add" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
               </div>
-              <span class="stat-badge up" id="rpt_cust_badge">â†‘ 0</span>
+              <span class="stat-badge up" id="rpt_cust_badge">↑ 0</span>
             </div>
             <div class="stat-val" id="rpt_newCustomers">0</div>
             <div class="stat-label">New Customers</div>
@@ -2071,23 +2071,23 @@ async function sdUpdatePassword(){
               <div style="background:var(--surface2);border-radius:12px;padding:16px 18px;border:1.5px solid var(--border2);">
                 <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;">New Customers</div>
                 <div class="stat-val" id="rpt_cg_new" style="font-size:28px;">0</div>
-                <div style="font-size:12px;font-weight:700;color:var(--success);margin-top:4px;" id="rpt_cg_new_pct">â–² 0%</div>
+                <div style="font-size:12px;font-weight:700;color:var(--success);margin-top:4px;" id="rpt_cg_new_pct">▲ 0%</div>
               </div>
               <div style="background:var(--surface2);border-radius:12px;padding:16px 18px;border:1.5px solid var(--border2);">
                 <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;">Repeat Customers</div>
                 <div class="stat-val" id="rpt_cg_repeat" style="font-size:28px;">0</div>
-                <div style="font-size:12px;font-weight:700;color:var(--danger);margin-top:4px;" id="rpt_cg_repeat_pct">â–¼ 0%</div>
+                <div style="font-size:12px;font-weight:700;color:var(--danger);margin-top:4px;" id="rpt_cg_repeat_pct">▼ 0%</div>
               </div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
               <div style="background:var(--surface2);border-radius:12px;padding:14px 16px;border:1.5px solid var(--border2);">
                 <div style="font-size:10px;font-weight:600;color:var(--muted);margin-bottom:4px;">Best City + Product</div>
-                <div style="font-size:14px;font-weight:800;color:var(--dark);" id="rpt_best_combo">â€”</div>
+                <div style="font-size:14px;font-weight:800;color:var(--dark);" id="rpt_best_combo">—</div>
                 <div style="font-size:10px;color:var(--muted2);margin-top:2px;">Most ordered combo</div>
               </div>
               <div style="background:var(--surface2);border-radius:12px;padding:14px 16px;border:1.5px solid var(--border2);">
                 <div style="font-size:10px;font-weight:600;color:var(--muted);margin-bottom:4px;">Fastest Growing Product</div>
-                <div style="font-size:14px;font-weight:800;color:var(--dark);" id="rpt_top_product">â€”</div>
+                <div style="font-size:14px;font-weight:800;color:var(--dark);" id="rpt_top_product">—</div>
                 <div style="font-size:10px;color:var(--muted2);margin-top:2px;">Strong growth this period</div>
               </div>
             </div>
@@ -2145,7 +2145,7 @@ async function sdUpdatePassword(){
         <!-- Enquiry Funnel Chart -->
         <div class="chart-card" style="padding:0;margin-bottom:22px;overflow:hidden;">
           <div class="table-head">
-            <div class="table-title">Enquiry â†’ Order Funnel</div>
+            <div class="table-title">Enquiry → Order Funnel</div>
             <div style="font-size:11px;color:var(--muted);font-weight:500;">Track drop-off % at each stage</div>
           </div>
           <div style="padding:20px 24px;" id="rpt_funnelChart">
@@ -2162,8 +2162,8 @@ async function sdUpdatePassword(){
         </div>
 
         
-        <span id="rpt_pending_amt" style="display:none;">â‚¹0</span>
-        <span id="rpt_avgOrder" style="display:none;">â‚¹0</span>
+        <span id="rpt_pending_amt" style="display:none;">₹0</span>
+        <span id="rpt_avgOrder" style="display:none;">₹0</span>
         <span id="rpt_enquiries" style="display:none;">0</span>
         <span id="rpt_converted" style="display:none;">0</span>
         <span id="rpt_conversion" style="display:none;">0%</span>
@@ -2200,7 +2200,7 @@ async function sdUpdatePassword(){
               <div>
                 <label for="logo_upload" style="cursor:pointer;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--text);display:inline-block;">Upload Logo</label>
                 <input type="file" id="logo_upload" accept="image/*" style="display:none;" onchange="previewLogo(this)">
-                <div style="font-size:11px;color:var(--muted);margin-top:4px;">PNG, JPG â€” Max 500KB</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px;">PNG, JPG — Max 500KB</div>
               </div>
             </div>
           </div>
@@ -2256,7 +2256,7 @@ async function sdUpdatePassword(){
             <label class="form-label">Bill Notes</label>
             <textarea class="form-textarea" id="s_billnote" placeholder="Please take a video while opening the parcel." style="min-height:55px;"></textarea>
           </div>
-          <!-- Social media fields hidden â€” not required -->
+          <!-- Social media fields hidden — not required -->
           <div style="display:none;">
             <input id="s_instagram"><input id="s_facebook"><input id="s_youtube">
           </div>
@@ -2287,7 +2287,7 @@ async function sdUpdatePassword(){
           <input type="checkbox" id="toggle-reports">
         </div>
 
-        <!-- â”€â”€ COMING SOON â”€â”€ -->
+        <!-- ── COMING SOON ── -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
 
           <div style="background:var(--surface);border-radius:16px;padding:20px 22px;box-shadow:0 2px 12px rgba(14,32,64,0.07);position:relative;overflow:hidden;border:1.5px dashed var(--border2);">
@@ -2310,10 +2310,10 @@ async function sdUpdatePassword(){
 
         </div>
 
-        <!-- â”€â”€ ORDER & BILLING â”€â”€ -->
+        <!-- ── ORDER & BILLING ── -->
         <div class="settings-section">
           <div class="settings-section-header">
-            <div class="settings-section-icon orange">ðŸ“‹</div>
+            <div class="settings-section-icon orange">📋</div>
             <div>
               <div class="settings-section-title">Order &amp; Billing</div>
               <div class="settings-section-sub">Customize order defaults and billing preferences</div>
@@ -2323,7 +2323,7 @@ async function sdUpdatePassword(){
           <div class="settings-field">
             <div class="settings-field-label">
               <div class="settings-field-label-text">Order ID Prefix</div>
-              <div class="settings-field-label-sub">Optional â€” customize how IDs look</div>
+              <div class="settings-field-label-sub">Optional — customize how IDs look</div>
             </div>
             <div class="settings-field-control">
               <input class="form-input" id="setting_order_prefix" placeholder="e.g. SRI, MSD" maxlength="8"
@@ -2340,8 +2340,8 @@ async function sdUpdatePassword(){
             </div>
             <div class="settings-field-control">
               <select class="form-select" id="setting_default_payment" style="width:200px;">
-                <option value="paid">âœ… Paid</option>
-                <option value="pending">ðŸ• Pending (COD)</option>
+                <option value="paid">✅ Paid</option>
+                <option value="pending">🕐 Pending (COD)</option>
               </select>
             </div>
           </div>
@@ -2374,14 +2374,14 @@ async function sdUpdatePassword(){
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               Save Changes
             </button>
-            <span class="settings-saved-badge" id="billing_saved_msg">âœ“ Saved!</span>
+            <span class="settings-saved-badge" id="billing_saved_msg">✓ Saved!</span>
           </div>
         </div>
 
-        <!-- â”€â”€ SHIPPING â”€â”€ -->
+        <!-- ── SHIPPING ── -->
         <div class="settings-section">
           <div class="settings-section-header">
-            <div class="settings-section-icon green">ðŸšš</div>
+            <div class="settings-section-icon green">🚚</div>
             <div>
               <div class="settings-section-title">Shipping</div>
               <div class="settings-section-sub">Default shipping preferences for labels</div>
@@ -2395,7 +2395,7 @@ async function sdUpdatePassword(){
             </div>
             <div class="settings-field-control">
               <select class="form-select" id="setting_default_courier" style="width:200px;">
-                <option value="">â€” None â€”</option>
+                <option value="">— None —</option>
                 <option value="ST Courier">ST Courier</option>
                 <option value="Professional">Professional</option>
                 <option value="DTDC">DTDC</option>
@@ -2410,11 +2410,11 @@ async function sdUpdatePassword(){
           <div class="settings-field">
             <div class="settings-field-label">
               <div class="settings-field-label-text">Shipping Charge</div>
-              <div class="settings-field-label-sub">Default charge on labels (â‚¹)</div>
+              <div class="settings-field-label-sub">Default charge on labels (₹)</div>
             </div>
             <div class="settings-field-control">
               <div style="display:flex;align-items:center;gap:8px;">
-                <span style="font-size:15px;font-weight:800;color:var(--muted);">â‚¹</span>
+                <span style="font-size:15px;font-weight:800;color:var(--muted);">₹</span>
                 <input class="form-input" id="setting_shipping_charge" type="number" min="0" placeholder="60"
                   style="width:120px;">
               </div>
@@ -2436,14 +2436,14 @@ async function sdUpdatePassword(){
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               Save Changes
             </button>
-            <span class="settings-saved-badge" id="shipping_saved_msg">âœ“ Saved!</span>
+            <span class="settings-saved-badge" id="shipping_saved_msg">✓ Saved!</span>
           </div>
         </div>
 
-        <!-- â”€â”€ BUSINESS â”€â”€ -->
+        <!-- ── BUSINESS ── -->
         <div class="settings-section">
           <div class="settings-section-header">
-            <div class="settings-section-icon purple">ðŸª</div>
+            <div class="settings-section-icon purple">🏪</div>
             <div>
               <div class="settings-section-title">Business</div>
               <div class="settings-section-sub">Your business identity details</div>
@@ -2457,7 +2457,7 @@ async function sdUpdatePassword(){
             </div>
             <div class="settings-field-control">
               <select class="form-select" id="setting_business_type" style="width:220px;">
-                <option value="">â€” Select â€”</option>
+                <option value="">— Select —</option>
                 <option value="reseller">Reseller</option>
                 <option value="brand">Brand / Manufacturer</option>
                 <option value="dropshipper">Dropshipper</option>
@@ -2492,14 +2492,14 @@ async function sdUpdatePassword(){
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               Save Changes
             </button>
-            <span class="settings-saved-badge" id="business_saved_msg">âœ“ Saved!</span>
+            <span class="settings-saved-badge" id="business_saved_msg">✓ Saved!</span>
           </div>
         </div>
 
-        <!-- â”€â”€ ACCOUNT â”€â”€ -->
+        <!-- ── ACCOUNT ── -->
         <div class="settings-section" style="margin-bottom:40px;">
           <div class="settings-section-header">
-            <div class="settings-section-icon" style="background:#f0f4ff;">ðŸ”</div>
+            <div class="settings-section-icon" style="background:#f0f4ff;">🔐</div>
             <div>
               <div class="settings-section-title">Account</div>
               <div class="settings-section-sub">Login credentials and account security</div>
@@ -2515,7 +2515,7 @@ async function sdUpdatePassword(){
               <div class="settings-email-row">
                 <input class="form-input" id="setting_account_email" readonly
                   style="color:var(--muted);background:var(--surface2);cursor:not-allowed;">
-                <span class="settings-locked-badge">ðŸ”’ Locked</span>
+                <span class="settings-locked-badge">🔒 Locked</span>
               </div>
             </div>
           </div>
@@ -2537,7 +2537,7 @@ async function sdUpdatePassword(){
 
           <!-- Danger Zone -->
           <div class="settings-danger-box">
-            <div class="settings-danger-title">âš ï¸ Danger Zone</div>
+            <div class="settings-danger-title">⚠️ Danger Zone</div>
             <div class="settings-danger-desc">Deleting your account will permanently remove all orders, customers, products, and data. This action cannot be undone.</div>
             <button class="settings-danger-btn" onclick="confirmDeleteAccount()">Delete My Account</button>
           </div>
@@ -2556,7 +2556,7 @@ async function sdUpdatePassword(){
     <div class="modal-header">
       <div>
         <div class="modal-title">New Order</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:3px;">Basic details â€” fill rest in Orders page</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">Basic details — fill rest in Orders page</div>
       </div>
       <span class="modal-close" onclick="closeModal('newOrderModal')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
     </div>
@@ -2574,7 +2574,7 @@ async function sdUpdatePassword(){
 
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('newOrderModal')">Cancel</button>
-      <button class="btn-primary" onclick="saveOrder()">Create Order â†’</button>
+      <button class="btn-primary" onclick="saveOrder()">Create Order →</button>
     </div>
   </div>
 </div>
@@ -2595,12 +2595,12 @@ async function sdUpdatePassword(){
     <div class="form-group" id="c_product_group">
       <label class="form-label">Products <span style="color:var(--danger)">*</span></label>
       <select class="form-select" id="c_product_select" onchange="addProductToOrder(this)">
-        <option value="">â€” Select a product â€”</option>
+        <option value="">— Select a product —</option>
       </select>
       <div id="c_selected_products" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;"></div>
       <div id="c_amount_display" style="display:none;margin-top:10px;background:var(--accent-light);border:1.5px solid var(--accent);border-radius:9px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
         <span style="font-size:13px;font-weight:600;color:var(--dark);">Total Amount</span>
-        <span style="font-size:18px;font-weight:800;color:var(--accent);" id="c_total_display">â‚¹0</span>
+        <span style="font-size:18px;font-weight:800;color:var(--accent);" id="c_total_display">₹0</span>
       </div>
       <input type="hidden" id="c_amount">
     </div>
@@ -2662,8 +2662,8 @@ async function sdUpdatePassword(){
     </div>
     <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:14px;margin-bottom:18px;">
       <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Dispatching for</div>
-      <div style="font-weight:700" id="dispatchCustomer">â€”</div>
-      <div style="font-size:12px;color:var(--muted)" id="dispatchProduct">â€”</div>
+      <div style="font-weight:700" id="dispatchCustomer">—</div>
+      <div style="font-size:12px;color:var(--muted)" id="dispatchProduct">—</div>
     </div>
     <div class="form-group">
       <label class="form-label">Select Courier</label>
@@ -2739,7 +2739,7 @@ async function sdUpdatePassword(){
         <input class="form-input" id="ep_cat" placeholder="Gifts, Dresses, Crafts...">
       </div>
       <div class="form-group">
-        <label class="form-label">Price (â‚¹) *</label>
+        <label class="form-label">Price (₹) *</label>
         <input class="form-input" id="ep_price" type="number" placeholder="499">
       </div>
     </div>
@@ -2755,7 +2755,7 @@ async function sdUpdatePassword(){
     </div>
     <div class="form-group">
       <label class="form-label">Description</label>
-      <textarea class="form-textarea" id="ep_desc" placeholder="Describe the product â€” material, size, colour, etc." style="min-height:65px;"></textarea>
+      <textarea class="form-textarea" id="ep_desc" placeholder="Describe the product — material, size, colour, etc." style="min-height:65px;"></textarea>
     </div>
     <div class="form-group">
       <label class="form-label">Image URL</label>
@@ -2788,7 +2788,7 @@ async function sdUpdatePassword(){
         <input class="form-input" id="p_cat" placeholder="Gifts, Dresses, Crafts...">
       </div>
       <div class="form-group">
-        <label class="form-label">Price (â‚¹) *</label>
+        <label class="form-label">Price (₹) *</label>
         <input class="form-input" id="p_price" type="number" placeholder="499">
       </div>
     </div>
@@ -2804,7 +2804,7 @@ async function sdUpdatePassword(){
     </div>
     <div class="form-group">
       <label class="form-label">Description</label>
-      <textarea class="form-textarea" id="p_desc" placeholder="Describe the product â€” material, size, colour, etc." style="min-height:65px;"></textarea>
+      <textarea class="form-textarea" id="p_desc" placeholder="Describe the product — material, size, colour, etc." style="min-height:65px;"></textarea>
     </div>
     <div class="form-group">
       <label class="form-label">Image URL</label>
@@ -2829,8 +2829,8 @@ async function sdUpdatePassword(){
     </div>
     <div style="background:var(--warning-bg);border:1.5px solid var(--warning);border-radius:10px;padding:16px;margin-bottom:18px;">
       <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Marking payment as PAID for</div>
-      <div style="font-weight:800;font-size:15px;" id="payModal_name">â€”</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:3px;" id="payModal_product">â€”</div>
+      <div style="font-weight:800;font-size:15px;" id="payModal_name">—</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:3px;" id="payModal_product">—</div>
     </div>
     <div style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;">
       Are you confirming payment received?<br>
@@ -2848,7 +2848,7 @@ async function sdUpdatePassword(){
 
 <div class="locked-toast" id="lockedToast">
   <div id="lockedToastMsg">This feature requires a paid plan</div>
-  <button class="locked-toast-btn" onclick="openUpgradeModal()">View Plans â†’</button>
+  <button class="locked-toast-btn" onclick="openUpgradeModal()">View Plans →</button>
 </div>
 
 
@@ -2891,7 +2891,7 @@ async function sdUpdatePassword(){
       <div id="cd_error" style="font-size:12px;color:var(--danger);margin-bottom:10px;display:none;padding:8px 12px;background:var(--danger-bg);border-radius:7px;"></div>
 
       <button class="btn-primary" onclick="submitCustomerDetails()" id="cd_submitBtn" style="width:100%;padding:13px;font-size:14px;border-radius:10px;margin-top:4px;">
-        Proceed to Payment â†’
+        Proceed to Payment →
       </button>
       <button class="btn-secondary" onclick="closeModal('customerDetailsModal')" style="width:100%;margin-top:10px;text-align:center;">
         Cancel
@@ -2899,7 +2899,7 @@ async function sdUpdatePassword(){
 
       <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:16px;">
         <span style="font-size:12px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
-        <span style="font-size:11px;color:var(--muted2);">100% Secure Â· Powered by <strong style="color:var(--muted);">Razorpay</strong></span>
+        <span style="font-size:11px;color:var(--muted2);">100% Secure · Powered by <strong style="color:var(--muted);">Razorpay</strong></span>
       </div>
     </div>
 
@@ -2920,8 +2920,8 @@ async function sdUpdatePassword(){
 </div>
 <!-- config + supabase already loaded in <head> auth bridge -->
 <script>
-// â•â• CORE HELPERS â•â•
-// Zero localStorage â€” all data via Supabase or JS memory
+// ══ CORE HELPERS ══
+// Zero localStorage — all data via Supabase or JS memory
 //
 // SUPABASE MIGRATION (run once in SQL editor):
 //   ALTER TABLE settings ADD COLUMN IF NOT EXISTS features JSONB DEFAULT '{"cod":true,"reports":true}'::jsonb;
@@ -2936,7 +2936,7 @@ async function sdUpdatePassword(){
 //   ALTER TABLE settings ADD COLUMN IF NOT EXISTS legal_name TEXT DEFAULT '';
 //   ALTER TABLE settings ADD COLUMN IF NOT EXISTS website TEXT DEFAULT '';
 //
-// â”€â”€ Single Supabase client â€” cookie-based for cross-subdomain session â”€â”€
+// ── Single Supabase client — cookie-based for cross-subdomain session ──
 const _sdCookieAdapter = {
   getItem(key){
     const match = document.cookie.split('; ').find(r => r.startsWith(key + '='));
@@ -2966,18 +2966,18 @@ const _supa = window.supabase.createClient(
   }
 );
 
-// â”€â”€ Trigger login banner load now that _supa is ready â”€â”€
+// ── Trigger login banner load now that _supa is ready ──
 if(typeof loadLoginBanner === 'function') loadLoginBanner();
 
-// â•â• LOGIN OVERLAY SYSTEM â•â•
+// ══ LOGIN OVERLAY SYSTEM ══
 // Defined after _supa so all callers (auth guard, idle timer) are in scope.
 window._sdShowLoginOverlay = function(reason){
   const overlay = document.getElementById('sdLoginOverlay');
   if(!overlay) return;
   const msgs = {
-    session_expired: 'â±ï¸ Session expired. Please login again.',
-    idle_timeout:    'Inactive â€” you have been logged out for security reasons.',
-    signed_out:      'âœ… You\'ve been signed out successfully.',
+    session_expired: '⏱️ Session expired. Please login again.',
+    idle_timeout:    'Inactive — you have been logged out for security reasons.',
+    signed_out:      '✅ You\'ve been signed out successfully.',
     config_error:    'Configuration error. Please contact your administrator.'
   };
   const reasonEl = document.getElementById('sdLoginReason');
@@ -2999,7 +2999,7 @@ window._sdHideLoginOverlay = function(){
   if(wrap){ wrap.style.visibility = 'visible'; wrap.style.display = 'flex'; }
 };
 
-// â”€â”€ Auth guard + idle logout â”€â”€
+// ── Auth guard + idle logout ──
 (function(){
   const cfg = window.SELLERDESK_CONFIG || {};
   const IDLE_MS = cfg.IDLE_TIMEOUT_MS || 600000;
@@ -3010,16 +3010,16 @@ window._sdHideLoginOverlay = function(){
     history.replaceState({}, '', window.location.pathname);
   }
 
-  // PASSWORD_RECOVERY flag â€” event vantha set aagum
+  // PASSWORD_RECOVERY flag — event vantha set aagum
   window._sdIsPasswordRecovery = false;
 
-  // Overlay is visible by default â€” hide only if valid session exists
+  // Overlay is visible by default — hide only if valid session exists
   document.addEventListener('DOMContentLoaded', async function(){
     const { data: { session } } = await _supa.auth.getSession();
     if(!session) return;
 
     // onAuthStateChange fires before PASSWORD_RECOVERY event
-    // If that flag is set â€” do not open the dashboard
+    // If that flag is set — do not open the dashboard
     if(window._sdIsPasswordRecovery) return;
 
     window._sdHideLoginOverlay();
@@ -3043,9 +3043,9 @@ window._sdHideLoginOverlay = function(){
   // Auth state change
   _supa.auth.onAuthStateChange(function(event, sess){
     if(event === 'PASSWORD_RECOVERY'){
-      // Set flag â€” prevent DOMContentLoaded from opening the dashboard
+      // Set flag — prevent DOMContentLoaded from opening the dashboard
       window._sdIsPasswordRecovery = true;
-      // If reset link was clicked â€” show new password form
+      // If reset link was clicked — show new password form
       window._sdShowLoginOverlay('');
       sdSwitchTab('newpass');
       // Update header text
@@ -3060,7 +3060,7 @@ window._sdHideLoginOverlay = function(){
   });
 })();
 
-// â•â• APP STATE â€” JS Memory only (zero localStorage) â•â•
+// ══ APP STATE — JS Memory only (zero localStorage) ══
 const AppState = {
   orders:    [],
   customers: [],
@@ -3071,7 +3071,7 @@ const AppState = {
   _uid:      null,
 };
 
-// â”€â”€ Features â€” Supabase settings table, never localStorage â”€â”€
+// ── Features — Supabase settings table, never localStorage ──
 function getFeatures(){
   return AppState.features || { cod: true, reports: true };
 }
@@ -3083,7 +3083,7 @@ async function saveFeatures(f){
   await _supa.from('settings').upsert(dbRow, { onConflict: 'user_id' });
 }
 
-// â”€â”€ camelCase <-> snake_case mapping for Supabase settings table â”€â”€
+// ── camelCase <-> snake_case mapping for Supabase settings table ──
 function settingsToDb(s){
   return {
     shop_name:  s.shopName,
@@ -3143,7 +3143,7 @@ function settingsFromDb(row){
   };
 }
 
-// â”€â”€ Safe DOM helper â€” prevents null crash on missing elements â”€â”€
+// ── Safe DOM helper — prevents null crash on missing elements ──
 function safeText(id, val){
   var el = document.getElementById(id);
   if(el) el.textContent = val;
@@ -3157,7 +3157,7 @@ function safeStyle(id, prop, val){
   if(el) el.style[prop] = val;
 }
 
-// â”€â”€ XSS helper â€” always use for user-supplied data in innerHTML â”€â”€
+// ── XSS helper — always use for user-supplied data in innerHTML ──
 function escapeHtml(str){
   if(str === null || str === undefined) return '';
   return String(str)
@@ -3168,7 +3168,7 @@ function escapeHtml(str){
     .replace(/'/g,'&#x27;');
 }
 
-// â”€â”€ Settings (from AppState â€” loaded via Supabase) â”€â”€
+// ── Settings (from AppState — loaded via Supabase) ──
 function getSettings(){
   const defaults = {
     shopName: 'My Shop', phone: '', district: '', pincode: '',
@@ -3182,9 +3182,9 @@ function getSettings(){
   return Object.assign({}, defaults, saved);
 }
 
-// â”€â”€ Plan â€” always from AppState (Supabase-verified, never localStorage) â”€â”€
+// ── Plan — always from AppState (Supabase-verified, never localStorage) ──
 function getPlan(){
-  // Plan is set only by Supabase on login â€” re-read from AppState
+  // Plan is set only by Supabase on login — re-read from AppState
   const p = AppState.plan || 'starter';
   // Accept any non-empty plan key from plan_configs as "paid"
   if(['starter','growth','elite'].includes(p)) return p;
@@ -3202,9 +3202,9 @@ function isPaid(){
 }
 function isPro(){ return isPaid(); }
 
-// â•â• DATABASE LAYER â•â•
+// ══ DATABASE LAYER ══
 const DB = {
-  // â”€â”€ Orders â”€â”€
+  // ── Orders ──
   getOrders(){ return AppState.orders || []; },
 
   async loadFromSupabase(){
@@ -3212,7 +3212,7 @@ const DB = {
     if(!user) return;
     AppState._uid = user.id;
 
-    // All data loaded into JS memory â€” never into localStorage
+    // All data loaded into JS memory — never into localStorage
     const [ordersRes, customersRes, productsRes, settingsRes, planRes] = await Promise.all([
       _supa.from('orders').select('*').eq('user_id', user.id),
       _supa.from('customers').select('*').eq('user_id', user.id),
@@ -3233,14 +3233,14 @@ const DB = {
       const rawBadge = settingsRes.data[0].badge || null;
       AppState.sellerBadge = rawBadge;
       console.log('[Badge Debug] settings row badge value:', rawBadge, '| full row keys:', Object.keys(settingsRes.data[0]));
-      // features loaded from Supabase â€” never from localStorage
+      // features loaded from Supabase — never from localStorage
       if(features && typeof features === 'object'){
         AppState.features = features;
       }
-      // No settings row at all â€” brand new user
+      // No settings row at all — brand new user
     }
 
-    // Plan verified from Supabase â€” cannot be tampered via browser console
+    // Plan verified from Supabase — cannot be tampered via browser console
     const subRow = planRes.data?.[0];
     AppState.plan = subRow?.plan || 'starter';
     // Check expiry
@@ -3356,7 +3356,7 @@ const DB = {
     return orders[idx];
   },
 
-  // â”€â”€ Customers (auto-derived from orders) â”€â”€
+  // ── Customers (auto-derived from orders) ──
   getCustomers(){ return AppState.customers || []; },
 
   _saveCustomers(c){
@@ -3399,7 +3399,7 @@ const DB = {
     this._saveCustomers(Object.values(map));
   },
 
-  // â”€â”€ Products â”€â”€
+  // ── Products ──
   getProducts(){ return AppState.products || []; },
   saveProducts(products){
     AppState.products = products;
@@ -3436,7 +3436,7 @@ const DB = {
   }
 };
 
-// â•â• STATE â•â•
+// ══ STATE ══
 let currentFilter = 'all';
 let currentDispatchId = null;
 let currentBillOrder = null;
@@ -3444,12 +3444,12 @@ let currentPaymentId = null;
 let selectedCourier = '';
 let currentChartMode = 'weekly';
 
-// â•â• TAB NAVIGATION â•â•
+// ══ TAB NAVIGATION ══
 function showTab(name, el){
-  // Feature guard â€” block disabled tabs
+  // Feature guard — block disabled tabs
   const f = getFeatures();
-  if(name === 'payments'   && !f.cod)     { showToast('COD Tracker is disabled. Enable it in Settings â†’ Features.'); return; }
-  if(name === 'reports'    && !f.reports)  { showToast('Reports & Analytics is disabled. Enable it in Settings â†’ Features.'); return; }
+  if(name === 'payments'   && !f.cod)     { showToast('COD Tracker is disabled. Enable it in Settings → Features.'); return; }
+  if(name === 'reports'    && !f.reports)  { showToast('Reports & Analytics is disabled. Enable it in Settings → Features.'); return; }
 
   document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -3473,7 +3473,7 @@ function showTab(name, el){
   refreshAll();
 }
 
-// â•â• REFRESH â•â•
+// ══ REFRESH ══
 function refreshAll(){
   refreshStats();
   refreshRecentOrders();
@@ -3523,7 +3523,7 @@ function refreshStats(){
   const revenue = orders.filter(o => o.payment === 'paid').reduce((s,o) => s + (Number(o.amount)||0), 0);
   const customers = DB.getCustomers().length;
 
-  // Returning buyers â€” customers with 2+ orders (by phone number)
+  // Returning buyers — customers with 2+ orders (by phone number)
   const phoneCounts = {};
   orders.forEach(o => { if(o.phone){ phoneCounts[o.phone] = (phoneCounts[o.phone]||0)+1; } });
   const returningBuyers = Object.values(phoneCounts).filter(c => c >= 2).length;
@@ -3531,10 +3531,10 @@ function refreshStats(){
   const todayStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
   const todayCount = orders.filter(o => o.date === todayStr).length;
   const todayBadge = document.getElementById('todayBadge');
-  if(todayBadge) todayBadge.textContent = todayCount > 0 ? `â†‘ Today: ${todayCount}` : 'â†‘ Today';
+  if(todayBadge) todayBadge.textContent = todayCount > 0 ? `↑ Today: ${todayCount}` : '↑ Today';
 
   safeText('totalOrdersStat', total);
-  safeText('totalRevenueStat', 'â‚¹' + revenue.toLocaleString('en-IN'));
+  safeText('totalRevenueStat', '₹' + revenue.toLocaleString('en-IN'));
   safeText('dispatchedStat', dispatched + delivered);
   safeText('pendingStat', pending);
   const cs = document.getElementById('totalCustomersStat');
@@ -3548,7 +3548,7 @@ function updatePendingCount(){
   safeText('pendingCount', pending);
 }
 
-// â•â• WORKFLOW STAGES â•â•
+// ══ WORKFLOW STAGES ══
 const STAGES = [
   { key:'enquiry',       label:'Enquiry',        color:'#5a7499', bg:'#f0f4ff' },
   { key:'order_confirm', label:'Order Confirm',   color:'#7c5cbf', bg:'#f3f0fa' },
@@ -3649,8 +3649,8 @@ function confirmOrderAndRefresh(id){
   // Populate product dropdown from DB
   const sel = document.getElementById('c_product_select');
   const products = DB.getProducts();
-  sel.innerHTML = '<option value="">â€” Select a product â€”</option>' +
-    products.map(p => `<option value="${p.id}" data-name="${p.name}" data-price="${p.price}">${p.name} â€” â‚¹${p.price}</option>`).join('');
+  sel.innerHTML = '<option value="">— Select a product —</option>' +
+    products.map(p => `<option value="${p.id}" data-name="${p.name}" data-price="${p.price}">${p.name} — ₹${p.price}</option>`).join('');
 
   // If order already had products, restore them
   if(order.products && Array.isArray(order.products)){
@@ -3661,7 +3661,7 @@ function confirmOrderAndRefresh(id){
   }
 
   renderSelectedProducts();
-  document.getElementById('confirmOrderCustomer').textContent = order.name + ' Â· ' + order.phone;
+  document.getElementById('confirmOrderCustomer').textContent = order.name + ' · ' + order.phone;
   document.getElementById('confirmOrderModal').classList.add('show');
 }
 
@@ -3710,19 +3710,19 @@ function renderSelectedProducts(){
   container.innerHTML = selectedOrderProducts.map(p => `
     <div style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;padding:8px 12px;">
       <span style="flex:1;font-size:13px;font-weight:600;color:var(--dark);">${p.name}</span>
-      <span style="font-size:12px;color:var(--muted);">â‚¹${p.price}</span>
+      <span style="font-size:12px;color:var(--muted);">₹${p.price}</span>
       <div style="display:flex;align-items:center;gap:4px;">
-        <button onclick="changeOrderProductQty('${p.id}',-1)" style="width:24px;height:24px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">âˆ’</button>
+        <button onclick="changeOrderProductQty('${p.id}',-1)" style="width:24px;height:24px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">−</button>
         <span style="font-size:13px;font-weight:700;min-width:20px;text-align:center;">${p.qty || 1}</span>
         <button onclick="changeOrderProductQty('${p.id}',1)" style="width:24px;height:24px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">+</button>
       </div>
-      <span style="font-size:13px;font-weight:700;color:var(--accent);min-width:60px;text-align:right;">â‚¹${((p.price)*(p.qty||1)).toLocaleString('en-IN')}</span>
+      <span style="font-size:13px;font-weight:700;color:var(--accent);min-width:60px;text-align:right;">₹${((p.price)*(p.qty||1)).toLocaleString('en-IN')}</span>
       <button onclick="removeOrderProduct('${p.id}')" style="background:var(--danger-bg);border:none;color:var(--danger);border-radius:6px;width:26px;height:26px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
   `).join('');
 
   const total = selectedOrderProducts.reduce((s, p) => s + (parseFloat(p.price) * (p.qty || 1)), 0);
-  totalDisplay.textContent = 'â‚¹' + total.toLocaleString('en-IN');
+  totalDisplay.textContent = '₹' + total.toLocaleString('en-IN');
   amountInput.value = total;
   amountBox.style.display = 'flex';
 }
@@ -3760,7 +3760,7 @@ function advanceStage(id, newStage){
   DB.updateOrder(id, updates);
   refreshAll();
   const meta = getStageMeta(newStage);
-  showToast(meta.label + ' â€” Updated!');
+  showToast(meta.label + ' — Updated!');
 }
 
 let currentDashFilter = 'all';
@@ -3784,10 +3784,10 @@ function refreshCharts(mode){
   if(mode) currentChartMode = mode;
   const orders = DB.getOrders();
 
-  // â”€â”€ Bar chart â”€â”€
+  // ── Bar chart ──
   let barLabels, counts;
   if(currentChartMode === 'monthly'){
-    // Last 6 months â€” real order counts
+    // Last 6 months — real order counts
     const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const now = new Date();
     barLabels = []; counts = [];
@@ -3801,7 +3801,7 @@ function refreshCharts(mode){
       }).length);
     }
   } else {
-    // Weekly â€” last 7 days â€” real order counts
+    // Weekly — last 7 days — real order counts
     const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
     const today = new Date().getDay();
     barLabels = [];
@@ -3830,7 +3830,7 @@ function refreshCharts(mode){
       <div class="mini-bar-label">${barLabels[i]}</div>
     </div>`).join('');
 
-  // â”€â”€ This Week Revenue card â”€â”€
+  // ── This Week Revenue card ──
   if(currentChartMode === 'weekly'){
     const now2 = new Date();
     const getWeekRev = (weeksAgo) => {
@@ -3852,9 +3852,9 @@ function refreshCharts(mode){
     const chgPct = lastWeekRev > 0 ? Math.round(((thisWeekRev-lastWeekRev)/lastWeekRev)*100) : 0;
     const amtEl = document.getElementById('weekRevenueAmt');
     const chgEl = document.getElementById('weekRevenueChg');
-    if(amtEl) amtEl.textContent = 'â‚¹' + thisWeekRev.toLocaleString('en-IN');
+    if(amtEl) amtEl.textContent = '₹' + thisWeekRev.toLocaleString('en-IN');
     if(chgEl){
-      chgEl.textContent = (chgPct>=0?'â†‘ ':'â†“ ') + Math.abs(chgPct) + '%';
+      chgEl.textContent = (chgPct>=0?'↑ ':'↓ ') + Math.abs(chgPct) + '%';
       chgEl.style.color = chgPct >= 0 ? '#2d9e6b' : '#c94040';
     }
     const card = document.getElementById('weekRevenueCard');
@@ -3864,7 +3864,7 @@ function refreshCharts(mode){
     if(card) card.style.display = 'none';
   }
 
-  // â”€â”€ Gauge chart â”€â”€
+  // ── Gauge chart ──
   const delivered = orders.filter(o=>o.status==='delivered').length;
   const total = orders.length || 1;
   const pct = Math.round((delivered/total)*100);
@@ -3873,9 +3873,9 @@ function refreshCharts(mode){
   const progPct = Math.min(100, Math.round((revenue/target)*100));
 
   safeText('gaugePct', pct + '%');
-  safeText('gaugeRevenue', 'â‚¹' + revenue.toLocaleString('en-IN'));
+  safeText('gaugeRevenue', '₹' + revenue.toLocaleString('en-IN'));
   document.getElementById('gaugeBar').style.width = progPct + '%';
-  safeText('gaugeTarget', 'â‚¹' + target.toLocaleString('en-IN'));
+  safeText('gaugeTarget', '₹' + target.toLocaleString('en-IN'));
 
   // Draw gauge arc SVG
   const svg = document.getElementById('gaugeSvg');
@@ -3898,7 +3898,7 @@ function refreshCharts(mode){
   });
   svg.innerHTML = paths;
 
-  // â”€â”€ Donut legend (status breakdown) â”€â”€
+  // ── Donut legend (status breakdown) ──
   const dispatched2 = orders.filter(o=>o.status==='dispatched').length;
   const pending2 = orders.filter(o=>o.status==='pending').length;
   const segments3=[
@@ -3932,9 +3932,9 @@ function refreshRecentOrders(){
       <td class="mono" style="font-weight:700;color:var(--success);">${o.orderId ? '#'+escapeHtml(o.orderId) : '<span style="color:var(--muted2);font-size:11px;">Enquiry</span>'}</td>
       <td style="color:var(--muted);font-size:12px;">${escapeHtml(o.date)}</td>
       <td><div class="customer-cell"><span class="customer-name">${escapeHtml(o.name)}</span><span class="customer-phone">${escapeHtml(o.phone)}</span></div></td>
-      <td><span class="product-tag">${escapeHtml(o.product||'â€”')}</span></td>
+      <td><span class="product-tag">${escapeHtml(o.product||'—')}</span></td>
       <td>${statusPill(o.status)}</td>
-      <td class="mono" style="font-weight:700;">â‚¹${Number(o.amount).toLocaleString('en-IN')}</td>
+      <td class="mono" style="font-weight:700;">₹${Number(o.amount).toLocaleString('en-IN')}</td>
     </tr>`).join('');
 }
 
@@ -3956,19 +3956,19 @@ function refreshAllOrders(){
   const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
   if(q) orders = orders.filter(o => o.name.toLowerCase().includes(q) || o.id.toLowerCase().includes(q) || (o.product||'').toLowerCase().includes(q));
 
-  // Sort: Enquiry first â†’ then latest OrderID on top (ORD1005 > ORD1004)
+  // Sort: Enquiry first → then latest OrderID on top (ORD1005 > ORD1004)
   orders.sort((a, b) => {
     const aEnq = !a.orderId;
     const bEnq = !b.orderId;
     if(aEnq && !bEnq) return -1;
     if(!aEnq && bEnq) return 1;
     if(!aEnq && !bEnq){
-      // Both have orderIds â€” sort by number descending
+      // Both have orderIds — sort by number descending
       const aNum = parseInt((a.orderId||'').replace(/\D/g,'')) || 0;
       const bNum = parseInt((b.orderId||'').replace(/\D/g,'')) || 0;
       return bNum - aNum;
     }
-    // Both enquiry â€” newest first (by id)
+    // Both enquiry — newest first (by id)
     return b.id > a.id ? 1 : -1;
   });
 
@@ -3990,12 +3990,12 @@ function refreshAllOrders(){
           <span class="customer-phone">${escapeHtml(o.phone)}</span>
         </div>
       </td>
-      <td><span class="product-tag">${escapeHtml(o.product||'â€”')}</span></td>
+      <td><span class="product-tag">${escapeHtml(o.product||'—')}</span></td>
       <td class="mono" style="font-weight:700;${!o.orderId?'color:var(--muted2);':''}">
-        ${!o.orderId ? 'â€”' : 'â‚¹'+Number(o.amount).toLocaleString('en-IN')}
+        ${!o.orderId ? '—' : '₹'+Number(o.amount).toLocaleString('en-IN')}
       </td>
-      <td>${!o.orderId ? '<span style="color:var(--muted2);font-size:11px;">â€”</span>' : paymentPill(o.payment)}</td>
-      <td style="color:var(--muted);font-size:12px;">${escapeHtml(o.courier||'â€”')}${o.tracking?'<br><span class="mono" style="font-size:10px;">'+escapeHtml(o.tracking)+'</span>':''}</td>
+      <td>${!o.orderId ? '<span style="color:var(--muted2);font-size:11px;">—</span>' : paymentPill(o.payment)}</td>
+      <td style="color:var(--muted);font-size:12px;">${escapeHtml(o.courier||'—')}${o.tracking?'<br><span class="mono" style="font-size:10px;">'+escapeHtml(o.tracking)+'</span>':''}</td>
       <td>${stagePill(stage)}</td>
       <td>
         <div class="action-btns" style="flex-wrap:wrap;gap:5px;">
@@ -4027,7 +4027,7 @@ function refreshCustomers(){
       <td class="mono">${escapeHtml(c.phone)}</td>
       <td style="color:var(--muted)">${escapeHtml(c.city)}</td>
       <td style="font-weight:700;color:${isReturning ? 'var(--success)' : 'var(--text)'}">${c.orders}</td>
-      <td class="mono" style="font-weight:600">â‚¹${c.spent.toLocaleString('en-IN')}</td>
+      <td class="mono" style="font-weight:600">₹${c.spent.toLocaleString('en-IN')}</td>
     </tr>`;
   }).join('');
 }
@@ -4044,24 +4044,24 @@ function refreshProducts(){
   );
   if(!products.length){ tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div><div class="empty-title">${q ? 'No results found' : 'No products yet'}</div><div class="empty-sub">${q ? '' : 'Click &quot;+ Add Product&quot; to add your first product'}</div></div></td></tr>`; return; }
   tbody.innerHTML = products.map(p => {
-    const stockNum = p.stock && p.stock!=='â€”' ? Number(p.stock) : null;
+    const stockNum = p.stock && p.stock!=='—' ? Number(p.stock) : null;
     const stockLabel = stockNum !== null
       ? (stockNum <= 5
-          ? `<span style="color:var(--danger);font-weight:700;">âš ï¸ ${stockNum}</span>`
+          ? `<span style="color:var(--danger);font-weight:700;">⚠️ ${stockNum}</span>`
           : `<span style="color:var(--success);font-weight:700;">${stockNum}</span>`)
-      : `<span style="color:var(--muted2);">â€”</span>`;
+      : `<span style="color:var(--muted2);">—</span>`;
     return `<tr onclick="openProductDetail('${escapeHtml(p.id)}')" style="cursor:pointer;">
       <td>
         <div style="display:flex;align-items:center;gap:10px;">
           ${p.img ? `<img src="${escapeHtml(p.img)}" style="width:36px;height:36px;border-radius:8px;object-fit:cover;border:1.5px solid var(--border);flex-shrink:0;" onerror="this.style.display='none'">` : `<div style="width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>`}
           <div>
             <div style="font-weight:700;font-size:13px;">${escapeHtml(p.name)}</div>
-            ${p.sku && p.sku!=='â€”' ? `<div style="font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;">${escapeHtml(p.sku)}</div>` : ''}
+            ${p.sku && p.sku!=='—' ? `<div style="font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;">${escapeHtml(p.sku)}</div>` : ''}
           </div>
         </div>
       </td>
       <td><span class="product-tag">${escapeHtml(p.category)}</span></td>
-      <td class="mono" style="font-weight:600;">â‚¹${Number(p.price).toLocaleString('en-IN')}</td>
+      <td class="mono" style="font-weight:600;">₹${Number(p.price).toLocaleString('en-IN')}</td>
       <td>${stockLabel}</td>
       <td>${p.orders}</td>
       <td>
@@ -4079,9 +4079,9 @@ function refreshPayments(){
   const allOrders = DB.getOrders();
   const paid = allOrders.filter(o => o.payment === 'paid').reduce((s,o) => s + (Number(o.amount)||0), 0);
   const unpaid = allOrders.filter(o => o.payment !== 'paid').reduce((s,o) => s + (Number(o.amount)||0), 0);
-  safeText('paidStat', 'â‚¹' + paid.toLocaleString('en-IN'));
-  safeText('unpaidStat', 'â‚¹' + unpaid.toLocaleString('en-IN'));
-  safeText('totalPayStat', 'â‚¹' + (paid+unpaid).toLocaleString('en-IN'));
+  safeText('paidStat', '₹' + paid.toLocaleString('en-IN'));
+  safeText('unpaidStat', '₹' + unpaid.toLocaleString('en-IN'));
+  safeText('totalPayStat', '₹' + (paid+unpaid).toLocaleString('en-IN'));
 
   const q = (document.getElementById('paymentSearchInput')?.value || '').toLowerCase().trim();
   let orders = allOrders;
@@ -4097,7 +4097,7 @@ function refreshPayments(){
     <tr>
       <td class="mono">${o.orderId ? '#'+escapeHtml(o.orderId) : '<span style="color:var(--muted2);font-size:11px;">Enquiry</span>'}</td>
       <td style="font-weight:600">${escapeHtml(o.name)}</td>
-      <td class="mono">â‚¹${Number(o.amount).toLocaleString('en-IN')}</td>
+      <td class="mono">₹${Number(o.amount).toLocaleString('en-IN')}</td>
       <td>${o.payment === 'paid'
         ? '<span class="status-pill delivered"><span class="status-dot"></span>Paid</span>'
         : '<span class="status-pill pending"><span class="status-dot"></span>Pending</span>'}</td>
@@ -4113,7 +4113,7 @@ function updateProductDatalist(){
   list.innerHTML = DB.getProducts().map(p => `<option value="${escapeHtml(p.name)}">`).join('');
 }
 
-// â•â• NEW ORDER â•â•
+// ══ NEW ORDER ══
 function openNewOrder(){
   ['f_name','f_phone'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   const hint = document.getElementById('returningHint');
@@ -4156,7 +4156,7 @@ function checkReturningCustomer(phone){
       </div>
       <div>
         <div style="font-size:10px;color:#b07a20;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Last Order</div>
-        <div style="font-size:13px;font-weight:700;color:#5a3500;">${lastOrder.date || 'â€”'}</div>
+        <div style="font-size:13px;font-weight:700;color:#5a3500;">${lastOrder.date || '—'}</div>
       </div>
       <div>
         <div style="font-size:10px;color:#b07a20;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Orders</div>
@@ -4164,7 +4164,7 @@ function checkReturningCustomer(phone){
       </div>
     </div>
     <div style="margin-top:9px;font-size:11px;color:#a06010;display:flex;align-items:center;gap:5px;">
-      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span><span>Click here to select product for this order â†’</span>
+      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span><span>Click here to select product for this order →</span>
     </div>
   `;
 }
@@ -4201,7 +4201,7 @@ function showNameSuggestions(query){
         <div style="font-size:13px;font-weight:700;color:var(--text);">${c.name}</div>
         <div style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;">${c.phone}</div>
       </div>
-      <span style="font-size:11px;color:var(--accent);">Select â†’</span>
+      <span style="font-size:11px;color:var(--accent);">Select →</span>
     </div>`).join('');
 }
 
@@ -4235,7 +4235,7 @@ function saveOrder(){
 }
 
 
-// â•â• DISPATCH â•â•
+// ══ DISPATCH ══
 function openDispatch(id){
   const order = DB.getOrders().find(o => o.id === id);
   if(!order) return;
@@ -4243,8 +4243,8 @@ function openDispatch(id){
   selectedCourier = '';
   document.querySelectorAll('.courier-chip').forEach(c => c.classList.remove('selected'));
   document.getElementById('d_tracking').value = '';
-  document.getElementById('dispatchCustomer').textContent = order.name + ' â€” ' + order.phone;
-  document.getElementById('dispatchProduct').textContent = order.product + ' Â· â‚¹' + Number(order.amount).toLocaleString('en-IN');
+  document.getElementById('dispatchCustomer').textContent = order.name + ' — ' + order.phone;
+  document.getElementById('dispatchProduct').textContent = order.product + ' · ₹' + Number(order.amount).toLocaleString('en-IN');
   document.getElementById('dispatchModal').classList.add('show');
 }
 
@@ -4266,7 +4266,7 @@ function confirmDispatch(){
   showToast('Order Dispatched! Press the WA button to send tracking details to the customer.');
 }
 
-// â•â• BILL â•â•
+// ══ BILL ══
 function buildBillHTML(order, s, forPrint){
   const noteText = s.billnote || 'Please take a video while opening the parcel. Without unboxing video, damage claims will not be accepted.';
   const tagline = s.tagline || '';
@@ -4289,18 +4289,18 @@ function buildBillHTML(order, s, forPrint){
             ${p.sku ? `<div style="font-size:10px;color:#888;margin-top:2px;">${escapeHtml(p.sku)}</div>` : ''}
           </td>
           <td style="padding:10px 12px;text-align:center;font-weight:600;">${qty}</td>
-          <td style="padding:10px 12px;text-align:right;font-weight:600;">â‚¹${price.toLocaleString('en-IN')}</td>
-          <td style="padding:10px 12px;text-align:right;font-weight:700;">â‚¹${total.toLocaleString('en-IN')}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:600;">₹${price.toLocaleString('en-IN')}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:700;">₹${total.toLocaleString('en-IN')}</td>
         </tr>`;
     });
   } else {
     subtotal = Number(order.amount) || 0;
     productRows = `
       <tr style="border-bottom:1px solid #e8e8e8;">
-        <td style="padding:10px 12px;font-weight:600;font-size:13px;color:#1a1a2e;">${escapeHtml(order.product || 'â€”')}</td>
+        <td style="padding:10px 12px;font-weight:600;font-size:13px;color:#1a1a2e;">${escapeHtml(order.product || '—')}</td>
         <td style="padding:10px 12px;text-align:center;font-weight:600;">1</td>
-        <td style="padding:10px 12px;text-align:right;font-weight:600;">â‚¹${subtotal.toLocaleString('en-IN')}</td>
-        <td style="padding:10px 12px;text-align:right;font-weight:700;">â‚¹${subtotal.toLocaleString('en-IN')}</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:600;">₹${subtotal.toLocaleString('en-IN')}</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:700;">₹${subtotal.toLocaleString('en-IN')}</td>
       </tr>`;
   }
 
@@ -4339,7 +4339,7 @@ function buildBillHTML(order, s, forPrint){
         <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">DATE</div>
         <div style="font-size:13px;font-weight:700;color:#0e2040;margin-bottom:10px;">${escapeHtml(order.date)}</div>
         <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">ORDER ID</div>
-        <div style="font-size:13px;font-weight:700;color:#0e2040;font-family:monospace;">${order.orderId ? '#ORD-'+escapeHtml(order.orderId) : 'â€”'}</div>
+        <div style="font-size:13px;font-weight:700;color:#0e2040;font-family:monospace;">${order.orderId ? '#ORD-'+escapeHtml(order.orderId) : '—'}</div>
       </div>
       <div style="padding:16px 20px;">
         <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">PAYMENT</div>
@@ -4375,14 +4375,14 @@ function buildBillHTML(order, s, forPrint){
       <div style="display:flex;justify-content:flex-end;margin-top:16px;">
         <div style="width:240px;">
           <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;color:#555;border-bottom:1px solid #eee;">
-            <span>Subtotal</span><span style="font-weight:600;">â‚¹${subtotal.toLocaleString('en-IN')}</span>
+            <span>Subtotal</span><span style="font-weight:600;">₹${subtotal.toLocaleString('en-IN')}</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;color:#555;border-bottom:1px solid #eee;">
-            <span>Delivery Charge</span><span style="font-weight:600;">â‚¹${shipping}</span>
+            <span>Delivery Charge</span><span style="font-weight:600;">₹${shipping}</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:10px 14px;background:#0e2040;border-radius:8px;margin-top:8px;">
             <span style="font-size:14px;font-weight:800;color:#fff;">Total</span>
-            <span style="font-size:15px;font-weight:900;color:#fff;">â‚¹${total.toLocaleString('en-IN')}</span>
+            <span style="font-size:15px;font-weight:900;color:#fff;">₹${total.toLocaleString('en-IN')}</span>
           </div>
         </div>
       </div>
@@ -4429,13 +4429,13 @@ function sendBillWhatsApp(){
   if(!currentBillOrder) return;
   const o = currentBillOrder;
   const s = getSettings();
-  const msg = `Invoice from *${s.shopName}*\n\nHi ${o.name},\n\nâ€¢ Product: ${o.product}\nâ€¢ Amount: â‚¹${Number(o.amount).toLocaleString('en-IN')}\nâ€¢ Payment: ${o.payment==='paid'?'Paid':'Pending (COD)'}\nâ€¢ Date: ${o.date}\nâ€¢ Order ID: ${o.orderId ? '#'+o.orderId : '(Enquiry)'}\n\nThank you for your order!\n\n*${s.shopName}*`;
+  const msg = `Invoice from *${s.shopName}*\n\nHi ${o.name},\n\n• Product: ${o.product}\n• Amount: ₹${Number(o.amount).toLocaleString('en-IN')}\n• Payment: ${o.payment==='paid'?'Paid':'Pending (COD)'}\n• Date: ${o.date}\n• Order ID: ${o.orderId ? '#'+o.orderId : '(Enquiry)'}\n\nThank you for your order!\n\n*${s.shopName}*`;
   const phone = o.phone.replace(/\D/g,'');
   const waPhone = phone.startsWith('91') && phone.length === 12 ? phone : '91' + phone;
   window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// â•â• SEND WHATSAPP (stage-based messages) â•â•
+// ══ SEND WHATSAPP (stage-based messages) ══
 function getTrackingUrl(courier, tracking){
   const urls = {
     'ST Courier': `https://stcourier.com`,
@@ -4454,10 +4454,10 @@ function sendWhatsApp(id){
   if(!order) return;
   const s = getSettings();
   const shop = s.shopName || 'Our Shop';
-  const sig = s.signature || 'â€” ' + shop;
+  const sig = s.signature || '— ' + shop;
   const stage = order.stage || 'enquiry';
   const orderId = order.orderId ? '#' + order.orderId : '';
-  const amt = 'â‚¹' + Number(order.amount).toLocaleString('en-IN');
+  const amt = '₹' + Number(order.amount).toLocaleString('en-IN');
   let msg = '';
 
   if(stage === 'enquiry'){
@@ -4474,9 +4474,9 @@ What product are you looking for? We will help you find the right one.
 
 Hi ${order.name},
 
-${orderId ? 'â€¢ Order ID: ' + orderId + '\n' : ''}â€¢ Product: ${order.product}
-â€¢ Amount: ${amt}
-â€¢ Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
 
 Next step: Your order is now being processed
 
@@ -4487,9 +4487,9 @@ Next step: Your order is now being processed
 
 Hi ${order.name},
 
-${orderId ? 'â€¢ Order ID: ' + orderId + '\n' : ''}â€¢ Product: ${order.product}
-â€¢ Amount: ${amt}
-â€¢ Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
 
 Next step: We are preparing your order for packing
 
@@ -4500,9 +4500,9 @@ Next step: We are preparing your order for packing
 
 Hi ${order.name},
 
-${orderId ? 'â€¢ Order ID: ' + orderId + '\n' : ''}â€¢ Product: ${order.product}
-â€¢ Amount: ${amt}
-â€¢ Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
 
 Next step: Your order will be packed very soon
 
@@ -4513,9 +4513,9 @@ Next step: Your order will be packed very soon
 
 Hi ${order.name},
 
-${orderId ? 'â€¢ Order ID: ' + orderId + '\n' : ''}â€¢ Product: ${order.product}
-â€¢ Amount: ${amt}
-â€¢ Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
 
 Next step: Your order will be dispatched soon
 
@@ -4527,11 +4527,11 @@ Next step: Your order will be dispatched soon
 
 Hi ${order.name},
 
-${orderId ? 'â€¢ Order ID: ' + orderId + '\n' : ''}â€¢ Product: ${order.product}
-â€¢ Amount: ${amt}
-â€¢ Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
-â€¢ Courier: ${order.courier || '-'}
-â€¢ Tracking: ${order.tracking || '-'}${trackLink ? '\nâ€¢ Track: ' + trackLink : ''}
+${orderId ? '• Order ID: ' + orderId + '\n' : ''}• Product: ${order.product}
+• Amount: ${amt}
+• Payment: ${order.payment === 'paid' ? 'Paid' : 'COD'}
+• Courier: ${order.courier || '-'}
+• Tracking: ${order.tracking || '-'}${trackLink ? '\n• Track: ' + trackLink : ''}
 
 Next step: Expect your delivery within 2-3 days
 
@@ -4548,7 +4548,7 @@ Next step: Expect your delivery within 2-3 days
   window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// â•â• MARK DELIVERED / PAID â•â•
+// ══ MARK DELIVERED / PAID ══
 function markDelivered(id){
   DB.updateOrder(id, { status: 'delivered', stage: 'delivered' });
   refreshAll();
@@ -4565,13 +4565,13 @@ function sendFeedbackWhatsApp(id){
 
 Hi ${order.name},
 
-â€¢ Order ID: ${order.orderId ? '#'+order.orderId : '-'}
-â€¢ Product: ${order.product}
+• Order ID: ${order.orderId ? '#'+order.orderId : '-'}
+• Product: ${order.product}
 
 We hope you love your order!
 
-â€¢ How was your experience?
-â€¢ Did the product meet your expectations?
+• How was your experience?
+• Did the product meet your expectations?
 
 Your review means a lot to us!
 
@@ -4613,12 +4613,12 @@ function filterOrdersByStage(stageKey){
   refreshStageStepper();
 }
 
-// â•â• SEARCH â•â•
+// ══ SEARCH ══
 function handleSearch(){
   refreshAllOrders();
 }
 
-// â•â• PRODUCTS â•â•
+// ══ PRODUCTS ══
 function previewImg(inputId, previewId, imgId){
   const val = document.getElementById(inputId).value.trim();
   const wrap = document.getElementById(previewId);
@@ -4641,7 +4641,7 @@ function saveProduct(){
   const desc = document.getElementById('p_desc').value.trim();
   const img = document.getElementById('p_img').value.trim();
   if(!name || !price){ showToast('Fill required fields!'); return; }
-  DB.addProduct({ name, category: category||'General', price, stock: stock||'â€”', sku: sku||'â€”', desc, img });
+  DB.addProduct({ name, category: category||'General', price, stock: stock||'—', sku: sku||'—', desc, img });
   closeModal('addProductModal');
   refreshAll();
   showToast('Product added!');
@@ -4654,8 +4654,8 @@ function openEditProduct(id){
   document.getElementById('ep_name').value = p.name;
   document.getElementById('ep_cat').value = p.category;
   document.getElementById('ep_price').value = p.price;
-  document.getElementById('ep_stock').value = (p.stock && p.stock!=='â€”') ? p.stock : '';
-  document.getElementById('ep_sku').value = (p.sku && p.sku!=='â€”') ? p.sku : '';
+  document.getElementById('ep_stock').value = (p.stock && p.stock!=='—') ? p.stock : '';
+  document.getElementById('ep_sku').value = (p.sku && p.sku!=='—') ? p.sku : '';
   document.getElementById('ep_desc').value = p.desc||'';
   document.getElementById('ep_img').value = p.img||'';
   const wrap = document.getElementById('ep_imgPreview');
@@ -4673,7 +4673,7 @@ function saveEditProduct(){
   const desc = document.getElementById('ep_desc').value.trim();
   const img = document.getElementById('ep_img').value.trim();
   if(!name || !price){ showToast('Fill required fields!'); return; }
-  DB.updateProduct(id, { name, category: category||'General', price, stock: stock||'â€”', sku: sku||'â€”', desc, img });
+  DB.updateProduct(id, { name, category: category||'General', price, stock: stock||'—', sku: sku||'—', desc, img });
   closeModal('editProductModal');
   closeProductDetail();
   refreshAll();
@@ -4688,7 +4688,7 @@ function confirmDeleteProduct(id, name){
   }
 }
 
-// â”€â”€ XSS-safe delete: reads id from data attribute, fetches name from DB â”€â”€
+// ── XSS-safe delete: reads id from data attribute, fetches name from DB ──
 function confirmDeleteProductSafe(btn){
   const id = btn.getAttribute('data-del-id');
   const p = DB.getProducts().find(p => p.id === id);
@@ -4704,8 +4704,8 @@ function confirmDeleteProductSafe(btn){
 function openProductDetail(id){
   const p = DB.getProducts().find(p => p.id === id);
   if(!p) return;
-  const stockColor = (p.stock && p.stock!=='â€”' && Number(p.stock) <= 5) ? 'var(--danger)' : 'var(--success)';
-  const stockBg = (p.stock && p.stock!=='â€”' && Number(p.stock) <= 5) ? 'var(--danger-bg)' : 'var(--success-bg)';
+  const stockColor = (p.stock && p.stock!=='—' && Number(p.stock) <= 5) ? 'var(--danger)' : 'var(--success)';
+  const stockBg = (p.stock && p.stock!=='—' && Number(p.stock) <= 5) ? 'var(--danger-bg)' : 'var(--success-bg)';
   document.getElementById('productDetailContent').innerHTML = `
     ${p.img ? `<img src="${p.img}" style="width:100%;height:160px;object-fit:cover;border-radius:10px;border:1.5px solid var(--border);margin-bottom:14px;" onerror="this.style.display='none'">` : ''}
     <div style="font-size:16px;font-weight:800;margin-bottom:4px;">${p.name}</div>
@@ -4713,15 +4713,15 @@ function openProductDetail(id){
     <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
       <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 10px;background:var(--surface2);border-radius:8px;">
         <span style="color:var(--muted);font-weight:600;">Price</span>
-        <span style="font-weight:800;font-family:'JetBrains Mono',monospace;">â‚¹${Number(p.price).toLocaleString('en-IN')}</span>
+        <span style="font-weight:800;font-family:'JetBrains Mono',monospace;">₹${Number(p.price).toLocaleString('en-IN')}</span>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 10px;background:${stockBg};border-radius:8px;">
         <span style="color:var(--muted);font-weight:600;">Stock</span>
-        <span style="font-weight:800;color:${stockColor};">${p.stock||'â€”'} units</span>
+        <span style="font-weight:800;color:${stockColor};">${p.stock||'—'} units</span>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 10px;background:var(--surface2);border-radius:8px;">
         <span style="color:var(--muted);font-weight:600;">SKU</span>
-        <span style="font-weight:700;font-family:'JetBrains Mono',monospace;">${p.sku||'â€”'}</span>
+        <span style="font-weight:700;font-family:'JetBrains Mono',monospace;">${p.sku||'—'}</span>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 10px;background:var(--surface2);border-radius:8px;">
         <span style="color:var(--muted);font-weight:600;">Total Orders</span>
@@ -4740,7 +4740,7 @@ function closeProductDetail(){
   document.getElementById('productDetailPanel').style.display='none';
 }
 
-// â•â• MODAL â•â•
+// ══ MODAL ══
 function closeModal(id){
   document.getElementById(id).classList.remove('show');
   if(AppState._planExpired){
@@ -4751,7 +4751,7 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if(e.target === m) m.classList.remove('show'); });
 });
 
-// â•â• TOAST â•â•
+// ══ TOAST ══
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -4759,7 +4759,7 @@ function showToast(msg){
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-// â•â• SETTINGS â•â•
+// ══ SETTINGS ══
 
 function applySettings(s){
   if(!s) return;
@@ -4781,13 +4781,13 @@ function applySettings(s){
   }
   setText('profile_shopname', shopName);
   setText('profile_tagline', s.tagline || '');
-  setText('profile_phone', s.phone || 'â€”');
-  setText('profile_district', s.district || 'â€”');
-  setText('profile_pincode', s.pincode || 'â€”');
-  setText('profile_address', s.address || 'â€”');
-  setText('profile_billnote', s.billnote || 'â€”');
+  setText('profile_phone', s.phone || '—');
+  setText('profile_district', s.district || '—');
+  setText('profile_pincode', s.pincode || '—');
+  setText('profile_address', s.address || '—');
+  setText('profile_billnote', s.billnote || '—');
   const profileEmailEl = document.getElementById('profile_email');
-  if(profileEmailEl) profileEmailEl.textContent = AppState._email || 'â€”';
+  if(profileEmailEl) profileEmailEl.textContent = AppState._email || '—';
   // Social media buttons with real SVG logos
   const socialEl = document.getElementById('profile_socials');
   if(socialEl){
@@ -4989,15 +4989,15 @@ function saveSettingsFromModal(){
         console.log('[SellerDesk] Settings saved OK. Logo in DB:', dbRow.logo ? 'yes ('+Math.round(dbRow.logo.length/1024)+'KB)' : 'none');
         // Reset _logoBase64 so next open uses saved logo
         if(AppState._logoBase64) { AppState._logoBase64 = null; }
-        showToast('Profile saved! âœ…');
+        showToast('Profile saved! ✅');
       }
     });
   } else {
-    showToast('Not logged in â€” profile saved locally only');
+    showToast('Not logged in — profile saved locally only');
   }
 }
 
-// â”€â”€ Order ID Prefix â”€â”€
+// ── Order ID Prefix ──
 function updateOrderPrefixPreview(val){
   const prefix = val.toUpperCase().trim();
   const preview = document.getElementById('order_prefix_preview');
@@ -5032,7 +5032,7 @@ async function saveBillingSettings(){
   const ok = await _saveSettingsFields(fields, 'billing_saved_msg');
   if(ok){
     updateOrderPrefixPreview(prefix);
-    showToast('Billing settings saved âœ…');
+    showToast('Billing settings saved ✅');
   }
 }
 
@@ -5043,7 +5043,7 @@ async function saveShippingSettings(){
     senderName:      document.getElementById('setting_sender_name').value.trim(),
   };
   const ok = await _saveSettingsFields(fields, 'shipping_saved_msg');
-  if(ok) showToast('Shipping settings saved âœ…');
+  if(ok) showToast('Shipping settings saved ✅');
 }
 
 async function saveBusinessSettings(){
@@ -5053,7 +5053,7 @@ async function saveBusinessSettings(){
     website:      document.getElementById('setting_website').value.trim(),
   };
   const ok = await _saveSettingsFields(fields, 'business_saved_msg');
-  if(ok) showToast('Business settings saved âœ…');
+  if(ok) showToast('Business settings saved ✅');
 }
 
 async function changePassword(){
@@ -5061,12 +5061,12 @@ async function changePassword(){
   const pw2 = document.getElementById('setting_confirm_password').value;
   const msg = document.getElementById('pw_change_msg');
   msg.style.display = 'block';
-  if(!pw || pw.length < 6){ msg.style.color = 'var(--danger)'; msg.textContent = 'âš ï¸ Password must be at least 6 characters.'; return; }
-  if(pw !== pw2){ msg.style.color = 'var(--danger)'; msg.textContent = 'âš ï¸ Passwords do not match.'; return; }
+  if(!pw || pw.length < 6){ msg.style.color = 'var(--danger)'; msg.textContent = '⚠️ Password must be at least 6 characters.'; return; }
+  if(pw !== pw2){ msg.style.color = 'var(--danger)'; msg.textContent = '⚠️ Passwords do not match.'; return; }
   const { error } = await _supa.auth.updateUser({ password: pw });
-  if(error){ msg.style.color = 'var(--danger)'; msg.textContent = 'âš ï¸ ' + error.message; return; }
+  if(error){ msg.style.color = 'var(--danger)'; msg.textContent = '⚠️ ' + error.message; return; }
   msg.style.color = 'var(--success)';
-  msg.textContent = 'âœ“ Password updated successfully!';
+  msg.textContent = '✓ Password updated successfully!';
   document.getElementById('setting_new_password').value = '';
   document.getElementById('setting_confirm_password').value = '';
   setTimeout(() => { msg.style.display = 'none'; }, 3000);
@@ -5074,7 +5074,7 @@ async function changePassword(){
 
 function confirmDeleteAccount(){
   if(!confirm('Are you sure you want to DELETE your account?\n\nAll orders, customers, and data will be permanently removed.\n\nThis CANNOT be undone!')) return;
-  if(!confirm('Last chance â€” this is permanent. Delete my account?')) return;
+  if(!confirm('Last chance — this is permanent. Delete my account?')) return;
   _deleteAccount();
 }
 
@@ -5082,7 +5082,7 @@ async function _deleteAccount(){
   showToast('Deleting account...');
   const uid = AppState._uid;
   if(uid){
-    // â”€â”€ Step 1: Save basic details to deleted_users for admin records â”€â”€
+    // ── Step 1: Save basic details to deleted_users for admin records ──
     const s = AppState.settings || {};
     const { data: { user } } = await _supa.auth.getUser();
     await _supa.from('deleted_users').insert({
@@ -5096,7 +5096,7 @@ async function _deleteAccount(){
       deleted_at: new Date().toISOString()
     });
 
-    // â”€â”€ Step 2: Delete all user data â”€â”€
+    // ── Step 2: Delete all user data ──
     await _supa.from('orders').delete().eq('user_id', uid);
     await _supa.from('customers').delete().eq('user_id', uid);
     await _supa.from('products').delete().eq('user_id', uid);
@@ -5105,10 +5105,10 @@ async function _deleteAccount(){
     await _supa.from('settings').delete().eq('user_id', uid);
   }
 
-  // â”€â”€ Step 3: Delete auth user (removes login permanently) â”€â”€
+  // ── Step 3: Delete auth user (removes login permanently) ──
   await _supa.rpc('delete_user');
 
-  showToast('Account deleted. Goodbye! ðŸ‘‹');
+  showToast('Account deleted. Goodbye! 👋');
   setTimeout(() => { location.reload(); }, 1500);
 }
 
@@ -5145,14 +5145,14 @@ function _populateSettingsPage(s){
 
 const FREE_ORDER_LIMIT = 20;
 const PAY_LINKS = {
-  growth: 'https://rzp.io/rzp/jj0WEzr8', // ðŸ‘ˆ Add your Razorpay Growth payment link here
-  elite:  'https://rzp.io/rzp/VfmALvIZ'   // ðŸ‘ˆ Add your Razorpay Elite payment link here
+  growth: 'https://rzp.io/rzp/jj0WEzr8', // 👈 Add your Razorpay Growth payment link here
+  elite:  'https://rzp.io/rzp/VfmALvIZ'   // 👈 Add your Razorpay Elite payment link here
 };
 
 function updatePlanUI(){
   const plan = getPlan();
   const paid = isPaid();
-  // Use raw plan key for label (e.g. 'trial-plan' â†’ 'TRIAL-PLAN')
+  // Use raw plan key for label (e.g. 'trial-plan' → 'TRIAL-PLAN')
   const rawPlan = AppState.plan || 'starter';
   const knownLabels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
   const planLabel = paid ? (knownLabels[plan] || rawPlan.toUpperCase()) : 'STARTER';
@@ -5180,7 +5180,7 @@ function updatePlanUI(){
   if(banner) banner.style.display = paid ? 'none' : 'block';
 }
 
-// Performance badge â€” topbar only (sidebar badge hidden)
+// Performance badge — topbar only (sidebar badge hidden)
 function updateSellerBadgeUI(badge){
   const sidebarEl = document.getElementById('sidebarPerfBadge');
   const topbarEl  = document.getElementById('topbarBadgeChip');
@@ -5191,10 +5191,10 @@ function updateSellerBadgeUI(badge){
     return;
   }
   const map = {
-    diamond: { label:'ðŸ’Ž Rank: Diamond', bg:'#dbeafe', color:'#1d4ed8', border:'#93c5fd' },
-    gold:    { label:'ðŸ¥‡ Rank: Gold',    bg:'#fef3c7', color:'#92400e', border:'#f59e0b' },
-    silver:  { label:'ðŸ¥ˆ Rank: Silver',  bg:'#e5e7eb', color:'#374151', border:'#cbd5e1' },
-    prime:   { label:'â­ Rank: Prime',   bg:'#f3e8ff', color:'#7c3aed', border:'#c4b5fd' },
+    diamond: { label:'💎 Rank: Diamond', bg:'#dbeafe', color:'#1d4ed8', border:'#93c5fd' },
+    gold:    { label:'🥇 Rank: Gold',    bg:'#fef3c7', color:'#92400e', border:'#f59e0b' },
+    silver:  { label:'🥈 Rank: Silver',  bg:'#e5e7eb', color:'#374151', border:'#cbd5e1' },
+    prime:   { label:'⭐ Rank: Prime',   bg:'#f3e8ff', color:'#7c3aed', border:'#c4b5fd' },
   };
   const m = map[String(badge).toLowerCase()] || map['prime'];
   // Topbar profile badge only
@@ -5249,7 +5249,7 @@ function showLockedToast(msg){
   window._lockedTimer = setTimeout(() => t.classList.remove('show'), 5500);
 }
 
-// â”€â”€ DYNAMIC PLAN CONFIGS FROM ADMIN â”€â”€
+// ── DYNAMIC PLAN CONFIGS FROM ADMIN ──
 let _cachedPlanConfigs = null;
 
 async function fetchPlanConfigs(){
@@ -5269,13 +5269,13 @@ async function fetchPlanConfigs(){
   }
 }
 
-// Admin panel FIXED_PLANS config â€” icons, colors, styles
+// Admin panel FIXED_PLANS config — icons, colors, styles
 const SELLER_PLAN_META = {
-  trial:  { badge:'TRIAL',          badge_bg:'#64748b', badge_color:'#fff', icon:'ðŸš€', price_color:'#64748b', btn_style:'border:2px solid #64748b;background:transparent;color:#64748b;', card_border:'#64748b', subtitle:'Try before you buy' },
-  free:   { badge:'FREE',           badge_bg:'#10b981', badge_color:'#fff', icon:'ðŸŽ', price_color:'#10b981', btn_style:'border:2px solid #10b981;background:transparent;color:#10b981;', card_border:'#10b981', subtitle:'For new sellers getting started' },
-  growth: { badge:'GROWTH',         badge_bg:'#f97316', badge_color:'#fff', icon:'ðŸ“ˆ', price_color:'#f97316', btn_style:'background:#f97316;color:#fff;border:0;', card_border:'#f97316', subtitle:'For serious sellers', popular:true },
-  elite:  { badge:'ELITE',          badge_bg:'#7c3aed', badge_color:'#fff', icon:'ðŸ’Ž', price_color:'#7c3aed', btn_style:'background:#7c3aed;color:#fff;border:0;', card_border:'#7c3aed', subtitle:'For advanced & high volume sellers' },
-  offer:  { badge:'âš¡ LIMITED OFFER',badge_bg:'#dc2626', badge_color:'#fff', icon:'ðŸŽ¯', price_color:'#dc2626', btn_style:'background:#dc2626;color:#fff;border:0;', card_border:'#dc2626', subtitle:'Special limited time deal' },
+  trial:  { badge:'TRIAL',          badge_bg:'#64748b', badge_color:'#fff', icon:'🚀', price_color:'#64748b', btn_style:'border:2px solid #64748b;background:transparent;color:#64748b;', card_border:'#64748b', subtitle:'Try before you buy' },
+  free:   { badge:'FREE',           badge_bg:'#10b981', badge_color:'#fff', icon:'🎁', price_color:'#10b981', btn_style:'border:2px solid #10b981;background:transparent;color:#10b981;', card_border:'#10b981', subtitle:'For new sellers getting started' },
+  growth: { badge:'GROWTH',         badge_bg:'#f97316', badge_color:'#fff', icon:'📈', price_color:'#f97316', btn_style:'background:#f97316;color:#fff;border:0;', card_border:'#f97316', subtitle:'For serious sellers', popular:true },
+  elite:  { badge:'ELITE',          badge_bg:'#7c3aed', badge_color:'#fff', icon:'💎', price_color:'#7c3aed', btn_style:'background:#7c3aed;color:#fff;border:0;', card_border:'#7c3aed', subtitle:'For advanced & high volume sellers' },
+  offer:  { badge:'⚡ LIMITED OFFER',badge_bg:'#dc2626', badge_color:'#fff', icon:'🎯', price_color:'#dc2626', btn_style:'background:#dc2626;color:#fff;border:0;', card_border:'#dc2626', subtitle:'Special limited time deal' },
 };
 
 const SELLER_ALL_FEATURES = [
@@ -5299,7 +5299,7 @@ function buildPlanCardHTML(cfg, currentPlan){
   // Use admin meta for icon/colors/badge
   const meta = SELLER_PLAN_META[planKey] || {
     badge: cfg.badge_label || '', badge_bg: cfg.badge_color || '#378add', badge_color:'#fff',
-    icon: 'ðŸ“¦', price_color: cfg.accent_color || '#378add',
+    icon: '📦', price_color: cfg.accent_color || '#378add',
     btn_style: `background:${cfg.button_color||'#378add'};color:#fff;border:0;`,
     card_border: cfg.card_border_color || '#e5e7eb',
     subtitle: cfg.footnote || '', popular: cfg.is_popular || false
@@ -5310,7 +5310,7 @@ function buildPlanCardHTML(cfg, currentPlan){
   try {
     const raw = Array.isArray(cfg.features) ? cfg.features : JSON.parse(cfg.features || '[]');
     if(raw.length && typeof raw[0] === 'object' && 'label' in raw[0]){
-      // DB has {label, enabled} format â€” map by position (index) to SELLER_ALL_FEATURES keys
+      // DB has {label, enabled} format — map by position (index) to SELLER_ALL_FEATURES keys
       raw.forEach((f, idx) => {
         if(f.enabled === true || f.enabled === 'true'){
           // Try label match first
@@ -5337,14 +5337,14 @@ function buildPlanCardHTML(cfg, currentPlan){
   const featuresHTML = SELLER_ALL_FEATURES.map(f => {
     const enabled = enabledKeys.includes(f.key);
     return `<div style="display:flex;align-items:center;gap:6px;font-size:11px;color:${enabled?'#374151':'#94a3b8'};font-weight:600;margin-bottom:4px;">
-      <span style="font-weight:900;flex-shrink:0;color:${enabled?'#10b981':'#ef4444'};font-size:12px;">${enabled?'âœ“':'âœ—'}</span>${f.label}
+      <span style="font-weight:900;flex-shrink:0;color:${enabled?'#10b981':'#ef4444'};font-size:12px;">${enabled?'✓':'✗'}</span>${f.label}
     </div>`;
   }).join('');
 
   let btnHTML = '';
-  const btnLabel = cfg.button_label || (isFree ? (planKey==='trial'?'Start Trial â†’':'Start Free â†’') : `Get ${planName} â†’`);
+  const btnLabel = cfg.button_label || (isFree ? (planKey==='trial'?'Start Trial →':'Start Free →') : `Get ${planName} →`);
   if(isCurrent){
-    btnHTML = `<button style="width:100%;border-radius:12px;padding:10px;font-size:12px;font-weight:900;cursor:default;border:2px solid #10b981;background:transparent;color:#10b981;">âœ“ Current Plan</button>`;
+    btnHTML = `<button style="width:100%;border-radius:12px;padding:10px;font-size:12px;font-weight:900;cursor:default;border:2px solid #10b981;background:transparent;color:#10b981;">✓ Current Plan</button>`;
   } else if(isFree){
     btnHTML = `<button style="width:100%;border-radius:12px;padding:10px;font-size:12px;font-weight:900;cursor:default;${meta.btn_style}">${btnLabel}</button>`;
   } else {
@@ -5362,7 +5362,7 @@ function buildPlanCardHTML(cfg, currentPlan){
         <div style="font-size:28px;margin-bottom:6px;">${meta.icon}</div>
         <div style="font-size:17px;font-weight:900;color:#071427;margin-bottom:3px;">${planName}</div>
         <div style="font-size:11px;color:#94a3b8;margin-bottom:14px;">${meta.subtitle}</div>
-        <div style="font-size:32px;font-weight:900;color:${meta.price_color};line-height:1;">â‚¹${price.toLocaleString('en-IN')}</div>
+        <div style="font-size:32px;font-weight:900;color:${meta.price_color};line-height:1;">₹${price.toLocaleString('en-IN')}</div>
         <div style="font-size:11px;color:#94a3b8;font-weight:600;margin-bottom:16px;">${durationLabel}</div>
         <!-- Features -->
         <div style="text-align:left;margin-bottom:14px;flex:1;">${featuresHTML}</div>
@@ -5392,41 +5392,41 @@ async function openUpgradeModal(){
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
           <span style="font-size:11px;font-weight:700;background:#e8f5e9;color:#2d9e6b;padding:3px 9px;border-radius:20px;">30-day free trial</span>
         </div>
-        <div class="plan-price" style="color:var(--muted);">â‚¹0 <span>/ 30 days</span></div>
+        <div class="plan-price" style="color:var(--muted);">₹0 <span>/ 30 days</span></div>
         <div style="height:1px;background:var(--border);margin:12px 0;"></div>
-        <div class="plan-feature"><span class="tick">âœ“</span> Digital bill (with watermark)</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> WhatsApp messaging</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> Customer &amp; product manage</div>
-        <button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.5;" disabled>${currentPlan==='starter'?'âœ“ Current Plan':'Free Plan'}</button>
+        <div class="plan-feature"><span class="tick">✓</span> Digital bill (with watermark)</div>
+        <div class="plan-feature"><span class="tick">✓</span> WhatsApp messaging</div>
+        <div class="plan-feature"><span class="tick">✓</span> Customer &amp; product manage</div>
+        <button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.5;" disabled>${currentPlan==='starter'?'✓ Current Plan':'Free Plan'}</button>
         <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">After 30 days, upgrade to continue</div>
       </div>
       <div class="plan-card pro-card" style="flex:1;">
         <div class="plan-card-badge" style="background:linear-gradient(90deg,#f59e0b,#f97316);">Most Popular</div>
         <div class="plan-name">Growth</div>
-        <div class="plan-price" style="color:#f59e0b;">â‚¹199 <span>/ month</span></div>
+        <div class="plan-price" style="color:#f59e0b;">₹199 <span>/ month</span></div>
         <div style="height:1px;background:#f59e0b44;margin:12px 0;"></div>
-        <div class="plan-feature"><span class="tick">âœ“</span> <strong>Unlimited</strong> orders</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> PDF download &amp; print</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> A5 Shipping label + QR</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> WhatsApp messaging</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> Priority support</div>
+        <div class="plan-feature"><span class="tick">✓</span> <strong>Unlimited</strong> orders</div>
+        <div class="plan-feature"><span class="tick">✓</span> PDF download &amp; print</div>
+        <div class="plan-feature"><span class="tick">✓</span> A5 Shipping label + QR</div>
+        <div class="plan-feature"><span class="tick">✓</span> WhatsApp messaging</div>
+        <div class="plan-feature"><span class="tick">✓</span> Priority support</div>
         ${currentPlan==='growth'
-          ? `<button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.6;" disabled>âœ“ Current Plan</button>`
-          : `<button class="btn-primary" style="width:100%;margin-top:14px;background:linear-gradient(90deg,#f59e0b,#f97316);" onclick="goToPay('growth')">Upgrade to Growth â€” â‚¹199/mo â†’</button>`}
-        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">Billed monthly Â· Cancel anytime</div>
+          ? `<button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.6;" disabled>✓ Current Plan</button>`
+          : `<button class="btn-primary" style="width:100%;margin-top:14px;background:linear-gradient(90deg,#f59e0b,#f97316);" onclick="goToPay('growth')">Upgrade to Growth — ₹199/mo →</button>`}
+        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">Billed monthly · Cancel anytime</div>
       </div>
       <div class="plan-card" style="flex:1;border-color:var(--purple);background:linear-gradient(135deg,#f5f0ff,#fff);">
         <div class="plan-card-badge" style="background:linear-gradient(90deg,var(--purple),#9b6fe0);">Elite</div>
         <div class="plan-name" style="color:var(--purple);">Elite</div>
-        <div class="plan-price" style="color:var(--purple);">â‚¹1,999 <span>/ year</span></div>
-        <div style="background:linear-gradient(90deg,var(--purple),#9b6fe0);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px 10px;border-radius:6px;margin-bottom:12px;">Best value â‚¹167/mo</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> Everything in Growth</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> 1 full year access</div>
-        <div class="plan-feature"><span class="tick">âœ“</span> VIP support</div>
+        <div class="plan-price" style="color:var(--purple);">₹1,999 <span>/ year</span></div>
+        <div style="background:linear-gradient(90deg,var(--purple),#9b6fe0);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px 10px;border-radius:6px;margin-bottom:12px;">Best value ₹167/mo</div>
+        <div class="plan-feature"><span class="tick">✓</span> Everything in Growth</div>
+        <div class="plan-feature"><span class="tick">✓</span> 1 full year access</div>
+        <div class="plan-feature"><span class="tick">✓</span> VIP support</div>
         ${currentPlan==='elite'
-          ? `<button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.6;" disabled>âœ“ Current Plan</button>`
-          : `<button class="btn-primary" style="width:100%;margin-top:14px;background:linear-gradient(90deg,var(--purple),#9b6fe0);" onclick="goToPay('elite')">Get Elite â€” â‚¹1,999/yr â†’</button>`}
-        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">One-time yearly payment Â· Best deal</div>
+          ? `<button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.6;" disabled>✓ Current Plan</button>`
+          : `<button class="btn-primary" style="width:100%;margin-top:14px;background:linear-gradient(90deg,var(--purple),#9b6fe0);" onclick="goToPay('elite')">Get Elite — ₹1,999/yr →</button>`}
+        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">One-time yearly payment · Best deal</div>
       </div>`;
   }
 }
@@ -5476,10 +5476,10 @@ function submitCustomerDetails(){
   showToast('Redirecting to payment...');
 }
 
-// â•â• UPGRADE MODAL â•â•
+// ══ UPGRADE MODAL ══
 
 
-// â•â• REPORTS â•â•
+// ══ REPORTS ══
 let reportDateMode = '7d';
 let reportFromDate = null;
 let reportToDate = null;
@@ -5540,7 +5540,7 @@ function applyCustomDate(){
   if(!f || !t){ showToast('Select both From and To dates!'); return; }
   reportFromDate = f;
   reportToDate = t;
-  document.getElementById('reportDateLabel').textContent = f + ' â†’ ' + t;
+  document.getElementById('reportDateLabel').textContent = f + ' → ' + t;
   refreshReports();
 }
 
@@ -5550,15 +5550,15 @@ function refreshReports(){
   const products = DB.getProducts();
   const confirmedOrders = orders.filter(o => o.orderId);
 
-  // â”€â”€ KPI Cards â”€â”€
+  // ── KPI Cards ──
   const revenue = confirmedOrders.filter(o => o.payment === 'paid').reduce((s,o) => s + (Number(o.amount)||0), 0);
   document.getElementById('rpt_totalOrders').textContent = confirmedOrders.length;
-  document.getElementById('rpt_revenue').textContent = 'â‚¹' + revenue.toLocaleString('en-IN');
+  document.getElementById('rpt_revenue').textContent = '₹' + revenue.toLocaleString('en-IN');
 
   // Customer stats
   const custMap = {};
   confirmedOrders.forEach(o => {
-    if(!custMap[o.phone]) custMap[o.phone] = { orders: 0, city: o.city||'â€”', name: o.name, lastDate: o.date, spent: 0 };
+    if(!custMap[o.phone]) custMap[o.phone] = { orders: 0, city: o.city||'—', name: o.name, lastDate: o.date, spent: 0 };
     custMap[o.phone].orders++;
     custMap[o.phone].spent += Number(o.amount)||0;
     custMap[o.phone].lastDate = o.date;
@@ -5577,21 +5577,21 @@ function refreshReports(){
   document.getElementById('rpt_cg_repeat').textContent = repeatCust;
 
   const newPct = newCust > 0 ? '+' + Math.round((newCust / Math.max(allPhones.length,1))*100) + '%' : '0%';
-  document.getElementById('rpt_cg_new_pct').textContent = 'â–² ' + newPct;
+  document.getElementById('rpt_cg_new_pct').textContent = '▲ ' + newPct;
   document.getElementById('rpt_cg_repeat_pct').innerHTML = repeatCust > 0
-    ? '<span style="color:var(--success);">â–² ' + repeatCust + ' loyal</span>'
-    : '<span style="color:var(--muted2);">â–¼ 0</span>';
+    ? '<span style="color:var(--success);">▲ ' + repeatCust + ' loyal</span>'
+    : '<span style="color:var(--muted2);">▼ 0</span>';
 
   // Best city+product combo
   const comboMap = {};
   confirmedOrders.forEach(o => {
-    const key = (o.city||'Unknown') + ' â†’ ' + (o.product||'Unknown');
+    const key = (o.city||'Unknown') + ' → ' + (o.product||'Unknown');
     comboMap[key] = (comboMap[key]||0) + 1;
   });
   const topCombo = Object.entries(comboMap).sort((a,b) => b[1]-a[1])[0];
-  document.getElementById('rpt_best_combo').textContent = topCombo ? topCombo[0] : 'â€”';
+  document.getElementById('rpt_best_combo').textContent = topCombo ? topCombo[0] : '—';
 
-  // â”€â”€ City Wise Chart â”€â”€
+  // ── City Wise Chart ──
   const cityMap = {};
   confirmedOrders.forEach(o => {
     const c = o.city || 'Unknown';
@@ -5612,12 +5612,12 @@ function refreshReports(){
           <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width 0.6s ease;"></div>
         </div>
         <div style="font-size:13px;font-weight:800;color:var(--dark);width:28px;text-align:right;">${count}</div>
-        <div style="font-size:11px;font-weight:700;color:${i===0?'var(--success)':'var(--muted2)'};width:40px;">â–² ${change}%</div>
+        <div style="font-size:11px;font-weight:700;color:${i===0?'var(--success)':'var(--muted2)'};width:40px;">▲ ${change}%</div>
       </div>`;
     }).join('');
   }
 
-  // â”€â”€ Product Wise Chart â”€â”€
+  // ── Product Wise Chart ──
   const productSales = {};
   confirmedOrders.forEach(o => {
     const key = o.product || 'Unknown';
@@ -5644,15 +5644,15 @@ function refreshReports(){
           <div style="height:100%;width:${pct}%;background:${color};border-radius:4px;transition:width 0.6s ease;"></div>
         </div>
         <div style="font-size:13px;font-weight:800;color:var(--dark);width:28px;text-align:right;">${data.orders}</div>
-        <div style="font-size:11px;font-weight:700;color:${isDown?'var(--danger)':'var(--success)'};width:46px;">${isDown?'â–¼':'â–²'} ${change}%</div>
+        <div style="font-size:11px;font-weight:700;color:${isDown?'var(--danger)':'var(--success)'};width:46px;">${isDown?'▼':'▲'} ${change}%</div>
       </div>`;
     }).join('');
   }
 
   // Top product
-  document.getElementById('rpt_top_product').textContent = sortedProds[0] ? sortedProds[0][0] : 'â€”';
+  document.getElementById('rpt_top_product').textContent = sortedProds[0] ? sortedProds[0][0] : '—';
 
-  // â”€â”€ Delivery Summary â”€â”€
+  // ── Delivery Summary ──
   const dPending    = confirmedOrders.filter(o => o.status === 'pending' || o.stage === 'packing').length;
   const dDispatched = confirmedOrders.filter(o => o.status === 'dispatched' || o.stage === 'dispatched').length;
   const dDelivered  = confirmedOrders.filter(o => o.status === 'delivered' || o.stage === 'delivered').length;
@@ -5663,7 +5663,7 @@ function refreshReports(){
   document.getElementById('rpt_d_delivered').textContent = dDelivered;
   document.getElementById('rpt_d_rate').textContent = dRate + '%';
 
-  // â”€â”€ Enquiry Funnel Chart â”€â”€
+  // ── Enquiry Funnel Chart ──
   const allOrdersForFunnel = DB.getOrders();
   const funnelStages = [
     { key: 'enquiry',       label: 'Enquiry',       color: '#5a7499' },
@@ -5705,14 +5705,14 @@ function refreshReports(){
             </div>
             <div style="width:48px;text-align:right;font-size:13px;font-weight:800;color:var(--dark);">${convPct}%</div>
             ${i > 0 && dropCount > 0
-              ? `<div style="width:70px;text-align:right;font-size:11px;font-weight:700;color:var(--danger);">â–¼ ${dropCount} drop</div>`
+              ? `<div style="width:70px;text-align:right;font-size:11px;font-weight:700;color:var(--danger);">▼ ${dropCount} drop</div>`
               : `<div style="width:70px;"></div>`}
           </div>
         </div>`;
     }).join('');
   }
 
-  // â”€â”€ Top Customers Table â”€â”€
+  // ── Top Customers Table ──
   const sortedCust = Object.values(custMap).sort((a,b) => b.spent - a.spent);
   const custTbody = document.getElementById('rpt_customerTbody');
   if(!sortedCust.length){
@@ -5726,17 +5726,17 @@ function refreshReports(){
         <td class="mono">${c.phone}</td>
         <td style="color:var(--muted);">${c.city}</td>
         <td style="font-weight:700;color:var(--accent);">${c.orders}</td>
-        <td class="mono" style="font-weight:800;color:var(--success);">â‚¹${c.spent.toLocaleString('en-IN')}</td>
+        <td class="mono" style="font-weight:800;color:var(--success);">₹${c.spent.toLocaleString('en-IN')}</td>
         <td style="font-size:12px;color:var(--muted);">${c.lastDate}</td>
       </tr>`;
     }).join('');
   }
 
-  // â”€â”€ Auto generate insights after render â”€â”€
+  // ── Auto generate insights after render ──
   generateAIInsights();
 }
 
-// â”€â”€ Smart Quick Insights (Rule-based, no API key needed) â”€â”€
+// ── Smart Quick Insights (Rule-based, no API key needed) ──
 function generateAIInsights(){
   const btn = document.getElementById('rpt_ai_btn');
   const insightsEl = document.getElementById('rpt_insights');
@@ -5758,7 +5758,7 @@ function generateAIInsights(){
         return;
       }
 
-      // â”€â”€ Compute all stats â”€â”€
+      // ── Compute all stats ──
       const cityMap = {}, prodMap = {}, phoneMap = {};
       let revenue = 0, paidRevenue = 0, codRevenue = 0;
       let pendingCount = 0, deliveredCount = 0, dispatchedCount = 0;
@@ -5789,41 +5789,41 @@ function generateAIInsights(){
       const delivRate  = orders.length ? Math.round((deliveredCount/orders.length)*100) : 0;
       const codShare   = revenue ? Math.round((codRevenue/revenue)*100) : 0;
 
-      // â”€â”€ Build smart insights â”€â”€
+      // ── Build smart insights ──
       const insights = [];
 
-      // Insight 1 â€” Revenue & orders summary
+      // Insight 1 — Revenue & orders summary
       if(revenue > 0){
-        insights.push(`<b>${escapeHtml(period)}</b> Revenue: <b>â‚¹${revenue.toLocaleString('en-IN')}</b> across <b>${orders.length} orders</b>. Average order value: <b>â‚¹${avgOrder.toLocaleString('en-IN')}</b>. ${avgOrder > 500 ? 'Excellent performance, keep it up! ' : 'Try adding premium products to increase your average order value.'}`);
+        insights.push(`<b>${escapeHtml(period)}</b> Revenue: <b>₹${revenue.toLocaleString('en-IN')}</b> across <b>${orders.length} orders</b>. Average order value: <b>₹${avgOrder.toLocaleString('en-IN')}</b>. ${avgOrder > 500 ? 'Excellent performance, keep it up! ' : 'Try adding premium products to increase your average order value.'}`);
       } else {
         insights.push(`<b>${orders.length} orders</b> recorded in ${escapeHtml(period)}. Don't forget to add payment details!`);
       }
 
-      // Insight 2 â€” Top city & product
+      // Insight 2 — Top city & product
       if(topCity && topProd){
-        insights.push(`Top city: <b>${escapeHtml(topCity[0])}</b> (${topCity[1]} orders) Â· Top product: <b>${escapeHtml(topProd[0])}</b> (${topProd[1].orders} orders, â‚¹${topProd[1].revenue.toLocaleString('en-IN')}). ${topCity[0] !== 'Unknown' ? 'Run targeted promotions in '+escapeHtml(topCity[0])+' to grow further! ' : 'Add customer city data for better targeting.'}`);
+        insights.push(`Top city: <b>${escapeHtml(topCity[0])}</b> (${topCity[1]} orders) · Top product: <b>${escapeHtml(topProd[0])}</b> (${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')}). ${topCity[0] !== 'Unknown' ? 'Run targeted promotions in '+escapeHtml(topCity[0])+' to grow further! ' : 'Add customer city data for better targeting.'}`);
       } else if(topProd){
-        insights.push(`Best seller: <b>${escapeHtml(topProd[0])}</b> â€” ${topProd[1].orders} orders, â‚¹${topProd[1].revenue.toLocaleString('en-IN')} revenue. Feature this product on Instagram for more sales! `);
+        insights.push(`Best seller: <b>${escapeHtml(topProd[0])}</b> — ${topProd[1].orders} orders, ₹${topProd[1].revenue.toLocaleString('en-IN')} revenue. Feature this product on Instagram for more sales! `);
       }
 
-      // Insight 3 â€” Customer loyalty
+      // Insight 3 — Customer loyalty
       if(repeatCust > 0){
         const loyalPct = Math.round((repeatCust / (repeatCust + newCust)) * 100);
-        insights.push(`<b>${repeatCust} repeat customers</b> (${loyalPct}% loyalty rate)! Reward them with exclusive offers. <b>${newCust} new customers</b> joined this period â€” send them a welcome message!`);
+        insights.push(`<b>${repeatCust} repeat customers</b> (${loyalPct}% loyalty rate)! Reward them with exclusive offers. <b>${newCust} new customers</b> joined this period — send them a welcome message!`);
       } else if(newCust > 0){
         insights.push(`<b>${newCust} new customers</b> joined this period! Send a follow-up message to encourage repeat orders. Loyal customers = stable income! `);
       }
 
-      // Insight 4 â€” Delivery or COD tip
+      // Insight 4 — Delivery or COD tip
       if(delivRate > 0){
         const tip = delivRate >= 80 ? 'Excellent delivery rate! Customer satisfaction is at its peak.' :
                     delivRate >= 50 ? 'Good progress! Improve dispatch speed to push the rate higher.' :
                                       'Delivery rate is low. Dispatch pending orders quickly!';
-        insights.push(`Delivery rate: <b>${delivRate}%</b> (${deliveredCount} delivered, ${dispatchedCount} in-transit, ${pendingCount} pending). ${tip}${codShare > 0 ? ` COD share: <b>${codShare}%</b> â€” offer a small discount to encourage prepaid orders.` : ''}`);
+        insights.push(`Delivery rate: <b>${delivRate}%</b> (${deliveredCount} delivered, ${dispatchedCount} in-transit, ${pendingCount} pending). ${tip}${codShare > 0 ? ` COD share: <b>${codShare}%</b> — offer a small discount to encourage prepaid orders.` : ''}`);
       } else if(codShare > 0){
         insights.push(`COD orders account for <b>${codShare}%</b> of sales. Offering a small discount to prepaid customers can improve your cash flow. Give it a try! `);
       } else {
-        insights.push(`Orders are coming in â€” keep tracking statuses! Mark delivered orders to see your delivery rate insights. `);
+        insights.push(`Orders are coming in — keep tracking statuses! Mark delivered orders to see your delivery rate insights. `);
       }
 
       const colors2 = ['var(--accent)','var(--success)','var(--warning)','var(--purple)'];
@@ -5839,7 +5839,7 @@ function generateAIInsights(){
   }, 400); // slight delay for smooth UX feel
 }
 
-// â”€â”€ Export Excel â”€â”€
+// ── Export Excel ──
 function exportReportExcel(){
   const orders = getReportOrders().filter(o => o.orderId);
   if(!orders.length){ showToast('No data to export!'); return; }
@@ -5856,7 +5856,7 @@ function exportReportExcel(){
   showToast('Excel (CSV) downloaded!');
 }
 
-// â”€â”€ Download PDF â”€â”€
+// ── Download PDF ──
 function downloadReportPDF(){
   const s = getSettings ? getSettings() : {};
   const period = document.getElementById('reportDateLabel')?.textContent || '';
@@ -5872,7 +5872,7 @@ function downloadReportPDF(){
   const topProds = Object.entries(prodMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
 
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
-  <title>Reports â€” ${s.shopName||'Shop'}<\/title>
+  <title>Reports — ${s.shopName||'Shop'}<\/title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:Arial,sans-serif;padding:24px;color:#111;font-size:13px;}
@@ -5888,11 +5888,11 @@ function downloadReportPDF(){
     td{padding:8px 10px;border-bottom:1px solid #eee;font-size:12px;}
     @page{size:A4;margin:15mm;}
   <\/style><\/head><body>
-  <h1>Reports â€” ${s.shopName||'My Shop'}</h1>
+  <h1>Reports — ${s.shopName||'My Shop'}</h1>
   <div class="sub">Period: ${period} &nbsp;|&nbsp; Generated: ${new Date().toLocaleString('en-IN')}</div>
   <div class="kpi-row">
     <div class="kpi"><div class="kpi-val">${orders.length}</div><div class="kpi-lbl">Total Orders</div></div>
-    <div class="kpi"><div class="kpi-val">â‚¹${revenue.toLocaleString('en-IN')}</div><div class="kpi-lbl">Revenue</div></div>
+    <div class="kpi"><div class="kpi-val">₹${revenue.toLocaleString('en-IN')}</div><div class="kpi-lbl">Revenue</div></div>
     <div class="kpi"><div class="kpi-val">${Object.keys(cityMap).length}</div><div class="kpi-lbl">Cities</div></div>
     <div class="kpi"><div class="kpi-val">${Object.keys(prodMap).length}</div><div class="kpi-lbl">Products</div></div>
   </div>
@@ -5906,7 +5906,7 @@ function downloadReportPDF(){
   </tbody></table>
   <h2>All Orders</h2>
   <table><thead><tr><th>Order ID</th><th>Customer</th><th>City</th><th>Product</th><th>Amount</th><th>Payment</th><th>Date</th></tr></thead><tbody>
-  ${orders.map(o=>`<tr><td>#${o.orderId}</td><td>${o.name}</td><td>${o.city||'â€”'}</td><td>${o.product}</td><td>â‚¹${Number(o.amount||0).toLocaleString('en-IN')}</td><td>${o.payment||'â€”'}</td><td>${o.date}</td></tr>`).join('')}
+  ${orders.map(o=>`<tr><td>#${o.orderId}</td><td>${o.name}</td><td>${o.city||'—'}</td><td>${o.product}</td><td>₹${Number(o.amount||0).toLocaleString('en-IN')}</td><td>${o.payment||'—'}</td><td>${o.date}</td></tr>`).join('')}
   </tbody></table>
   \x3cscript>window.onload=()=>{window.print();window.onafterprint=()=>window.close();}\x3c/script>
   <\/body><\/html>`;
@@ -5916,19 +5916,19 @@ function downloadReportPDF(){
   a.href = URL.createObjectURL(blob);
   a.download = `Report_${(s.shopName||'Shop').replace(/\s+/g,'_')}_${new Date().toLocaleDateString('en-IN').replace(/\//g,'-')}.html`;
   a.click();
-  showToast('PDF ready! Open file â†’ Ctrl+P â†’ Save as PDF');
+  showToast('PDF ready! Open file → Ctrl+P → Save as PDF');
 }
 
-// â”€â”€ INIT â”€â”€
+// ── INIT ──
 loadSettingsForm();
 applyFeatures();
 updatePlanUI();
 refreshAll();
 
-// â•â• PRINT BILL â•â•
+// ══ PRINT BILL ══
 function getBillPageHTML(order, s){
   return `<!DOCTYPE html><html><head><meta charset="UTF-8">
-  <title>Invoice ${order.orderId ? '#'+order.orderId : '(Enquiry)'} â€” ${s.shopName}<\/title>
+  <title>Invoice ${order.orderId ? '#'+order.orderId : '(Enquiry)'} — ${s.shopName}<\/title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     body{background:#fff;font-family:'Segoe UI',Arial,sans-serif;}
@@ -5987,10 +5987,10 @@ function downloadBillPDF(){
   a.href = URL.createObjectURL(blob);
   a.download = `Invoice_${o.orderId||o.id}_${o.name.replace(/\s+/g,'_')}.html`;
   a.click();
-  showToast('Bill downloaded! Open â†’ Ctrl+P â†’ Save as PDF');
+  showToast('Bill downloaded! Open → Ctrl+P → Save as PDF');
 }
 
-// â•â• SHIPPING LABEL â•â•
+// ══ SHIPPING LABEL ══
 let currentLabelOrder = null;
 
 function openShippingLabel(id){
@@ -6026,7 +6026,7 @@ function openShippingLabel(id){
       <div class="label-from">
         <div class="label-section-title">From</div>
         <div class="label-name" style="font-size:14px;">${s.shopName}</div>
-        <div class="label-phone">${s.phone || ''} ${s.district ? 'Â· '+s.district : ''} ${s.pincode ? '- '+s.pincode : ''}</div>
+        <div class="label-phone">${s.phone || ''} ${s.district ? '· '+s.district : ''} ${s.pincode ? '- '+s.pincode : ''}</div>
       </div>
 
       
@@ -6045,7 +6045,7 @@ function openShippingLabel(id){
         </div>
         <div class="label-detail-item">
           <div class="label-detail-label">Amount</div>
-          <div class="label-detail-val">â‚¹${Number(order.amount).toLocaleString('en-IN')}</div>
+          <div class="label-detail-val">₹${Number(order.amount).toLocaleString('en-IN')}</div>
         </div>
         <div class="label-detail-item">
           <div class="label-detail-label">Payment</div>
@@ -6075,7 +6075,7 @@ function openShippingLabel(id){
   document.getElementById('shippingModal').classList.add('show');
 }
 
-// â•â• SIMPLE QR CODE GENERATOR (matrix-based) â•â•
+// ══ SIMPLE QR CODE GENERATOR (matrix-based) ══
 function generateQR(text, size){
   // Simple visual QR placeholder using a deterministic pattern from text
   // For production use qrcode.js library
@@ -6196,7 +6196,7 @@ function downloadLabelPDF(){
   a.href = URL.createObjectURL(blob);
   a.download = `ShippingLabel_${o.orderId||o.id}.html`;
   a.click();
-  showToast('Label downloaded! Open in browser â†’ Print â†’ Save as PDF');
+  showToast('Label downloaded! Open in browser → Print → Save as PDF');
 }
 
 function switchToDashboard(){
@@ -6211,13 +6211,13 @@ function switchToDashboard(){
 function applyFeatures(){
   const f = getFeatures();
 
-  // â”€â”€ 2. COD TRACKER â”€â”€
+  // ── 2. COD TRACKER ──
   const navPayments = document.getElementById('nav-payments');
   const tabPayments = document.getElementById('tab-payments');
   if(navPayments) navPayments.style.display = f.cod ? '' : 'none';
-  // Don't force display:none on tab â€” let active class handle visibility
+  // Don't force display:none on tab — let active class handle visibility
   // Also hide "Payments" nav label if both cod hidden (reports still visible)
-  // Payment pending badge in orders â€” hide COD pending indicator
+  // Payment pending badge in orders — hide COD pending indicator
   document.querySelectorAll('.cod-hide').forEach(el => {
     el.style.display = f.cod ? '' : 'none';
   });
@@ -6226,7 +6226,7 @@ function applyFeatures(){
     switchToDashboard();
   }
 
-  // â”€â”€ 4. REPORTS & ANALYTICS â”€â”€
+  // ── 4. REPORTS & ANALYTICS ──
   const navReports = document.getElementById('nav-reports');
   const tabReports = document.getElementById('tab-reports');
   if(navReports) navReports.style.display = f.reports ? '' : 'none';
@@ -6236,13 +6236,13 @@ function applyFeatures(){
       switchToDashboard();
     }
   }
-  // Finance label â€” hide if both payments and reports hidden
+  // Finance label — hide if both payments and reports hidden
   const financeLabel = document.getElementById('nav-label-finance');
   if(financeLabel){
     financeLabel.style.display = (!f.cod && !f.reports) ? 'none' : '';
   }
 
-  // â”€â”€ Sync toggle checkboxes â”€â”€
+  // ── Sync toggle checkboxes ──
   const tc  = document.getElementById('toggle-cod');
   const trp = document.getElementById('toggle-reports');
   if(tc)  tc.checked  = f.cod;
@@ -6278,7 +6278,7 @@ async function toggleFeature(name, enabled){
 
 
 
-// â”€â”€ Identity + Access bootstrap â”€â”€
+// ── Identity + Access bootstrap ──
 (function(){
   function bridgeAuthFromUrl(){
     try {
@@ -6329,7 +6329,7 @@ async function toggleFeature(name, enabled){
       console.error('[SellerDesk] Profile recovery failed:', e);
     }
     await DB.loadFromSupabase();
-    // After DB load, settings are now available â€” re-apply shop name to topbar
+    // After DB load, settings are now available — re-apply shop name to topbar
     if(AppState.settings && AppState.settings.shopName){
       AppState._shopName = AppState.settings.shopName;
       applyTopbarIdentity();
@@ -6352,7 +6352,7 @@ window.logoutSellerDesk = async function(){
   window._sdShowLoginOverlay('signed_out');
 };
 
-// â”€â”€ Mobile sidebar â”€â”€
+// ── Mobile sidebar ──
 function openMobSidebar(){
   document.querySelector('.sidebar').classList.add('mob-open');
   document.getElementById('sidebarOverlay').classList.add('show');
@@ -6374,15 +6374,15 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 </div><!-- /#sdDashboardWrap -->
 
-<!-- â”€â”€ TRIAL INFO MODAL â”€â”€ -->
+<!-- ── TRIAL INFO MODAL ── -->
 <div class="modal-overlay" id="trialInfoModal">
   <div class="modal-box" style="max-width:420px;">
     <div class="modal-header">
       <div>
-        <div class="modal-title">ðŸ§ª Trial Plan</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:3px;">MySellerDesk Â· Active Session</div>
+        <div class="modal-title">🧪 Trial Plan</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px;">MySellerDesk · Active Session</div>
       </div>
-      <span class="modal-close" onclick="closeTrialInfoModal()">âœ•</span>
+      <span class="modal-close" onclick="closeTrialInfoModal()">✕</span>
     </div>
     <div style="background:var(--accent-light);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:16px;">
       <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;">You're on a Trial Plan</div>
@@ -6395,7 +6395,7 @@ document.addEventListener('DOMContentLoaded', function(){
       </div>
     </div>
     <div style="background:var(--warning-bg);border:1.5px solid #f0d080;border-radius:10px;padding:12px 16px;font-size:12px;color:var(--warning);line-height:1.6;">
-      âš ï¸ <strong>Note:</strong> Trial access cannot be converted to a paid plan mid-cycle. Paid plans will be available once your trial period ends.
+      ⚠️ <strong>Note:</strong> Trial access cannot be converted to a paid plan mid-cycle. Paid plans will be available once your trial period ends.
     </div>
     <div class="modal-footer" style="margin-top:18px;">
       <button class="btn-primary" onclick="closeTrialInfoModal()">Got it</button>
@@ -6417,20 +6417,20 @@ document.getElementById('trialInfoModal').addEventListener('click', function(e){
 
 
 <button id="supportFab" onclick="openSupportTicket()" title="Raise a support ticket">
-  ðŸŽ§
+  🎧
 </button>
 <div id="supportFabTooltip">Raise a support ticket</div>
 
-<!-- â”€â”€ SUPPORT TICKET MODAL â”€â”€ -->
+<!-- ── SUPPORT TICKET MODAL ── -->
 <div class="modal-overlay" id="supportTicketModal">
   <div class="modal-box">
     <div id="supportTicketForm">
       <div class="modal-header">
         <div>
-          <div class="modal-title">ðŸŽ§ Raise a Support Ticket</div>
+          <div class="modal-title">🎧 Raise a Support Ticket</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px;">We'll get back to you within 48 hours</div>
         </div>
-        <span class="modal-close" onclick="closeSupportTicket()">âœ•</span>
+        <span class="modal-close" onclick="closeSupportTicket()">✕</span>
       </div>
       <div class="form-group">
         <label class="form-label">Your Name</label>
@@ -6444,12 +6444,12 @@ document.getElementById('trialInfoModal').addEventListener('click', function(e){
         <label class="form-label">Category</label>
         <select class="form-select" id="stCategory">
           <option value="">Select a category</option>
-          <option value="billing">ðŸ’³ Billing & Payments</option>
-          <option value="orders">ðŸ“¦ Orders & Tracking</option>
-          <option value="account">ðŸ‘¤ Account & Login</option>
-          <option value="bug">ðŸ› Bug / Technical Issue</option>
-          <option value="feature">ðŸ’¡ Feature Request</option>
-          <option value="other">ðŸ”– Other</option>
+          <option value="billing">💳 Billing & Payments</option>
+          <option value="orders">📦 Orders & Tracking</option>
+          <option value="account">👤 Account & Login</option>
+          <option value="bug">🐛 Bug / Technical Issue</option>
+          <option value="feature">💡 Feature Request</option>
+          <option value="other">🔖 Other</option>
         </select>
       </div>
       <div class="form-group">
@@ -6463,17 +6463,17 @@ document.getElementById('trialInfoModal').addEventListener('click', function(e){
       <div id="stError" style="display:none;color:var(--danger);font-size:12px;margin-bottom:10px;padding:8px 12px;background:var(--danger-bg);border-radius:8px;"></div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeSupportTicket()">Cancel</button>
-        <button class="btn-primary" onclick="submitSupportTicket()">ðŸš€ Submit Ticket</button>
+        <button class="btn-primary" onclick="submitSupportTicket()">🚀 Submit Ticket</button>
       </div>
     </div>
     <!-- Success State -->
     <div id="supportTicketSuccess" style="display:none;">
       <div class="modal-header">
         <div class="modal-title">Support Ticket</div>
-        <span class="modal-close" onclick="closeSupportTicket()">âœ•</span>
+        <span class="modal-close" onclick="closeSupportTicket()">✕</span>
       </div>
       <div class="ticket-success-wrap">
-        <div class="ticket-success-icon">âœ…</div>
+        <div class="ticket-success-icon">✅</div>
         <div class="ticket-success-title">Ticket Submitted!</div>
         <div class="ticket-success-sub">Your support ticket has been raised successfully.<br>Our team will respond within <strong>48 hours</strong>.</div>
         <div class="ticket-id-badge" id="stTicketIdBadge">#TKT-000000</div>
@@ -6486,7 +6486,7 @@ document.getElementById('trialInfoModal').addEventListener('click', function(e){
 </div>
 
 <script>
-// â”€â”€ Support Ticket Logic â”€â”€
+// ── Support Ticket Logic ──
 var _stPriority = '';
 
 function openSupportTicket(){
@@ -6525,13 +6525,13 @@ function submitSupportTicket(){
   var errEl = document.getElementById('stError');
 
   if(!name || !email || !cat || !subj || !desc){
-    errEl.textContent = 'âš ï¸ Please fill all fields.';
+    errEl.textContent = '⚠️ Please fill all fields.';
     errEl.style.display = 'block';
     return;
   }
   var emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if(!emailRx.test(email)){
-    errEl.textContent = 'âš ï¸ Please enter a valid email address.';
+    errEl.textContent = '⚠️ Please enter a valid email address.';
     errEl.style.display = 'block';
     return;
   }
@@ -6574,7 +6574,7 @@ document.getElementById('supportTicketModal').addEventListener('click', function
 });
 </script>
 
-<!-- â”€â”€ PLAN EXPIRED OVERLAY â”€â”€ -->
+<!-- ── PLAN EXPIRED OVERLAY ── -->
 <div id="sdPlanExpiredOverlay">
   <div class="plan-expired-blur"></div>
   <div class="plan-expired-card">
@@ -6591,22 +6591,22 @@ document.getElementById('supportTicketModal').addEventListener('click', function
       <div class="pec-grid">
         <div class="pec-box blue">
           <div class="pec-box-lbl">Started</div>
-          <div class="pec-box-val" id="pecStartDate">â€”</div>
+          <div class="pec-box-val" id="pecStartDate">—</div>
         </div>
         <div class="pec-box red">
           <div class="pec-box-lbl">Expired</div>
-          <div class="pec-box-val" id="pecExpiredDate">â€”</div>
+          <div class="pec-box-val" id="pecExpiredDate">—</div>
         </div>
         <div class="pec-box red">
           <div class="pec-box-lbl">Data Deleted</div>
-          <div class="pec-box-val" id="pecDeleteDate">â€”</div>
+          <div class="pec-box-val" id="pecDeleteDate">—</div>
         </div>
         <div class="pec-box red">
           <div class="pec-box-lbl">Days Remaining</div>
-          <div class="pec-box-val" id="pecDaysLeft">â€”</div>
+          <div class="pec-box-val" id="pecDaysLeft">—</div>
         </div>
       </div>
-      <div class="pec-warn">Your data will be <strong>permanently deleted</strong> on <span id="pecDeleteDateInline">â€”</span>.</div>
+      <div class="pec-warn">Your data will be <strong>permanently deleted</strong> on <span id="pecDeleteDateInline">—</span>.</div>
       <button class="pec-btn-primary" onclick="openUpgradeModal()">Upgrade Now</button>
       <button class="pec-btn-secondary" onclick="openUpgradeModal()">View Plans</button>
     </div>
@@ -6614,7 +6614,7 @@ document.getElementById('supportTicketModal').addEventListener('click', function
 </div>
 
 <script>
-// â”€â”€ PLAN EXPIRY SYSTEM â”€â”€
+// ── PLAN EXPIRY SYSTEM ──
 (function(){
   function fmtDate(d){
     return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
@@ -6648,7 +6648,7 @@ document.getElementById('supportTicketModal').addEventListener('click', function
     var daysLeft = Math.ceil((expiryDate - today) / (1000*60*60*24));
     var daysToDelete = Math.ceil((deleteDate - today) / (1000*60*60*24));
 
-    // â”€â”€ Topbar plan badge: show start date â†’ remaining days â”€â”€
+    // ── Topbar plan badge: show start date → remaining days ──
     var tbadge = document.getElementById('topbarPlanBadge');
     var badgeLabels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
     var prefix = badgeLabels[plan] || 'STARTER';
@@ -6656,16 +6656,16 @@ document.getElementById('supportTicketModal').addEventListener('click', function
 
     if(tbadge){
       if(daysLeft <= 0){
-        tbadge.textContent = prefix + ' Â· Expired';
+        tbadge.textContent = prefix + ' · Expired';
         showPlanExpiredOverlay(plan, startDate, expiryDate, deleteDate, daysToDelete);
       } else if(daysLeft <= 3){
-        tbadge.textContent = prefix + ' Â· ' + startStr + ' â†’ ' + daysLeft + 'd left âš ï¸';
+        tbadge.textContent = prefix + ' · ' + startStr + ' → ' + daysLeft + 'd left ⚠️';
       } else {
-        tbadge.textContent = prefix + ' Â· ' + startStr + ' â†’ ' + daysLeft + ' days left';
+        tbadge.textContent = prefix + ' · ' + startStr + ' → ' + daysLeft + ' days left';
       }
     }
 
-    // â”€â”€ Sidebar plan expiry panel â”€â”€
+    // ── Sidebar plan expiry panel ──
     var sidebarExpiry = document.getElementById('sidebarPlanExpiry');
     if(sidebarExpiry){
       // Plan colour config
@@ -6693,7 +6693,7 @@ document.getElementById('supportTicketModal').addEventListener('click', function
       var planNames = { starter:'STARTER PLAN', growth:'GROWTH PLAN', elite:'ELITE PLAN' };
       var planDisplayName = planNames[planKey] || (plan.toUpperCase() + ' PLAN');
       var labelEl = document.getElementById('sidebarExpiryLabel');
-      if(labelEl){ labelEl.textContent = daysLeft <= 0 ? planDisplayName + ' Â· EXPIRED' : planDisplayName; labelEl.style.color = colors.labelColor; }
+      if(labelEl){ labelEl.textContent = daysLeft <= 0 ? planDisplayName + ' · EXPIRED' : planDisplayName; labelEl.style.color = colors.labelColor; }
 
       var daysEl = document.getElementById('sidebarExpiryDays');
       if(daysEl){
@@ -6706,7 +6706,7 @@ document.getElementById('supportTicketModal').addEventListener('click', function
 
       var dateEl = document.getElementById('sidebarExpiryDate');
       if(dateEl){
-        dateEl.textContent = 'Started ' + fmtDate(startDate) + ' Â· Ends ' + fmtDate(expiryDate);
+        dateEl.textContent = 'Started ' + fmtDate(startDate) + ' · Ends ' + fmtDate(expiryDate);
         dateEl.style.color = colors.labelColor;
       }
     }
