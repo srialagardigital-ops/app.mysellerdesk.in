@@ -1328,23 +1328,31 @@ async function sdLoginWithEmail(){
   sdShowSuccess('✅ Welcome back! Signing you in...');
   await new Promise(r => setTimeout(r, 900));
   window._sdHideLoginOverlay();
-  document.querySelectorAll('.shop-name').forEach(el => el.textContent = getSettings().shopName || 'My Shop');
-  document.querySelectorAll('.shop-handle').forEach(el => el.textContent = data.user.email);
-  const av = document.getElementById('sidebarAvatar');
-  if(av) av.textContent = (getSettings().shopName || 'S')[0].toUpperCase();
-  await DB.loadFromSupabase();
-  updateTopbarProfile(getSettings());
+
   // Retry any pending settings that failed during signup (RLS timing issue)
+  // Must run BEFORE loadFromSupabase so fresh data is loaded after save
   try {
     const pendingKey = 'sd_pending_settings_' + data.user.id;
     const pending = localStorage.getItem(pendingKey);
     if(pending){
       const payload = JSON.parse(pending);
-      const { error: retryErr } = await _supa.from('settings').upsert(payload, { onConflict: 'user_id' });
+      // Retry users table if it failed during signup
+      if(payload._users_payload){
+        await _supa.from('users').upsert(payload._users_payload, { onConflict: 'id' });
+      }
+      // Retry settings table (exclude internal _users_payload key)
+      const { _users_payload, ...settingsOnly } = payload;
+      const { error: retryErr } = await _supa.from('settings').upsert(settingsOnly, { onConflict: 'user_id' });
       if(!retryErr){ localStorage.removeItem(pendingKey); console.log('Pending settings saved on login.'); }
     }
   } catch(e){}
-}
+
+  await DB.loadFromSupabase();
+  document.querySelectorAll('.shop-name').forEach(el => el.textContent = getSettings().shopName || 'My Shop');
+  document.querySelectorAll('.shop-handle').forEach(el => el.textContent = data.user.email);
+  const av = document.getElementById('sidebarAvatar');
+  if(av) av.textContent = (getSettings().shopName || 'S')[0].toUpperCase();
+  updateTopbarProfile(getSettings());}
 
 async function sdSignupWithEmail(){
   sdClearMessages();
@@ -1373,7 +1381,7 @@ async function sdSignupWithEmail(){
     options: {
       data: {
         shop_name: shopName,
-        phone: whatsapp,
+        whatsapp_number: whatsapp,
         address: address,
         district: district,
         pincode: pincode
@@ -1386,12 +1394,26 @@ async function sdSignupWithEmail(){
     sdShowError('An account with this email already exists. Please Sign In instead.'); return;
   }
 
-  // Save settings to Supabase immediately
+  // Save to Supabase immediately
   if(data.user){
-    const settingsPayload = {
-      user_id: data.user.id,
+    const userId = data.user.id;
+
+    // 1. Update users table — role, plan, shop_name, whatsapp_number
+    const { error: userError } = await _supa.from('users').upsert({
+      id: userId,
+      email: email,
+      role: 'seller',
+      plan: 'free',
       shop_name: shopName,
-      phone: whatsapp,
+      whatsapp_number: whatsapp
+    }, { onConflict: 'id' });
+    if(userError) console.error('Users table error:', userError.message);
+
+    // 2. Save full settings to settings table
+    const settingsPayload = {
+      user_id: userId,
+      shop_name: shopName,
+      whatsapp_number: whatsapp,
       address: address,
       district: district,
       pincode: pincode,
@@ -1402,7 +1424,12 @@ async function sdSignupWithEmail(){
     if(settingsError){
       console.error('Settings error:', settingsError.message);
       // Fallback: store in localStorage, retry after email confirmation + login
-      try { localStorage.setItem('sd_pending_settings_' + data.user.id, JSON.stringify(settingsPayload)); } catch(e){}
+      try {
+        localStorage.setItem('sd_pending_settings_' + userId, JSON.stringify({
+          ...settingsPayload,
+          _users_payload: { id: userId, email, role: 'seller', plan: 'free', shop_name: shopName, whatsapp_number: whatsapp }
+        }));
+      } catch(e){}
     }
   }
 
