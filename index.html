@@ -1437,68 +1437,27 @@ async function sdSignupWithEmail(){
       }
     }
   });
+  sdSetBtnLoading('sdSignUpBtn', false, 'Create Account â†’');
   if(error){
-    sdSetBtnLoading('sdSignUpBtn', false, 'Create Account â†’');
     sdShowError('' + (error.message || 'Signup failed. Please try again.'));
     return;
   }
   if(data.user && data.user.identities && data.user.identities.length === 0){
-    sdSetBtnLoading('sdSignUpBtn', false, 'Create Account â†’');
     sdShowError('An account with this email already exists. Please Sign In instead.');
     return;
   }
 
-  // â”€â”€ Create seller profile (settings row) immediately after signup. â”€â”€
-  // Success is NOT shown until this insert succeeds. If it fails, the
-  // signup is rolled back so we never leave an auth user without a profile.
-  if(data.user){
-    const userId = data.user.id;
-
-    const settingsPayload = {
-      id: userId,
-      user_id: userId,
-      shop_name: shopName,
-      whatsapp_number: whatsapp,
-      phone: whatsapp,
-      address: address,
-      district: district,
-      pincode: pincode,
-      onboarded: true,
-      features: { cod: true, reports: true }
-    };
-
-    const { error: settingsError } = await _supa.from('settings').upsert(settingsPayload, { onConflict: 'user_id' });
-
-    if(settingsError){
-      // â”€â”€ Rollback: undo the signup so the user isn't left in a broken state â”€â”€
-      console.error('[SellerDesk] Settings insert failed during signup:', settingsError);
-      try {
-        // Best-effort: remove the auth user / session this signUp created.
-        // (Requires a server-side endpoint or RPC with the service role key â€”
-        // the anon client cannot delete other users. If SELLERDESK_CONFIG
-        // exposes a rollback endpoint, call it; otherwise just sign out so
-        // the half-created session isn't left active in this browser.)
-        const cfg = window.SELLERDESK_CONFIG || {};
-        if(cfg.SIGNUP_ROLLBACK_URL){
-          await fetch(cfg.SIGNUP_ROLLBACK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user_id: userId })
-          }).catch(() => {});
-        }
-        await _supa.auth.signOut();
-      } catch(e){
-        console.error('[SellerDesk] Rollback attempt failed:', e);
-      }
-
-      sdSetBtnLoading('sdSignUpBtn', false, 'Create Account â†’');
-      sdShowError('Could not create your seller profile (' + (settingsError.message || 'unknown error') + '). Your signup has been rolled back â€” please try again.');
-      return;
-    }
-  }
-
-  sdSetBtnLoading('sdSignUpBtn', false, 'Create Account â†’');
-  sdShowSuccess('âœ… Account created! Please check your email and click the confirmation link to verify your account.');
+  // â”€â”€ Seller profile (settings row) is created automatically by the â”€â”€
+  // `on_auth_user_created` database trigger on auth.users, which reads
+  // shop_name / whatsapp_number / district / address / pincode straight
+  // from raw_user_meta_data (the options.data passed to signUp() above)
+  // using SECURITY DEFINER, so it runs regardless of whether a session/
+  // auth.uid() exists yet. This means the profile is saved immediately on
+  // signup, with or without email confirmation. No client-side insert or
+  // rollback is needed here anymore.
+  sdShowSuccess(data.session
+    ? 'âœ… Account created! Setting up your dashboard...'
+    : 'âœ… Account created! Please check your email and click the confirmation link, then sign in to continue.');
 }
 
 // â”€â”€ Safe redirect URL builder â€” prevents open redirect via tampered APP_URL â”€â”€
