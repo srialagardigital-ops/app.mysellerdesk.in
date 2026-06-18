@@ -9,7 +9,7 @@
 <script>
 // Safety fallback: if dashboard-page-config.js failed to define AppState, create a default
 if(typeof AppState === 'undefined'){
-  window.AppState = { plan: 'starter', _email: '', _shopName: '', _planExpired: false };
+  window.AppState = { plan: 'free', _email: '', _shopName: '', _planExpired: false };
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -1405,7 +1405,8 @@ async function sdSignupWithEmail(){
       role: 'seller',
       plan: 'free',
       shop_name: shopName,
-      whatsapp_number: whatsapp
+      whatsapp_number: whatsapp,
+      district: district
     }, { onConflict: 'id' });
     if(userError) console.error('Users table error:', userError.message);
 
@@ -1427,7 +1428,7 @@ async function sdSignupWithEmail(){
       try {
         localStorage.setItem('sd_pending_settings_' + userId, JSON.stringify({
           ...settingsPayload,
-          _users_payload: { id: userId, email, role: 'seller', plan: 'free', shop_name: shopName, whatsapp_number: whatsapp }
+          _users_payload: { id: userId, email, role: 'seller', plan: 'free', shop_name: shopName, whatsapp_number: whatsapp, district: district }
         }));
       } catch(e){}
     }
@@ -3042,7 +3043,7 @@ const AppState = {
   customers: [],
   products:  [],
   settings:  {},
-  plan:      'starter', // verified from Supabase
+  plan:      'free', // verified from Supabase
   features:  { cod: true, reports: true },
   _uid:      null,
 };
@@ -3159,20 +3160,16 @@ function getSettings(){
 // ── Plan — always from AppState (Supabase-verified, never localStorage) ──
 function getPlan(){
   // Plan is set only by Supabase on login — re-read from AppState
-  const p = AppState.plan || 'starter';
-  // Accept any non-empty plan key from plan_configs as "paid"
-  if(['starter','growth','elite'].includes(p)) return p;
+  const p = AppState.plan || 'free';
+  // Accept any non-empty plan key from plan_configs as known
+  if(['free','starter','growth','elite'].includes(p)) return p;
   // If admin assigned a custom plan key, treat as 'growth' (paid)
   if(p && p !== 'starter') return 'growth';
-  return 'starter';
+  return 'free';
 }
 function isPaid(){
-  // Check real plan from Supabase subscription
-  const p = AppState.plan || 'starter';
-  // If plan expired, not paid
-  if(AppState._planExpired) return false;
-  // Any non-starter plan = paid
-  return p !== 'starter';
+  // Beta version — all features enabled for everyone, no restrictions
+  return true;
 }
 function isPro(){ return isPaid(); }
 
@@ -3216,12 +3213,14 @@ const DB = {
 
     // Plan verified from Supabase — cannot be tampered via browser console
     const subRow = planRes.data?.[0];
-    AppState.plan = subRow?.plan || 'starter';
-    // Check expiry
-    if(subRow?.expires_at){
+    AppState.plan = subRow?.plan || 'free';
+    // free plan has no expiry — skip expiry check
+    if(AppState.plan === 'free'){
+      AppState._planExpired = false;
+    } else if(subRow?.expires_at){
       const expiry = new Date(subRow.expires_at);
       AppState._planExpired = expiry < new Date();
-      if(AppState._planExpired) AppState.plan = 'starter'; // treat expired as starter
+      if(AppState._planExpired) AppState.plan = 'free'; // expired → back to free
     } else if(!subRow) {
       AppState._planExpired = false;
     }
@@ -4390,12 +4389,8 @@ function openBill(id){
   currentBillOrder = order;
   const s = getSettings();
   const billHtml = buildBillHTML(order, s, false);
-  if(isPro()){
-    document.getElementById('billContent').innerHTML = billHtml;
-  } else {
-    document.getElementById('billContent').innerHTML =
-      `<div class="bill-watermark-wrap">${billHtml}<div class="wm-text">FREE PLAN</div></div>`;
-  }
+  // Beta — no watermark for anyone
+  document.getElementById('billContent').innerHTML = billHtml;
   document.getElementById('billModal').classList.add('show');
 }
 
@@ -5127,11 +5122,11 @@ function updatePlanUI(){
   const plan = getPlan();
   const paid = isPaid();
   // Use raw plan key for label (e.g. 'trial-plan' → 'TRIAL-PLAN')
-  const rawPlan = AppState.plan || 'starter';
-  const knownLabels = { starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
-  const planLabel = paid ? (knownLabels[plan] || rawPlan.toUpperCase()) : 'STARTER';
-  // planClass: paid users get 'growth' styling minimum
-  const planClass = !paid ? 'starter' : (plan === 'elite' ? 'elite' : 'growth');
+  const rawPlan = AppState.plan || 'free';
+  const knownLabels = { free:'FREE', starter:'STARTER', growth:'GROWTH', elite:'ELITE' };
+  const planLabel = knownLabels[plan] || rawPlan.toUpperCase();
+  // planClass: free/growth/elite get accent styling; starter gets muted
+  const planClass = plan === 'elite' ? 'elite' : (plan === 'free' || plan === 'growth') ? 'growth' : 'starter';
 
   // Sidebar badge
   const badge = document.getElementById('sidebarPlanBadge');
@@ -5149,9 +5144,9 @@ function updatePlanUI(){
     tbadge.onclick = paid ? null : openUpgradeModal;
   }
 
-  // Upgrade banner
+  // Upgrade banner — hide for free and paid plans
   const banner = document.getElementById('upgradeBanner');
-  if(banner) banner.style.display = paid ? 'none' : 'block';
+  if(banner) banner.style.display = (plan === 'free' || paid) ? 'none' : 'block';
 }
 
 // Performance badge — topbar only (sidebar badge hidden)
@@ -5182,20 +5177,9 @@ function updateSellerBadgeUI(badge){
 }
 
 function updateOrderLimitBar(){
-  if(isPro()) return;
-  const orders = DB.getOrders();
-  const now = new Date();
-  const thisMonth = orders.filter(o => {
-    if(!o.date) return false;
-    const parts = o.date.split('/');
-    if(parts.length < 3) return false;
-    return parseInt(parts[1]) === now.getMonth()+1 && parseInt(parts[2]) === now.getFullYear();
-  }).length;
-  const pct = Math.min(100, (thisMonth / FREE_ORDER_LIMIT) * 100);
-  safeText('orderLimitText', thisMonth + ' / ' + FREE_ORDER_LIMIT);
-  const fill = document.getElementById('orderLimitFill');
-  fill.style.width = pct + '%';
-  fill.style.background = pct >= 90 ? 'var(--danger)' : pct >= 70 ? 'var(--warning)' : 'var(--accent)';
+  // Beta — no order limit, hide limit bar
+  const bar = document.getElementById('orderLimitBar');
+  if(bar) bar.style.display = 'none';
 }
 
 function checkOrderLimit(){
@@ -5215,7 +5199,8 @@ function checkOrderLimit(){
   return true;
 }
 
-function showLockedToast(msg){
+function showLockedToast(msg){ return; // Beta — no locks
+  // original below (unreachable)
   const t = document.getElementById('lockedToast');
   document.getElementById('lockedToastMsg').textContent = msg;
   t.classList.add('show');
@@ -5361,18 +5346,21 @@ async function openUpgradeModal(){
   } else {
     // Fallback: hardcoded plans if plan_configs table is empty or missing
     container.innerHTML = `
-      <div class="plan-card" style="flex:1;">
-        <div class="plan-name">Starter</div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-          <span style="font-size:11px;font-weight:700;background:#e8f5e9;color:#2d9e6b;padding:3px 9px;border-radius:20px;">30-day free trial</span>
-        </div>
-        <div class="plan-price" style="color:var(--muted);">₹0 <span>/ 30 days</span></div>
-        <div style="height:1px;background:var(--border);margin:12px 0;"></div>
-        <div class="plan-feature"><span class="tick">✓</span> Digital bill (with watermark)</div>
+      <div class="plan-card" style="flex:1;border-color:#2d9e6b;background:linear-gradient(135deg,#f0fdf6,#fff);">
+        <div class="plan-card-badge" style="background:linear-gradient(90deg,#2d9e6b,#38c77e);">Current Plan</div>
+        <div class="plan-name" style="color:#2d9e6b;">Free</div>
+        <div class="plan-price" style="color:#2d9e6b;">₹0 <span>/ forever</span></div>
+        <div style="height:1px;background:#a8dfca;margin:12px 0;"></div>
+        <div style="font-size:11px;font-weight:700;color:#2d9e6b;background:#edf7f2;border-radius:7px;padding:6px 10px;margin-bottom:10px;text-align:center;">✅ எல்லா features-உம் enabled</div>
+        <div class="plan-feature"><span class="tick">✓</span> Orders, Customers, Products</div>
         <div class="plan-feature"><span class="tick">✓</span> WhatsApp messaging</div>
-        <div class="plan-feature"><span class="tick">✓</span> Customer &amp; product manage</div>
-        <button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.5;" disabled>${currentPlan==='starter'?'✓ Current Plan':'Free Plan'}</button>
-        <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:7px;">After 30 days, upgrade to continue</div>
+        <div class="plan-feature"><span class="tick">✓</span> Digital bill & invoice</div>
+        <div class="plan-feature"><span class="tick">✓</span> COD Tracker & Reports</div>
+        <div class="plan-feature"><span class="tick">✓</span> Shipping label (PDF)</div>
+        <div style="margin-top:12px;padding:10px 12px;background:#edf7f2;border:1px solid #a8dfca;border-radius:8px;font-size:11px;color:#2d9e6b;line-height:1.6;text-align:center;font-weight:700;">
+          🎉 Beta Version — எந்த கட்டுப்பாடும் இல்லை!<br>எல்லா features-உம் 100% free!
+        </div>
+        <button class="btn-secondary" style="width:100%;margin-top:14px;opacity:0.6;" disabled>✓ உங்கள் தற்போதைய plan</button>
       </div>
       <div class="plan-card pro-card" style="flex:1;">
         <div class="plan-card-badge" style="background:linear-gradient(90deg,#f59e0b,#f97316);">Most Popular</div>
@@ -5940,7 +5928,7 @@ function getBillPageHTML(order, s){
 
 function printBill(){
   if(!currentBillOrder) return;
-  if(!isPro()){ showLockedToast('Print is a Growth+ feature!'); return; }
+  // Beta — print enabled for all
   const s = getSettings();
   const html = getBillPageHTML(currentBillOrder, s);
   const w = window.open('','_blank','width=700,height=900');
@@ -5951,7 +5939,7 @@ function printBill(){
 
 function downloadBillPDF(){
   if(!currentBillOrder) return;
-  if(!isPro()){ showLockedToast('PDF download is a Growth+ feature!'); return; }
+  // Beta — PDF enabled for all
   const s = getSettings();
   const o = currentBillOrder;
   const innerHtml = getBillPageHTML(o, s).replace('<\/body><\/html>',
@@ -5968,7 +5956,7 @@ function downloadBillPDF(){
 let currentLabelOrder = null;
 
 function openShippingLabel(id){
-  if(!isPro()){ showLockedToast('Shipping Label is a Growth+ feature!'); return; }
+  // Beta — shipping label enabled for all
   const order = DB.getOrders().find(o => o.id === id);
   if(!order) return;
   currentLabelOrder = order;
@@ -6099,7 +6087,7 @@ function generateQR(text, size){
 
 function printLabel(){
   if(!currentLabelOrder) return;
-  if(!isPro()){ showLockedToast('Label print is a Growth+ feature!'); return; }
+  // Beta — label print enabled for all
   const s = getSettings();
   const o = currentLabelOrder;
   const labelHtml = document.getElementById('labelA5').outerHTML;
@@ -6135,7 +6123,7 @@ function printLabel(){
 
 function downloadLabelPDF(){
   if(!currentLabelOrder) return;
-  if(!isPro()){ showLockedToast('Label download is a Growth+ feature!'); return; }
+  // Beta — label download enabled for all
   const s = getSettings();
   const o = currentLabelOrder;
   const labelHtml = document.getElementById('labelA5').outerHTML;
@@ -6311,7 +6299,7 @@ window.logoutSellerDesk = async function(){
   try {
     AppState.orders = []; AppState.customers = []; AppState.products = [];
     AppState.settings = {}; AppState.features = { cod: true, reports: true };
-    AppState.plan = 'starter'; AppState._uid = null;
+    AppState.plan = 'free'; AppState._uid = null;
     AppState._email = null; AppState._shopName = null;
     sessionStorage.clear();
     await _supa.auth.signOut();
@@ -6588,7 +6576,15 @@ document.getElementById('supportTicketModal').addEventListener('click', function
   }
 
   window.initExpirySystem = function(signupDate){
-    var plan = (typeof AppState !== 'undefined' && AppState.plan) ? AppState.plan : 'starter';
+    var plan = (typeof AppState !== 'undefined' && AppState.plan) ? AppState.plan : 'free';
+    // Free plan has no expiry — skip entirely
+    if(plan === 'free'){
+      var tbadge = document.getElementById('topbarPlanBadge');
+      if(tbadge){ tbadge.textContent = 'FREE'; }
+      var sidebarExpiry = document.getElementById('sidebarPlanExpiry');
+      if(sidebarExpiry) sidebarExpiry.style.display = 'none';
+      return;
+    }
 
     // Duration in days per plan
     var durations = { starter:30, growth:30, elite:365 };
