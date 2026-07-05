@@ -4219,15 +4219,16 @@ async function bootApp(){
    throw a ReferenceError in the meantime. */
 function saveData(){}
 
-/* Load banner config & render dashboard banner */
-loadBannerConfig();
-renderDashBanner();
-
-
-
 /* ═══════════════════════════════
    DASHBOARD BANNER (Admin-configured)
 ═══════════════════════════════ */
+
+/* Plan info — set planExpiry to a real date string to trigger alerts.
+   (Moved above BANNER_CONFIG since BANNER_CONFIG reads from it on init.) */
+const PLAN_INFO = {
+  name: 'Starter Plan',
+  expiry: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) /* 5 days from now — change as needed */
+};
 
 /* Stored banner config */
 let BANNER_CONFIG = {
@@ -4983,11 +4984,7 @@ function saveSettings(){
 
 
 /* ── NOTIFICATIONS ───────────────────────────────────────────── */
-/* Plan info — set planExpiry to a real date string to trigger alerts */
-const PLAN_INFO = {
-  name: 'Starter Plan',
-  expiry: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) /* 5 days from now — change as needed */
-};
+/* PLAN_INFO is declared earlier (above, near BANNER_CONFIG) since the banner needs it first */
 const LOW_STOCK_THRESHOLD = 5;
 
 let _notifReadSet = new Set(); /* tracks read notification ids */
@@ -5756,6 +5753,11 @@ function generateShippingLabel(idx){
   win.document.close();
 }
 
+/* Load banner config & render dashboard banner — called here, at the end of
+   this script block, so every value it depends on (BANNER_CONFIG, PLAN_INFO,
+   _notifReadSet, etc.) has already been declared. */
+loadBannerConfig();
+renderDashBanner();
 
 
 </script>
@@ -5958,8 +5960,8 @@ async function handleSignup(e){
     await onAuthSuccess(data.user);
   } else {
     // Email confirmation required
-    showAuthMsg('✅ Account created! Please check your email to confirm, then log in.', 'success');
     switchAuthTab('login');
+    showAuthMsg('✅ Account created! Please check your email to confirm, then log in.', 'success');
     document.getElementById('loginEmail').value = email;
   }
   return false;
