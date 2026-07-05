@@ -1669,34 +1669,11 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
               This Month <i class="ti ti-chevron-down" style="font-size:12px;margin-left:2px"></i>
             </div>
           </div>
-          <div class="db-chart-wrap">
-            <div class="db-chart-ylabels">
-              <span>100K</span><span>80K</span><span>60K</span><span>40K</span><span>20K</span><span>0</span>
+          <div class="db-chart-wrap" style="display:flex;align-items:center;justify-content:center;min-height:200px">
+            <div class="empty-state" style="padding:24px 12px">
+              <i class="ti ti-chart-line"></i>
+              <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No sales data yet</p>
             </div>
-            <div class="db-chart-area">
-              <svg viewBox="0 0 520 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-                <defs>
-                  <linearGradient id="salesGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#5B4FCF" stop-opacity="0.18"/>
-                    <stop offset="100%" stop-color="#5B4FCF" stop-opacity="0.02"/>
-                  </linearGradient>
-                </defs>
-                <!-- Grid lines -->
-                <line x1="0" y1="0" x2="520" y2="0" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="40" x2="520" y2="40" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="80" x2="520" y2="80" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="120" x2="520" y2="120" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="160" x2="520" y2="160" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="200" x2="520" y2="200" stroke="#E4EBF5" stroke-width="1"/>
-                <!-- Area fill -->
-                <path d="M0,170 C20,162 40,155 65,145 C90,135 105,118 130,108 C155,98 170,95 195,80 C220,65 235,62 260,45 C285,28 300,50 325,42 C350,34 365,55 390,48 C415,41 440,60 465,52 C490,44 505,50 520,48 L520,200 L0,200 Z" fill="url(#salesGrad)"/>
-                <!-- Line -->
-                <path d="M0,170 C20,162 40,155 65,145 C90,135 105,118 130,108 C155,98 170,95 195,80 C220,65 235,62 260,45 C285,28 300,50 325,42 C350,34 365,55 390,48 C415,41 440,60 465,52 C490,44 505,50 520,48" stroke="#5B4FCF" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-          <div class="db-chart-xlabels">
-            <span>01 May</span><span>05 May</span><span>10 May</span><span>15 May</span><span>20 May</span><span>25 May</span><span>30 May</span>
           </div>
         </div>
 
@@ -1814,28 +1791,28 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           <div class="pp-stat-icon" style="background:#EDE9FE"><i class="ti ti-box" style="color:#7C3AED;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Products</div>
-            <div class="op-stat-val">320</div>
+            <div class="op-stat-val">0</div>
           </div>
         </div>
         <div class="pp-stat-card">
           <div class="pp-stat-icon" style="background:#F0FDF4"><i class="ti ti-circle-check" style="color:#15803D;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Active Products</div>
-            <div class="op-stat-val">285</div>
+            <div class="op-stat-val">0</div>
           </div>
         </div>
         <div class="pp-stat-card">
           <div class="pp-stat-icon" style="background:#FFF7ED"><i class="ti ti-package" style="color:#EA580C;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Out of Stock</div>
-            <div class="op-stat-val">18</div>
+            <div class="op-stat-val">0</div>
           </div>
         </div>
         <div class="pp-stat-card" style="border-right:none">
           <div class="pp-stat-icon" style="background:#FFF1F2"><i class="ti ti-home" style="color:#E11D48;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Drafts</div>
-            <div class="op-stat-val">17</div>
+            <div class="op-stat-val">0</div>
           </div>
         </div>
       </div>
@@ -1879,146 +1856,11 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </thead>
           <tbody>
             <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div class="pp-product-cell">
-                  <div class="pp-prod-img" style="background:#EFF6FF">
-                    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=60&h=60&fit=crop" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='👕'">
-                  </div>
-                  <div>
-                    <div class="pp-prod-name">Men's Casual Cotton Shirt</div>
-                    <span class="pp-prod-status-inline active">Active</span>
-                  </div>
-                </div>
-              </td>
-              <td class="pp-sku">MSD-001</td>
-              <td class="pp-category"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">RK Frames</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">Coimbatore</div></td>
-              <td>
-                <div class="pp-price">₹899</div>
-                <div class="pp-price-orig">₹1,299</div>
-              </td>
-              <td class="pp-stock-val" style="color:#16A34A;font-weight:700">120</td>
-              <td><span class="pp-status-badge active">Active</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View Men's Casual Cotton Shirt" onclick="viewProduct(0)"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit Men's Casual Cotton Shirt" onclick="editProduct(0)"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More" onclick="moreProduct(0)"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div class="pp-product-cell">
-                  <div class="pp-prod-img" style="background:#FFF0F6">
-                    <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=60&h=60&fit=crop" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='👗'">
-                  </div>
-                  <div>
-                    <div class="pp-prod-name">Women's Floral Dress</div>
-                    <span class="pp-prod-status-inline active">Active</span>
-                  </div>
-                </div>
-              </td>
-              <td class="pp-sku">MSD-002</td>
-              <td class="pp-category"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">ABC Gifts</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">Chennai</div></td>
-              <td>
-                <div class="pp-price">₹1,499</div>
-                <div class="pp-price-orig">₹1,999</div>
-              </td>
-              <td class="pp-stock-val" style="color:#16A34A;font-weight:700">85</td>
-              <td><span class="pp-status-badge active">Active</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View Women's Floral Dress" onclick="viewProduct(1)"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit Women's Floral Dress" onclick="editProduct(1)"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More" onclick="moreProduct(1)"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div class="pp-product-cell">
-                  <div class="pp-prod-img" style="background:#F8FAFC">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=60&h=60&fit=crop" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='👟'">
-                  </div>
-                  <div>
-                    <div class="pp-prod-name">Sports Running Shoes</div>
-                    <span class="pp-prod-status-inline active">Active</span>
-                  </div>
-                </div>
-              </td>
-              <td class="pp-sku">MSD-003</td>
-              <td class="pp-category"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">Chennai Acrylics</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">Chennai</div></td>
-              <td>
-                <div class="pp-price">₹2,199</div>
-                <div class="pp-price-orig">₹2,999</div>
-              </td>
-              <td class="pp-stock-val" style="color:#DC2626;font-weight:700">0</td>
-              <td><span class="pp-status-badge out-of-stock">Out of Stock</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View Sports Running Shoes" onclick="viewProduct(2)"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit Sports Running Shoes" onclick="editProduct(2)"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More" onclick="moreProduct(2)"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div class="pp-product-cell">
-                  <div class="pp-prod-img" style="background:#F0F4FF">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=60&h=60&fit=crop" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='⌚'">
-                  </div>
-                  <div>
-                    <div class="pp-prod-name">Smart Watch Series 5</div>
-                    <span class="pp-prod-status-inline active">Active</span>
-                  </div>
-                </div>
-              </td>
-              <td class="pp-sku">MSD-004</td>
-              <td class="pp-category"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">Sri Venkateshwara Plastics</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">Salem</div></td>
-              <td>
-                <div class="pp-price">₹4,999</div>
-                <div class="pp-price-orig">₹5,999</div>
-              </td>
-              <td class="pp-stock-val" style="color:#D97706;font-weight:700">32</td>
-              <td><span class="pp-status-badge active">Active</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View Smart Watch Series 5" onclick="viewProduct(3)"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit Smart Watch Series 5" onclick="editProduct(3)"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More" onclick="moreProduct(3)"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div class="pp-product-cell">
-                  <div class="pp-prod-img" style="background:#F8FAFC">
-                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=60&h=60&fit=crop" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='🎒'">
-                  </div>
-                  <div>
-                    <div class="pp-prod-name">Travel Backpack</div>
-                    <span class="pp-prod-status-inline draft">Draft</span>
-                  </div>
-                </div>
-              </td>
-              <td class="pp-sku">MSD-005</td>
-              <td class="pp-category"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">Global Packaging</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">Tiruppur</div></td>
-              <td>
-                <div class="pp-price">₹1,299</div>
-              </td>
-              <td class="pp-stock-val" style="color:#16A34A;font-weight:700">25</td>
-              <td><span class="pp-status-badge draft">Draft</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View Travel Backpack" onclick="viewProduct(4)"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit Travel Backpack" onclick="editProduct(4)"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More" onclick="moreProduct(4)"><i class="ti ti-dots-vertical"></i></button>
+              <td colspan="8">
+                <div class="empty-state" style="padding:40px 12px">
+                  <i class="ti ti-box"></i>
+                  <h3>No products yet</h3>
+                  <p>Click <strong>Add Product</strong> to create your first listing</p>
                 </div>
               </td>
             </tr>
@@ -2027,17 +1869,13 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 
         <!-- Pagination -->
         <div class="op-pagination">
-          <div class="op-page-info">Showing 1 to 5 of 320 products</div>
+          <div class="op-page-info">Showing 0 of 0 products</div>
           <div class="op-page-controls">
             <button class="op-pg-btn" disabled><i class="ti ti-chevron-left"></i></button>
             <button class="op-pg-btn active">1</button>
-            <button class="op-pg-btn">2</button>
-            <button class="op-pg-btn">3</button>
-            <span class="op-pg-ellipsis">...</span>
-            <button class="op-pg-btn">64</button>
-            <button class="op-pg-btn"><i class="ti ti-chevron-right"></i></button>
+            <button class="op-pg-btn" disabled><i class="ti ti-chevron-right"></i></button>
           </div>
-          <div class="op-per-page" onclick="toast('⚙️ Per-page setting coming soon')" style="cursor:pointer">5 / page <i class="ti ti-chevron-down"></i></div>
+          <div class="op-per-page" onclick="toast('⚙️ Per-page setting coming soon')" style="cursor:pointer">10 / page <i class="ti ti-chevron-down"></i></div>
         </div>
       </div>
 
@@ -2052,40 +1890,35 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#EDE9FE;display:flex;align-items:center;justify-content:center"><i class="ti ti-users" style="color:#7C3AED;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Suppliers</div>
-            <div class="op-stat-val">28</div>
-            <div class="op-stat-trend up">↑ 12.5% this month</div>
+            <div class="op-stat-val">0</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:20px 22px;border-right:1px solid var(--border-light)">
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#DCFCE7;display:flex;align-items:center;justify-content:center"><i class="ti ti-circle-check" style="color:#16A34A;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Active Suppliers</div>
-            <div class="op-stat-val">24</div>
-            <div class="op-stat-trend up">↑ 14.3% this month</div>
+            <div class="op-stat-val">0</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:20px 22px;border-right:1px solid var(--border-light)">
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#FEE2E2;display:flex;align-items:center;justify-content:center"><i class="ti ti-circle-x" style="color:#DC2626;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Inactive Suppliers</div>
-            <div class="op-stat-val">4</div>
-            <div class="op-stat-trend down">↓ 20.0% this month</div>
+            <div class="op-stat-val">0</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:20px 22px;border-right:1px solid var(--border-light)">
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#DBEAFE;display:flex;align-items:center;justify-content:center"><i class="ti ti-box" style="color:#1D4ED8;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Products</div>
-            <div class="op-stat-val">156</div>
-            <div class="op-stat-trend up">↑ 18.7% this month</div>
+            <div class="op-stat-val">0</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:20px 22px">
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#FFF7ED;display:flex;align-items:center;justify-content:center"><i class="ti ti-wallet" style="color:#EA580C;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Purchase Value</div>
-            <div class="op-stat-val">₹2,48,560</div>
-            <div class="op-stat-trend up">↑ 22.4% this month</div>
+            <div class="op-stat-val">₹0</div>
           </div>
         </div>
       </div>
@@ -2121,205 +1954,11 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </thead>
           <tbody>
             <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div style="display:flex;align-items:center;gap:12px">
-                  <div style="width:38px;height:38px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#7C3AED;flex-shrink:0">R</div>
-                  <div>
-                    <div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">RK Frames</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">info@rkframes.com</div>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size:13px;color:var(--text-secondary)">Raj Kumar</td>
-              <td>
-                <div style="display:flex;align-items:center;gap:8px">
-                  <span style="font-size:13px;font-weight:500;color:var(--text-primary)">+91 98765 43210</span>
-                  <button class="op-wa-btn" onclick="window.open('https://wa.me/919876543210','_blank')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>
-                </div>
-              </td>
-              <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Coimbatore,</div><div style="font-size:11.5px;color:var(--text-muted)">Tamil Nadu</div></td>
-              <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">25</td>
-              <td><span class="pp-status-badge active">Active</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View" onclick="toast('👁 View supplier')"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit" onclick="toast('✏️ Edit supplier')"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More" onclick="toast('⋮ More options')"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div style="display:flex;align-items:center;gap:12px">
-                  <div style="width:38px;height:38px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#16A34A;flex-shrink:0">A</div>
-                  <div>
-                    <div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">ABC Gifts</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">contact@abcgifts.com</div>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size:13px;color:var(--text-secondary)">Arun Prakash</td>
-              <td>
-                <div style="display:flex;align-items:center;gap:8px">
-                  <span style="font-size:13px;font-weight:500;color:var(--text-primary)">+91 91234 56789</span>
-                  <button class="op-wa-btn" onclick="window.open('https://wa.me/919123456789','_blank')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>
-                </div>
-              </td>
-              <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Chennai,</div><div style="font-size:11.5px;color:var(--text-muted)">Tamil Nadu</div></td>
-              <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">18</td>
-              <td><span class="pp-status-badge active">Active</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View" onclick="toast('👁 View supplier')"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit" onclick="toast('✏️ Edit supplier')"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div style="display:flex;align-items:center;gap:12px">
-                  <div style="width:38px;height:38px;border-radius:50%;background:#DBEAFE;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#1D4ED8;flex-shrink:0">C</div>
-                  <div>
-                    <div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">Chennai Acrylics</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">sales@chennaiacrylics.com</div>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size:13px;color:var(--text-secondary)">Suresh Babu</td>
-              <td>
-                <div style="display:flex;align-items:center;gap:8px">
-                  <span style="font-size:13px;font-weight:500;color:var(--text-primary)">+91 90031 23456</span>
-                  <button class="op-wa-btn" onclick="window.open('https://wa.me/919003123456','_blank')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>
-                </div>
-              </td>
-              <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Chennai,</div><div style="font-size:11.5px;color:var(--text-muted)">Tamil Nadu</div></td>
-              <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">32</td>
-              <td><span class="pp-status-badge active">Active</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View" onclick="toast('👁 View supplier')"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit" onclick="toast('✏️ Edit supplier')"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div style="display:flex;align-items:center;gap:12px">
-                  <div style="width:38px;height:38px;border-radius:50%;background:#FEF3C7;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#92400E;flex-shrink:0">M</div>
-                  <div>
-                    <div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">Madurai Textiles</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">hello@maduraitextiles.com</div>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size:13px;color:var(--text-secondary)">Muthu Raja</td>
-              <td>
-                <div style="display:flex;align-items:center;gap:8px">
-                  <span style="font-size:13px;font-weight:500;color:var(--text-primary)">+91 94433 22110</span>
-                  <button class="op-wa-btn" onclick="window.open('https://wa.me/919443322110','_blank')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>
-                </div>
-              </td>
-              <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Madurai,</div><div style="font-size:11.5px;color:var(--text-muted)">Tamil Nadu</div></td>
-              <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">12</td>
-              <td><span class="pp-status-badge inactive">Inactive</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View" onclick="toast('👁 View supplier')"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit" onclick="toast('✏️ Edit supplier')"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div style="display:flex;align-items:center;gap:12px">
-                  <div style="width:38px;height:38px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#4C1D95;flex-shrink:0">S</div>
-                  <div>
-                    <div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">Sri Venkateshwara Plastics</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">info@svplastics.com</div>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size:13px;color:var(--text-secondary)">Venkatesh</td>
-              <td>
-                <div style="display:flex;align-items:center;gap:8px">
-                  <span style="font-size:13px;font-weight:500;color:var(--text-primary)">+91 98400 55667</span>
-                  <button class="op-wa-btn" onclick="window.open('https://wa.me/919840055667','_blank')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>
-                </div>
-              </td>
-              <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Salem,</div><div style="font-size:11.5px;color:var(--text-muted)">Tamil Nadu</div></td>
-              <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">14</td>
-              <td><span class="pp-status-badge active">Active</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View" onclick="toast('👁 View supplier')"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit" onclick="toast('✏️ Edit supplier')"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div style="display:flex;align-items:center;gap:12px">
-                  <div style="width:38px;height:38px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#065F46;flex-shrink:0">G</div>
-                  <div>
-                    <div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">Global Packaging</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">support@globalpack.com</div>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size:13px;color:var(--text-secondary)">Gokul Kumar</td>
-              <td>
-                <div style="display:flex;align-items:center;gap:8px">
-                  <span style="font-size:13px;font-weight:500;color:var(--text-primary)">+91 97909 88776</span>
-                  <button class="op-wa-btn" onclick="window.open('https://wa.me/919790988776','_blank')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>
-                </div>
-              </td>
-              <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Tiruppur,</div><div style="font-size:11.5px;color:var(--text-muted)">Tamil Nadu</div></td>
-              <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">21</td>
-              <td><span class="pp-status-badge active">Active</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View" onclick="toast('👁 View supplier')"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit" onclick="toast('✏️ Edit supplier')"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More"><i class="ti ti-dots-vertical"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="pp-checkbox"></td>
-              <td>
-                <div style="display:flex;align-items:center;gap:12px">
-                  <div style="width:38px;height:38px;border-radius:50%;background:#FEE2E2;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#991B1B;flex-shrink:0">O</div>
-                  <div>
-                    <div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">Others (Local Supplier)</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">localsupplier@gmail.com</div>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size:13px;color:var(--text-secondary)">Mani</td>
-              <td>
-                <div style="display:flex;align-items:center;gap:8px">
-                  <span style="font-size:13px;font-weight:500;color:var(--text-primary)">+91 97890 11223</span>
-                  <button class="op-wa-btn" onclick="window.open('https://wa.me/919789011223','_blank')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>
-                </div>
-              </td>
-              <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Virudhunagar,</div><div style="font-size:11.5px;color:var(--text-muted)">Tamil Nadu</div></td>
-              <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">8</td>
-              <td><span class="pp-status-badge inactive">Inactive</span></td>
-              <td>
-                <div class="op-action-btns">
-                  <button class="op-eye-btn" title="View" onclick="toast('👁 View supplier')"><i class="ti ti-eye"></i></button>
-                  <button class="op-eye-btn" title="Edit" onclick="toast('✏️ Edit supplier')"><i class="ti ti-pencil"></i></button>
-                  <button class="op-more-btn" title="More"><i class="ti ti-dots-vertical"></i></button>
+              <td colspan="8">
+                <div class="empty-state" style="padding:40px 12px">
+                  <i class="ti ti-truck-delivery"></i>
+                  <h3>No suppliers yet</h3>
+                  <p>Click <strong>Add Supplier</strong> to add your first supplier</p>
                 </div>
               </td>
             </tr>
@@ -2328,14 +1967,11 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 
         <!-- Pagination -->
         <div class="op-pagination">
-          <div class="op-page-info">Showing 1 to 7 of 28 suppliers</div>
+          <div class="op-page-info">Showing 0 of 0 suppliers</div>
           <div class="op-page-controls">
             <button class="op-pg-btn" disabled><i class="ti ti-chevron-left"></i></button>
             <button class="op-pg-btn active">1</button>
-            <button class="op-pg-btn">2</button>
-            <button class="op-pg-btn">3</button>
-            <button class="op-pg-btn">4</button>
-            <button class="op-pg-btn"><i class="ti ti-chevron-right"></i></button>
+            <button class="op-pg-btn" disabled><i class="ti ti-chevron-right"></i></button>
           </div>
           <div class="op-per-page">10 / page <i class="ti ti-chevron-down"></i></div>
         </div>
@@ -2358,8 +1994,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">Total Customers</div>
-            <div class="cust-stat-val">2,856</div>
-            <div class="op-stat-trend up">↑ 16.3% this month</div>
+            <div class="cust-stat-val">0</div>
           </div>
         </div>
         <div class="cust-stat-card">
@@ -2368,8 +2003,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">New Customers</div>
-            <div class="cust-stat-val">386</div>
-            <div class="op-stat-trend up">↑ 12.8% this month</div>
+            <div class="cust-stat-val">0</div>
           </div>
         </div>
         <div class="cust-stat-card">
@@ -2378,8 +2012,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">Repeat Customers</div>
-            <div class="cust-stat-val">1,248</div>
-            <div class="op-stat-trend up">↑ 18.7% this month</div>
+            <div class="cust-stat-val">0</div>
           </div>
         </div>
         <div class="cust-stat-card">
@@ -2388,8 +2021,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">Avg. Order Value</div>
-            <div class="cust-stat-val">₹2,150</div>
-            <div class="op-stat-trend up">↑ 8.6% this month</div>
+            <div class="cust-stat-val">₹0</div>
           </div>
         </div>
         <div class="cust-stat-card" style="border-right:none">
@@ -2398,8 +2030,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">Total Spent</div>
-            <div class="cust-stat-val">₹61,42,850</div>
-            <div class="op-stat-trend up">↑ 20.4% this month</div>
+            <div class="cust-stat-val">₹0</div>
           </div>
         </div>
       </div>
@@ -2436,129 +2067,24 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </thead>
           <tbody>
             <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Karthik Raj</span></td>
-              <td><div class="contact-phone">+91 98765 43210</div><div class="contact-email">karthik@email.com</div></td>
-              <td><div class="location-city">Coimbatore,</div><div class="location-state">Tamil Nadu</div></td>
-              <td><div class="orders-count">12</div></td>
-              <td><span class="spent-val">₹24,560</span></td>
-              <td><span class="since-date">30 May, 2024</span></td>
-              <td><span class="cust-status-badge active">Active</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(0)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(0,'9876543210')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('9876543210')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Priya Sharma</span></td>
-              <td><div class="contact-phone">+91 91234 56789</div><div class="contact-email">priya.sharma@email.com</div></td>
-              <td><div class="location-city">Bangalore,</div><div class="location-state">Karnataka</div></td>
-              <td><div class="orders-count">8</div></td>
-              <td><span class="spent-val">₹15,230</span></td>
-              <td><span class="since-date">28 May, 2024</span></td>
-              <td><span class="cust-status-badge active">Active</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(1)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(1,'9123456789')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('9123456789')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Arun Kumar</span></td>
-              <td><div class="contact-phone">+91 99887 76655</div><div class="contact-email">arunkumar@email.com</div></td>
-              <td><div class="location-city">Chennai,</div><div class="location-state">Tamil Nadu</div></td>
-              <td><div class="orders-count">15</div></td>
-              <td><span class="spent-val">₹32,450</span></td>
-              <td><span class="since-date">27 May, 2024</span></td>
-              <td><span class="cust-status-badge active">Active</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(2)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(2,'9988776655')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('9988776655')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Sneha Reddy</span></td>
-              <td><div class="contact-phone">+91 90000 11122</div><div class="contact-email">sneha.reddy@email.com</div></td>
-              <td><div class="location-city">Hyderabad,</div><div class="location-state">Telangana</div></td>
-              <td><div class="orders-count">6</div></td>
-              <td><span class="spent-val">₹8,450</span></td>
-              <td><span class="since-date">25 May, 2024</span></td>
-              <td><span class="cust-status-badge active">Active</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(3)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(3,'9000011122')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('9000011122')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Vignesh M</span></td>
-              <td><div class="contact-phone">+91 93456 78901</div><div class="contact-email">vigneshm@email.com</div></td>
-              <td><div class="location-city">Madurai,</div><div class="location-state">Tamil Nadu</div></td>
-              <td><div class="orders-count">3</div></td>
-              <td><span class="spent-val">₹4,250</span></td>
-              <td><span class="since-date">24 May, 2024</span></td>
-              <td><span class="cust-status-badge inactive">Inactive</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(4)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(4,'9345678901')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('9345678901')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Deepa Nair</span></td>
-              <td><div class="contact-phone">+91 81234 56780</div><div class="contact-email">deepa.nair@email.com</div></td>
-              <td><div class="location-city">Kochi,</div><div class="location-state">Kerala</div></td>
-              <td><div class="orders-count">10</div></td>
-              <td><span class="spent-val">₹19,780</span></td>
-              <td><span class="since-date">22 May, 2024</span></td>
-              <td><span class="cust-status-badge active">Active</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(5)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(5,'8123456780')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('8123456780')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Suresh Babu</span></td>
-              <td><div class="contact-phone">+91 97890 12345</div><div class="contact-email">sureshb@email.com</div></td>
-              <td><div class="location-city">Trichy,</div><div class="location-state">Tamil Nadu</div></td>
-              <td><div class="orders-count">2</div></td>
-              <td><span class="spent-val">₹2,150</span></td>
-              <td><span class="since-date">20 May, 2024</span></td>
-              <td><span class="cust-status-badge inactive">Inactive</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(6)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(6,'9789012345')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('9789012345')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Ramya Krishnan</span></td>
-              <td><div class="contact-phone">+91 94567 89012</div><div class="contact-email">ramya.k@email.com</div></td>
-              <td><div class="location-city">Tirupur,</div><div class="location-state">Tamil Nadu</div></td>
-              <td><div class="orders-count">7</div></td>
-              <td><span class="spent-val">₹11,340</span></td>
-              <td><span class="since-date">18 May, 2024</span></td>
-              <td><span class="cust-status-badge active">Active</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(7)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(7,'8012345678')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('8012345678')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Mohan Raj</span></td>
-              <td><div class="contact-phone">+91 87654 32109</div><div class="contact-email">mohanraj@email.com</div></td>
-              <td><div class="location-city">Salem,</div><div class="location-state">Tamil Nadu</div></td>
-              <td><div class="orders-count">5</div></td>
-              <td><span class="spent-val">₹7,890</span></td>
-              <td><span class="since-date">15 May, 2024</span></td>
-              <td><span class="cust-status-badge active">Active</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(8)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(8,'7654321098')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('7654321098')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="cbox"></td>
-              <td><span class="cust-name">Lakshmi Priya</span></td>
-              <td><div class="contact-phone">+91 76543 21098</div><div class="contact-email">lakshmi.p@email.com</div></td>
-              <td><div class="location-city">Erode,</div><div class="location-state">Tamil Nadu</div></td>
-              <td><div class="orders-count">9</div></td>
-              <td><span class="spent-val">₹16,500</span></td>
-              <td><span class="since-date">12 May, 2024</span></td>
-              <td><span class="cust-status-badge active">Active</span></td>
-              <td><div class="action-btns"><button class="act-btn" title="View" onclick="viewCustomer(9)"><i class="ti ti-eye"></i></button><button class="act-btn" title="Edit" onclick="editCustomer(9,'9001122334')"><i class="ti ti-pencil"></i></button><button class="act-btn" title="WhatsApp" onclick="waCustomer('9001122334')"><i class="ti ti-brand-whatsapp" style="color:#25D366"></i></button></div></td>
+              <td colspan="9">
+                <div class="empty-state" style="padding:40px 12px">
+                  <i class="ti ti-users"></i>
+                  <h3>No customers yet</h3>
+                  <p>Click <strong>Add Customer</strong> to add your first customer</p>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
 
         <!-- Pagination -->
         <div class="op-pagination">
-          <div class="op-page-info">Showing 1 to 10 of 2,856 customers</div>
+          <div class="op-page-info">Showing 0 of 0 customers</div>
           <div class="op-page-controls">
             <button class="op-pg-btn" disabled><i class="ti ti-chevron-left"></i></button>
             <button class="op-pg-btn active">1</button>
-            <button class="op-pg-btn">2</button>
-            <button class="op-pg-btn">3</button>
-            <span class="op-pg-ellipsis">...</span>
-            <button class="op-pg-btn">286</button>
-            <button class="op-pg-btn"><i class="ti ti-chevron-right"></i></button>
+            <button class="op-pg-btn" disabled><i class="ti ti-chevron-right"></i></button>
           </div>
           <div class="op-per-page">10 / page <i class="ti ti-chevron-down"></i></div>
         </div>
@@ -2576,48 +2102,43 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           <div class="rp-stat-icon" style="background:#EDE9FE"><i class="ti ti-chart-line" style="color:#7C3AED;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Revenue</div>
-            <div class="rp-stat-val">₹12,48,750</div>
-            <div class="op-stat-trend up">↑ 18.6% vs last 30 days</div>
+            <div class="rp-stat-val">₹0</div>
           </div>
         </div>
         <div class="rp-stat-card">
           <div class="rp-stat-icon" style="background:#F0FDF4"><i class="ti ti-shopping-bag" style="color:#15803D;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Orders</div>
-            <div class="rp-stat-val">1,248</div>
-            <div class="op-stat-trend up">↑ 15.3% vs last 30 days</div>
+            <div class="rp-stat-val">0</div>
           </div>
         </div>
         <div class="rp-stat-card">
           <div class="rp-stat-icon" style="background:#FFF7ED"><i class="ti ti-wallet" style="color:#EA580C;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Average Order Value</div>
-            <div class="rp-stat-val">₹1,002</div>
-            <div class="op-stat-trend up">↑ 2.4% vs last 30 days</div>
+            <div class="rp-stat-val">₹0</div>
           </div>
         </div>
         <div class="rp-stat-card">
           <div class="rp-stat-icon" style="background:#EFF6FF"><i class="ti ti-users" style="color:#1D4ED8;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">New Customers</div>
-            <div class="rp-stat-val">386</div>
-            <div class="op-stat-trend up">↑ 12.7% vs last 30 days</div>
+            <div class="rp-stat-val">0</div>
           </div>
         </div>
         <div class="rp-stat-card" style="border-right:none">
           <div class="rp-stat-icon" style="background:#FFF1F2"><i class="ti ti-repeat" style="color:#E11D48;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Return Rate</div>
-            <div class="rp-stat-val">2.45%</div>
-            <div class="op-stat-trend down">↓ 0.6% vs last 30 days</div>
+            <div class="rp-stat-val">0%</div>
           </div>
         </div>
       </div>
 
       <!-- Date filter bar -->
       <div class="rp-date-bar">
-        <div class="rp-date-select" onclick="toast('📅 Date picker coming soon')" style="cursor:pointer"><i class="ti ti-calendar" style="color:var(--text-muted);font-size:14px"></i> 30 Apr – 30 May 2024 <i class="ti ti-chevron-down" style="font-size:12px;margin-left:4px"></i></div>
-        <div class="rp-date-select">Compare with: 30 Mar – 29 Apr 2024 <i class="ti ti-chevron-down" style="font-size:12px;margin-left:4px"></i></div>
+        <div class="rp-date-select" onclick="toast('📅 Date picker coming soon')" style="cursor:pointer"><i class="ti ti-calendar" style="color:var(--text-muted);font-size:14px"></i> Last 30 days <i class="ti ti-chevron-down" style="font-size:12px;margin-left:4px"></i></div>
+        <div class="rp-date-select">Compare with: previous 30 days <i class="ti ti-chevron-down" style="font-size:12px;margin-left:4px"></i></div>
         <div style="flex:1"></div>
         <div class="rp-date-select">Daily <i class="ti ti-chevron-down" style="font-size:12px;margin-left:4px"></i></div>
       </div>
@@ -2639,73 +2160,25 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
             <div class="op-filter-select" style="font-size:12px;padding:6px 12px">Revenue <i class="ti ti-chevron-down"></i></div>
           </div>
           <div class="rp-metrics-row">
-            <div><div class="rp-metric-val">₹12,48,750</div></div>
-            <div><div class="rp-metric-val">1,248</div></div>
-            <div><div class="rp-metric-val">856</div></div>
+            <div><div class="rp-metric-val">₹0</div></div>
+            <div><div class="rp-metric-val">0</div></div>
+            <div><div class="rp-metric-val">0</div></div>
           </div>
-          <div class="rp-chart-area">
-            <div class="rp-y-labels">
-              <span>40K</span><span>30K</span><span>20K</span><span>10K</span><span>0</span>
+          <div class="rp-chart-area" style="display:flex;align-items:center;justify-content:center">
+            <div class="empty-state" style="padding:24px 12px">
+              <i class="ti ti-chart-line"></i>
+              <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No sales data yet</p>
             </div>
-            <div class="rp-chart-svg-wrap">
-              <svg viewBox="0 0 620 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-                <defs>
-                  <linearGradient id="rg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366F1" stop-opacity="0.18"/><stop offset="100%" stop-color="#6366F1" stop-opacity="0.02"/></linearGradient>
-                  <linearGradient id="rg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#60A5FA" stop-opacity="0.15"/><stop offset="100%" stop-color="#60A5FA" stop-opacity="0.02"/></linearGradient>
-                  <linearGradient id="rg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#34D399" stop-opacity="0.12"/><stop offset="100%" stop-color="#34D399" stop-opacity="0.01"/></linearGradient>
-                </defs>
-                <!-- Grid lines -->
-                <line x1="0" y1="0" x2="620" y2="0" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="45" x2="620" y2="45" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="90" x2="620" y2="90" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="135" x2="620" y2="135" stroke="#E4EBF5" stroke-width="1"/>
-                <line x1="0" y1="180" x2="620" y2="180" stroke="#E4EBF5" stroke-width="1"/>
-                <!-- Revenue area (top wave) -->
-                <path d="M0,130 C30,120 60,115 90,118 C120,121 150,108 180,105 C210,102 240,112 270,108 C300,104 330,95 360,98 C390,101 420,90 450,92 C480,94 510,88 540,85 C570,82 600,88 620,85 L620,180 L0,180 Z" fill="url(#rg1)"/>
-                <path d="M0,130 C30,120 60,115 90,118 C120,121 150,108 180,105 C210,102 240,112 270,108 C300,104 330,95 360,98 C390,101 420,90 450,92 C480,94 510,88 540,85 C570,82 600,88 620,85" stroke="#6366F1" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <!-- Orders area (middle wave) -->
-                <path d="M0,148 C30,140 60,138 90,142 C120,146 150,132 180,130 C210,128 240,138 270,135 C300,132 330,122 360,126 C390,130 420,118 450,122 C480,126 510,118 540,115 C570,112 600,118 620,115 L620,180 L0,180 Z" fill="url(#rg2)"/>
-                <path d="M0,148 C30,140 60,138 90,142 C120,146 150,132 180,130 C210,128 240,138 270,135 C300,132 330,122 360,126 C390,130 420,118 450,122 C480,126 510,118 540,115 C570,112 600,118 620,115" stroke="#60A5FA" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <!-- Customers area (bottom wave) -->
-                <path d="M0,162 C30,158 60,156 90,159 C120,162 150,152 180,150 C210,148 240,155 270,153 C300,151 330,145 360,148 C390,151 420,143 450,146 C480,149 510,142 540,140 C570,138 600,143 620,140 L620,180 L0,180 Z" fill="url(#rg3)"/>
-                <path d="M0,162 C30,158 60,156 90,159 C120,162 150,152 180,150 C210,148 240,155 270,153 C300,151 330,145 360,148 C390,151 420,143 450,146 C480,149 510,142 540,140 C570,138 600,143 620,140" stroke="#34D399" stroke-width="2" fill="none" stroke-linecap="round"/>
-              </svg>
-            </div>
-          </div>
-          <div class="rp-x-labels">
-            <span>30 Apr</span><span>5 May</span><span>10 May</span><span>15 May</span><span>20 May</span><span>25 May</span><span>30 May</span>
           </div>
         </div>
 
         <!-- Order Status donut -->
         <div class="card rp-donut-card">
           <div class="card-title" style="margin-bottom:18px">Order Status</div>
-          <div class="rp-donut-wrap">
-            <svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" style="width:160px;height:160px;flex-shrink:0">
-              <!-- Donut segments: Delivered 49.7%, Shipped 27.4%, Processing 12.5%, Pending 6.4%, Cancelled 3.8% -->
-              <!-- r=70, circumference = 439.8 -->
-              <!-- Delivered: 49.7% = 218.6 -->
-              <circle cx="90" cy="90" r="70" fill="none" stroke="#22C55E" stroke-width="28" stroke-dasharray="218.6 221.2" stroke-dashoffset="109.95" transform="rotate(-90 90 90)"/>
-              <!-- Shipped: 27.4% = 120.5 -->
-              <circle cx="90" cy="90" r="70" fill="none" stroke="#3B82F6" stroke-width="28" stroke-dasharray="120.5 319.3" stroke-dashoffset="-108.65" transform="rotate(-90 90 90)"/>
-              <!-- Processing: 12.5% = 54.9 -->
-              <circle cx="90" cy="90" r="70" fill="none" stroke="#F97316" stroke-width="28" stroke-dasharray="54.9 384.9" stroke-dashoffset="-229.15" transform="rotate(-90 90 90)"/>
-              <!-- Pending: 6.4% = 28.1 -->
-              <circle cx="90" cy="90" r="70" fill="none" stroke="#8B5CF6" stroke-width="28" stroke-dasharray="28.1 411.7" stroke-dashoffset="-284.05" transform="rotate(-90 90 90)"/>
-              <!-- Cancelled: 3.8% = 16.7 -->
-              <circle cx="90" cy="90" r="70" fill="none" stroke="#F43F5E" stroke-width="28" stroke-dasharray="16.7 423.1" stroke-dashoffset="-312.15" transform="rotate(-90 90 90)"/>
-              <!-- Center -->
-              <circle cx="90" cy="90" r="56" fill="white"/>
-              <text x="90" y="86" text-anchor="middle" font-size="18" font-weight="800" fill="#0B1D3A" font-family="Inter,sans-serif">1,248</text>
-              <text x="90" y="102" text-anchor="middle" font-size="11" fill="#8496B0" font-family="Inter,sans-serif">Total Orders</text>
-            </svg>
-            <div class="rp-donut-legend">
-              <div class="rp-legend-row"><span class="rp-dot" style="background:#22C55E"></span><span class="rp-leg-label">Delivered</span><span class="rp-leg-val">620 (49.7%)</span></div>
-              <div class="rp-legend-row"><span class="rp-dot" style="background:#3B82F6"></span><span class="rp-leg-label">Shipped</span><span class="rp-leg-val">342 (27.4%)</span></div>
-              <div class="rp-legend-row"><span class="rp-dot" style="background:#F97316"></span><span class="rp-leg-label">Processing</span><span class="rp-leg-val">156 (12.5%)</span></div>
-              <div class="rp-legend-row"><span class="rp-dot" style="background:#8B5CF6"></span><span class="rp-leg-label">Pending</span><span class="rp-leg-val">80 (6.4%)</span></div>
-              <div class="rp-legend-row"><span class="rp-dot" style="background:#F43F5E"></span><span class="rp-leg-label">Cancelled</span><span class="rp-leg-val">48 (3.8%)</span></div>
-              <a href="#" class="rp-view-link">View full report →</a>
+          <div class="rp-donut-wrap" style="display:flex;align-items:center;justify-content:center;min-height:160px">
+            <div class="empty-state" style="padding:24px 12px">
+              <i class="ti ti-chart-donut"></i>
+              <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No orders yet</p>
             </div>
           </div>
         </div>
@@ -2728,55 +2201,15 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
             </thead>
             <tbody>
               <tr>
-                <td>
-                  <div class="rp-prod-cell">
-                    <div class="rp-prod-img" style="background:#EFF6FF"><img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=48&h=48&fit=crop" onerror="this.style.display='none';this.parentElement.innerHTML='👕'" alt=""></div>
-                    <div><div class="rp-prod-name">Men's Casual Cotton Shirt</div><div class="rp-prod-sku">MSD-001</div></div>
+                <td colspan="4">
+                  <div class="empty-state" style="padding:24px 12px">
+                    <i class="ti ti-box"></i>
+                    <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No product sales yet</p>
                   </div>
                 </td>
-                <td class="rp-td-num">152</td><td class="rp-td-num">320</td><td class="rp-td-rev">₹1,52,640</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="rp-prod-cell">
-                    <div class="rp-prod-img" style="background:#FFF0F6"><img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=48&h=48&fit=crop" onerror="this.style.display='none';this.parentElement.innerHTML='👗'" alt=""></div>
-                    <div><div class="rp-prod-name">Women's Floral Dress</div><div class="rp-prod-sku">MSD-002</div></div>
-                  </div>
-                </td>
-                <td class="rp-td-num">128</td><td class="rp-td-num">256</td><td class="rp-td-rev">₹1,28,450</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="rp-prod-cell">
-                    <div class="rp-prod-img" style="background:#F8FAFC"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=48&h=48&fit=crop" onerror="this.style.display='none';this.parentElement.innerHTML='👟'" alt=""></div>
-                    <div><div class="rp-prod-name">Sports Running Shoes</div><div class="rp-prod-sku">MSD-003</div></div>
-                  </div>
-                </td>
-                <td class="rp-td-num">110</td><td class="rp-td-num">220</td><td class="rp-td-rev">₹1,10,880</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="rp-prod-cell">
-                    <div class="rp-prod-img" style="background:#F0F4FF"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=48&h=48&fit=crop" onerror="this.style.display='none';this.parentElement.innerHTML='⌚'" alt=""></div>
-                    <div><div class="rp-prod-name">Smart Watch Series 5</div><div class="rp-prod-sku">MSD-004</div></div>
-                  </div>
-                </td>
-                <td class="rp-td-num">98</td><td class="rp-td-num">196</td><td class="rp-td-rev">₹97,800</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="rp-prod-cell">
-                    <div class="rp-prod-img" style="background:#F8FAFC"><img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=48&h=48&fit=crop" onerror="this.style.display='none';this.parentElement.innerHTML='🎒'" alt=""></div>
-                    <div><div class="rp-prod-name">Travel Backpack</div><div class="rp-prod-sku">MSD-005</div></div>
-                  </div>
-                </td>
-                <td class="rp-td-num">85</td><td class="rp-td-num">170</td><td class="rp-td-rev">₹85,000</td>
               </tr>
             </tbody>
           </table>
-          <div style="padding:14px 0 2px;text-align:right">
-            <a href="#" class="rp-view-link">View all products report →</a>
-          </div>
         </div>
 
         <!-- Orders by Channel — live from ORDERS data -->
@@ -4934,13 +4367,7 @@ function loadBannerConfig(){
 /* ═══════════════════════════════
    PRODUCTS PAGE FUNCTIONS
 ═══════════════════════════════ */
-const STATIC_PRODUCTS = [
-  { name:"Men's Casual Cotton Shirt", sku:'MSD-001', category:'Clothing', price:1199, stock:42, status:'active' },
-  { name:"Women's Floral Dress",      sku:'MSD-002', category:'Clothing', price:1799, stock:18, status:'active' },
-  { name:"Sports Running Shoes",      sku:'MSD-003', category:'Footwear', price:2499, stock:0,  status:'out-of-stock' },
-  { name:"Smart Watch Series 5",      sku:'MSD-004', category:'Electronics', price:4999, stock:32, status:'active' },
-  { name:"Travel Backpack",           sku:'MSD-005', category:'Bags & Luggage', price:1299, stock:25, status:'draft' },
-];
+const STATIC_PRODUCTS = [];
 
 /* ── PRODUCT CATEGORIES & SUPPLIERS ─────────────────────────── */
 const PRODUCT_CATEGORIES = [
@@ -4949,15 +4376,7 @@ const PRODUCT_CATEGORIES = [
   'Sports & Fitness','Beauty & Personal Care','Jewellery',
   'Food & Beverages','Automotive','Health & Wellness','Other'
 ];
-const SUPPLIERS = [
-  { id:'SUP001', name:'Rajan Textiles, Surat' },
-  { id:'SUP002', name:'Chennai Fabrics Pvt Ltd' },
-  { id:'SUP003', name:'Bangalore Electronics Hub' },
-  { id:'SUP004', name:'Mumbai Wholesale Traders' },
-  { id:'SUP005', name:'Tirupur Garments Co.' },
-  { id:'SUP006', name:'Delhi General Merchants' },
-  { id:'SUP007', name:'Coimbatore Handlooms' },
-];
+const SUPPLIERS = [];
 
 
 /* ── SUPPLIER COLORS (cycle through for avatars) ─── */
@@ -5382,18 +4801,7 @@ function resetProdFilter(){
 /* ═══════════════════════════════
    CUSTOMERS PAGE FUNCTIONS
 ═══════════════════════════════ */
-const STATIC_CUSTOMERS = [
-  { name:'Karthik Raj',    phone:'9876543210', email:'karthik@email.com',      city:'Coimbatore', state:'Tamil Nadu',  orders:12, spent:'₹24,560', status:'active' },
-  { name:'Priya Sharma',   phone:'9123456789', email:'priya.sharma@email.com', city:'Bangalore',  state:'Karnataka',   orders:8,  spent:'₹15,230', status:'active' },
-  { name:'Arun Kumar',     phone:'9988776655', email:'arunkumar@email.com',    city:'Chennai',    state:'Tamil Nadu',  orders:15, spent:'₹32,450', status:'active' },
-  { name:'Sneha Reddy',    phone:'9000011122', email:'sneha.reddy@email.com',  city:'Hyderabad',  state:'Telangana',   orders:6,  spent:'₹8,450',  status:'active' },
-  { name:'Vignesh M',      phone:'9345678901', email:'vigneshm@email.com',     city:'Madurai',    state:'Tamil Nadu',  orders:3,  spent:'₹4,250',  status:'inactive' },
-  { name:'Deepa Nair',     phone:'8123456780', email:'deepa.nair@email.com',   city:'Kochi',      state:'Kerala',      orders:10, spent:'₹19,780', status:'active' },
-  { name:'Suresh Babu',    phone:'9789012345', email:'sureshb@email.com',      city:'Trichy',     state:'Tamil Nadu',  orders:7,  spent:'₹11,340', status:'active' },
-  { name:'Ramya Krishnan', phone:'8012345678', email:'ramyak@email.com',       city:'Salem',      state:'Tamil Nadu',  orders:5,  spent:'₹7,890',  status:'inactive' },
-  { name:'Mohan Raj',      phone:'7654321098', email:'mohanraj@email.com',     city:'Erode',      state:'Tamil Nadu',  orders:9,  spent:'₹16,220', status:'active' },
-  { name:'Lakshmi Priya',  phone:'9001122334', email:'lakshmip@email.com',     city:'Tirunelveli',state:'Tamil Nadu',  orders:4,  spent:'₹5,600',  status:'active' },
-];
+const STATIC_CUSTOMERS = [];
 
 function openAddCustomer(){
   const body = `
