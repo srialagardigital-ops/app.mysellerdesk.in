@@ -5836,10 +5836,13 @@ async function ensureSellerRow(user){
       SELLER_PROFILE.district = existing.district || SELLER_PROFILE.district;
       SELLER_PROFILE.pincode  = existing.pincode || SELLER_PROFILE.pincode;
       SELLER_PROFILE.logo     = existing.logo_url || null;
+      SELLER_PROFILE.status   = existing.status || 'pending';
       return;
     }
 
-    // No seller row yet — create one, using pending signup details if available
+    // Fallback only: normally the on_auth_user_created DB trigger already inserts
+    // this row at signup time (even before email verification). This branch just
+    // covers older accounts created before the trigger existed.
     let pending = {};
     try{
       const raw = localStorage.getItem(PENDING_PROFILE_KEY + '_' + user.email);
@@ -5940,13 +5943,19 @@ async function handleSignup(e){
 
   btn.disabled = true; btn.textContent = 'Creating account…';
 
-  // Stash the extra profile fields locally so we can attach them to the sellers row
-  // once the account is confirmed (Supabase auth doesn't store custom fields itself).
+  // Keep a local backup too (not required anymore since the DB trigger handles it,
+  // but harmless as a fallback).
   try{
     localStorage.setItem(PENDING_PROFILE_KEY + '_' + email, JSON.stringify({ name, whatsapp, address, state, district, pincode }));
   }catch(e){}
 
-  const { data, error } = await sbClient.auth.signUp({ email, password });
+  // Pass profile fields as auth user metadata — a DB trigger (on_auth_user_created)
+  // reads this to create the `sellers` row immediately, even before email is verified.
+  const { data, error } = await sbClient.auth.signUp({
+    email,
+    password,
+    options: { data: { name, whatsapp, address, state, district, pincode } }
+  });
 
   btn.disabled = false; btn.textContent = 'Create Account';
 
