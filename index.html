@@ -4126,8 +4126,7 @@ function renderConfirmDrawer(){
     </div>
   `;
   const footer = `
-    <button class="mo-btn-sec" onclick="openOrderView(${currentOrderIdx})">Back</button>
-    <button class="mo-btn-red" onclick="cancelOrder(${currentOrderIdx})"><i class="ti ti-x"></i>Cancel</button>
+    <button class="mo-btn-sec" onclick="closeDrawer()"><i class="ti ti-x"></i>Cancel</button>
     <button class="mo-btn-pri" onclick="confirmOrder()"><i class="ti ti-check"></i>Confirm Order</button>
   `;
   openDrawer('Confirm Order','Review details and confirm the order', body, footer);
@@ -4447,7 +4446,7 @@ function openShippingDrawer(idx){
     </div>
   `;
   const footer = `
-    <button class="mo-btn-sec" onclick="openOrderView(${idx})">Back</button>
+    <button class="mo-btn-sec" onclick="closeDrawer()"><i class="ti ti-x"></i>Cancel</button>
     <button class="mo-btn-pri" onclick="saveShipping(${idx})"><i class="ti ti-truck-delivery"></i>Save & Generate Label</button>
   `;
   openDrawer('Generate Shipping Label', 'Enter courier and tracking details', body, footer);
@@ -4515,7 +4514,7 @@ function openEditEnquiry(idx){
     </div>
   `;
   const footer = `
-    <button class="mo-btn-sec" onclick="openOrderView(${idx})">Back</button>
+    <button class="mo-btn-sec" onclick="closeDrawer()"><i class="ti ti-x"></i>Cancel</button>
     <button class="mo-btn-pri" onclick="saveEditEnquiry(${idx})"><i class="ti ti-device-floppy"></i>Save Changes</button>
   `;
   openDrawer('Edit Enquiry','Update enquiry details', body, footer);
