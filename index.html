@@ -2095,35 +2095,35 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#EDE9FE;display:flex;align-items:center;justify-content:center"><i class="ti ti-users" style="color:#7C3AED;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Suppliers</div>
-            <div class="op-stat-val">0</div>
+            <div class="op-stat-val" id="statTotalSuppliers">0</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:20px 22px;border-right:1px solid var(--border-light)">
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#DCFCE7;display:flex;align-items:center;justify-content:center"><i class="ti ti-circle-check" style="color:#16A34A;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Active Suppliers</div>
-            <div class="op-stat-val">0</div>
+            <div class="op-stat-val" id="statActiveSuppliers">0</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:20px 22px;border-right:1px solid var(--border-light)">
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#FEE2E2;display:flex;align-items:center;justify-content:center"><i class="ti ti-circle-x" style="color:#DC2626;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Inactive Suppliers</div>
-            <div class="op-stat-val">0</div>
+            <div class="op-stat-val" id="statInactiveSuppliers">0</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:20px 22px;border-right:1px solid var(--border-light)">
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#DBEAFE;display:flex;align-items:center;justify-content:center"><i class="ti ti-box" style="color:#1D4ED8;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Products</div>
-            <div class="op-stat-val">0</div>
+            <div class="op-stat-val" id="statSupplierProducts">0</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:20px 22px">
           <div style="width:48px;height:48px;min-width:48px;border-radius:12px;background:#FFF7ED;display:flex;align-items:center;justify-content:center"><i class="ti ti-wallet" style="color:#EA580C;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Purchase Value</div>
-            <div class="op-stat-val">₹0</div>
+            <div class="op-stat-val" id="statSupplierPurchaseValue">₹0</div>
           </div>
         </div>
       </div>
@@ -2157,7 +2157,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="suppliersBody">
             <tr>
               <td colspan="8">
                 <div class="empty-state" style="padding:40px 12px">
@@ -3391,6 +3391,22 @@ function dbProductToApp(row){
   };
 }
 
+function dbSupplierToApp(row){
+  const addrParts = [row.address, row.district, row.state, row.pincode].filter(Boolean);
+  return {
+    id: row.id,
+    name: row.name || '',
+    whatsapp: row.whatsapp || '',
+    email: row.email || '',
+    street: row.address || '',
+    state: row.state || '',
+    district: row.district || '',
+    pincode: row.pincode || '',
+    status: row.status || 'active',
+    addressDisplay: addrParts.join(', '),
+  };
+}
+
 function dbOrderToApp(row){
   const productIdx = row.product_id ? PRODUCTS.findIndex(p => p.id === row.product_id) : -1;
   return {
@@ -3415,20 +3431,23 @@ function dbOrderToApp(row){
 }
 
 /* Fetch every table for the logged-in seller and populate the in-memory
-   PRODUCTS / ORDERS / CUSTOMERS that the rest of the app already reads from. */
+   PRODUCTS / ORDERS / CUSTOMERS / SUPPLIERS that the rest of the app already reads from. */
 async function loadSellerData(){
   try{
-    const [prodRes, ordRes, custRes] = await Promise.all([
+    const [prodRes, ordRes, custRes, supRes] = await Promise.all([
       sbClient.from('products').select('*').order('created_at', { ascending: true }),
       sbClient.from('orders').select('*').order('created_at', { ascending: true }),
       sbClient.from('customers').select('*'),
+      sbClient.from('suppliers').select('*').order('created_at', { ascending: true }),
     ]);
 
     if(prodRes.error) console.warn('Products load error:', prodRes.error.message);
     if(ordRes.error)  console.warn('Orders load error:', ordRes.error.message);
     if(custRes.error) console.warn('Customers load error:', custRes.error.message);
+    if(supRes.error)  console.warn('Suppliers load error:', supRes.error.message);
 
     PRODUCTS.splice(0, PRODUCTS.length, ...(prodRes.data || []).map(dbProductToApp));
+    SUPPLIERS.splice(0, SUPPLIERS.length, ...(supRes.data || []).map(dbSupplierToApp));
 
     Object.keys(CUSTOMERS).forEach(k => delete CUSTOMERS[k]);
     (custRes.data || []).forEach(row => {
@@ -3524,6 +3543,7 @@ function renderAll(){
   renderRecentOrders();
   renderProductsPage();
   renderCustomersPage();
+  renderSuppliersPage();
   const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
   const filtered = ORDERS.filter((o,i) => {
     if(currentFilter !== 'All' && o.status !== currentFilter) return false;
@@ -4688,6 +4708,60 @@ const SUP_COLORS = [
   {bg:'#FEF3C7',text:'#92400E'}
 ];
 
+function supplierFormHtml(sup){
+  sup = sup || {};
+  const distOpts = TN_DISTRICTS.map(d=>`<option value="${d}" ${sup.district===d?'selected':''}>${d}</option>`).join('');
+  const isOther = sup.state && sup.state !== 'Tamil Nadu';
+  return `
+    <p class="sec-title">Basic Info</p>
+    <div class="form-group">
+      <label class="form-label">Supplier Name <span class="req">*</span></label>
+      <input class="form-input" id="asName" type="text" placeholder="e.g. Rajan Textiles, Surat" value="${sup.name||''}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">WhatsApp Number <span class="req">*</span></label>
+      <div style="display:flex;align-items:center;gap:0">
+        <span style="padding:10px 12px;border:1.5px solid var(--border);border-right:none;border-radius:var(--radius-md) 0 0 var(--radius-md);background:var(--bg-subtle);font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap">+91</span>
+        <input class="form-input" id="asWhatsapp" type="tel" maxlength="10" placeholder="10-digit number" value="${sup.whatsapp||''}"
+          style="border-radius:0 var(--radius-md) var(--radius-md) 0;border-left:none;flex:1"
+          oninput="this.value=this.value.replace(/\\D/g,'')">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email ID <span class="opt">(optional)</span></label>
+      <input class="form-input" id="asEmail" type="email" placeholder="supplier@example.com" value="${sup.email||''}">
+    </div>
+
+    <p class="sec-title" style="margin-top:20px">Address <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted);font-size:11px">(optional)</span></p>
+    <div class="form-group">
+      <label class="form-label">Door No / Street / Area</label>
+      <textarea class="form-input" id="asStreet" rows="2" placeholder="e.g. 12/A, Gandhi Street, Anna Nagar..." style="resize:none">${sup.street||''}</textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div>
+        <label class="form-label">State</label>
+        <select class="form-select" id="asState" onchange="onAsStateChange(this.value)">
+          <option value="Tamil Nadu" ${!isOther?'selected':''}>Tamil Nadu</option>
+          <option value="Other" ${isOther?'selected':''}>Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">District</label>
+        <div id="asDistrictWrap">
+          ${isOther
+            ? `<input class="form-input" id="asDistrict" type="text" placeholder="Enter district" value="${sup.district||''}">`
+            : `<select class="form-select" id="asDistrict"><option value="">Select district…</option>${distOpts}</select>`}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Pincode</label>
+      <input class="form-input" id="asPincode" type="text" maxlength="6" placeholder="6-digit pincode" value="${sup.pincode||''}"
+        oninput="this.value=this.value.replace(/\\D/g,'')">
+    </div>
+  `;
+}
+
 function openAddSupplier(){
   const overlay = document.getElementById('drawerOverlay');
   const title   = document.getElementById('drawerTitle');
@@ -4697,63 +4771,47 @@ function openAddSupplier(){
 
   title.textContent = 'Add New Supplier';
   sub.textContent   = 'Supplier details will appear in product dropdown';
-
-  const distOpts = TN_DISTRICTS.map(d=>`<option value="${d}">${d}</option>`).join('');
-
-  body.innerHTML = `
-    <p class="sec-title">Basic Info</p>
-    <div class="form-group">
-      <label class="form-label">Supplier Name <span class="req">*</span></label>
-      <input class="form-input" id="asName" type="text" placeholder="e.g. Rajan Textiles, Surat">
-    </div>
-    <div class="form-group">
-      <label class="form-label">WhatsApp Number <span class="req">*</span></label>
-      <div style="display:flex;align-items:center;gap:0">
-        <span style="padding:10px 12px;border:1.5px solid var(--border);border-right:none;border-radius:var(--radius-md) 0 0 var(--radius-md);background:var(--bg-subtle);font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap">+91</span>
-        <input class="form-input" id="asWhatsapp" type="tel" maxlength="10" placeholder="10-digit number"
-          style="border-radius:0 var(--radius-md) var(--radius-md) 0;border-left:none;flex:1"
-          oninput="this.value=this.value.replace(/\\D/g,'')">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Email ID <span class="opt">(optional)</span></label>
-      <input class="form-input" id="asEmail" type="email" placeholder="supplier@example.com">
-    </div>
-
-    <p class="sec-title" style="margin-top:20px">Address <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted);font-size:11px">(optional)</span></p>
-    <div class="form-group">
-      <label class="form-label">Door No / Street / Area</label>
-      <textarea class="form-input" id="asStreet" rows="2" placeholder="e.g. 12/A, Gandhi Street, Anna Nagar..." style="resize:none"></textarea>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-      <div>
-        <label class="form-label">State</label>
-        <select class="form-select" id="asState" onchange="onAsStateChange(this.value)">
-          <option value="Tamil Nadu" selected>Tamil Nadu</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div>
-        <label class="form-label">District</label>
-        <div id="asDistrictWrap">
-          <select class="form-select" id="asDistrict">
-            <option value="">Select district…</option>
-            ${distOpts}
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Pincode</label>
-      <input class="form-input" id="asPincode" type="text" maxlength="6" placeholder="6-digit pincode"
-        oninput="this.value=this.value.replace(/\\D/g,'')">
-    </div>
-  `;
-
+  body.innerHTML = supplierFormHtml();
   footer.innerHTML = '<button class="btn-primary" style="flex:1;justify-content:center" onclick="saveSupplier()"><i class="ti ti-check"></i> Save Supplier</button><button onclick="closeDrawer()" style="padding:9px 16px;border:1.5px solid var(--border);border-radius:var(--radius-md);background:white;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:var(--font)">Cancel</button>';
 
   overlay.classList.add('open');
   setTimeout(()=>document.getElementById('asName')?.focus(),100);
+}
+
+function editSupplier(idx){
+  const sup = SUPPLIERS[idx];
+  if(!sup) return;
+  const overlay = document.getElementById('drawerOverlay');
+  const title   = document.getElementById('drawerTitle');
+  const sub     = document.getElementById('drawerSub');
+  const body    = document.getElementById('drawerBody');
+  const footer  = document.getElementById('drawerFooter');
+
+  title.textContent = 'Edit Supplier';
+  sub.textContent   = sup.name;
+  body.innerHTML = supplierFormHtml(sup);
+  footer.innerHTML = '<button class="btn-primary" style="flex:1;justify-content:center" onclick="saveEditSupplier('+idx+')"><i class="ti ti-check"></i> Save Changes</button><button onclick="closeDrawer()" style="padding:9px 16px;border:1.5px solid var(--border);border-radius:var(--radius-md);background:white;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:var(--font)">Cancel</button>';
+
+  overlay.classList.add('open');
+}
+
+function viewSupplier(idx){
+  const sup = SUPPLIERS[idx];
+  if(!sup) return;
+  const prodCount = PRODUCTS.filter(p => p.supplier === sup.id).length;
+  const body = `
+    <p class="sec-title">Supplier Info</p>
+    <div class="order-detail-row"><span class="order-detail-label">Name</span><span class="order-detail-val">${sup.name}</span></div>
+    <div class="order-detail-row"><span class="order-detail-label">WhatsApp</span><span class="order-detail-val">+91 ${sup.whatsapp||'—'}</span></div>
+    ${sup.email ? `<div class="order-detail-row"><span class="order-detail-label">Email</span><span class="order-detail-val">${sup.email}</span></div>` : ''}
+    ${sup.addressDisplay ? `<div class="order-detail-row"><span class="order-detail-label">Address</span><span class="order-detail-val" style="line-height:1.5">${sup.addressDisplay}</span></div>` : ''}
+    <div class="order-detail-row"><span class="order-detail-label">Total Products</span><span class="order-detail-val">${prodCount}</span></div>
+  `;
+  const footer = `
+    <button class="mo-btn-sec" onclick="closeDrawer()">Close</button>
+    <button class="mo-btn-pri" onclick="closeDrawer();editSupplier(${idx})"><i class="ti ti-pencil"></i>Edit</button>
+  `;
+  openDrawer(sup.name, 'Supplier Details', body, footer);
 }
 
 function onAsStateChange(val){
@@ -4767,7 +4825,7 @@ function onAsStateChange(val){
   }
 }
 
-function saveSupplier(){
+function readSupplierForm(){
   const name     = (document.getElementById('asName')?.value||'').trim();
   const whatsapp = (document.getElementById('asWhatsapp')?.value||'').trim();
   const email    = (document.getElementById('asEmail')?.value||'').trim();
@@ -4775,52 +4833,141 @@ function saveSupplier(){
   const state    = (document.getElementById('asState')?.value||'').trim();
   const district = (document.getElementById('asDistrict')?.value||'').trim();
   const pincode  = (document.getElementById('asPincode')?.value||'').trim();
+  return { name, whatsapp, email, street, state, district, pincode };
+}
 
-  if(!name){ toast('⚠️ Supplier name is required'); document.getElementById('asName').focus(); return; }
-  if(!whatsapp || whatsapp.length !== 10){ toast('⚠️ Enter a valid 10-digit WhatsApp number'); document.getElementById('asWhatsapp').focus(); return; }
+async function saveSupplier(){
+  const f = readSupplierForm();
+  if(!f.name){ toast('⚠️ Supplier name is required'); document.getElementById('asName').focus(); return; }
+  if(!f.whatsapp || f.whatsapp.length !== 10){ toast('⚠️ Enter a valid 10-digit WhatsApp number'); document.getElementById('asWhatsapp').focus(); return; }
+  if(!CURRENT_USER_ID){ toast('⚠️ Not logged in','#DC2626'); return; }
 
-  const addrParts = [street, district, state, pincode].filter(Boolean);
-  const addressDisplay = addrParts.join(', ');
+  const btn = document.querySelector('#drawerFooter .btn-primary');
+  if(btn){ btn.disabled = true; btn.textContent = 'Saving…'; }
 
-  const newId  = 'SUP' + String(Date.now()).slice(-6);
-  const newSup = { id: newId, name, whatsapp, email, street, state, district, pincode, addressDisplay };
-  SUPPLIERS.push(newSup);
+  const { data: inserted, error } = await sbClient.from('suppliers').insert({
+    seller_id: CURRENT_USER_ID,
+    name: f.name,
+    whatsapp: f.whatsapp,
+    email: f.email || null,
+    address: f.street || null,
+    state: f.state || null,
+    district: f.district || null,
+    pincode: f.pincode || null,
+    status: 'active'
+  }).select().single();
 
-  renderNewSupplierRow(newSup);
+  if(btn){ btn.disabled = false; btn.textContent = 'Save Supplier'; }
+
+  if(error){
+    toast('⚠️ Could not add supplier: ' + error.message, '#DC2626');
+    return;
+  }
+
+  SUPPLIERS.push(dbSupplierToApp(inserted));
   closeDrawer();
-  toast('✅ Supplier "' + name + '" added!');
+  renderAll();
+  toast('✅ Supplier "' + f.name + '" added!');
 }
 
-function renderNewSupplierRow(sup){
-  const tbody = document.querySelector('#page-suppliers .op-tbl tbody');
+async function saveEditSupplier(idx){
+  const sup = SUPPLIERS[idx];
+  if(!sup) return;
+  const f = readSupplierForm();
+  if(!f.name){ toast('⚠️ Supplier name is required'); document.getElementById('asName').focus(); return; }
+  if(!f.whatsapp || f.whatsapp.length !== 10){ toast('⚠️ Enter a valid 10-digit WhatsApp number'); document.getElementById('asWhatsapp').focus(); return; }
+
+  const btn = document.querySelector('#drawerFooter .btn-primary');
+  if(btn){ btn.disabled = true; btn.textContent = 'Saving…'; }
+
+  const { data: updated, error } = await sbClient.from('suppliers').update({
+    name: f.name,
+    whatsapp: f.whatsapp,
+    email: f.email || null,
+    address: f.street || null,
+    state: f.state || null,
+    district: f.district || null,
+    pincode: f.pincode || null
+  }).eq('id', sup.id).select().single();
+
+  if(btn){ btn.disabled = false; btn.textContent = 'Save Changes'; }
+
+  if(error){
+    toast('⚠️ Could not update supplier: ' + error.message, '#DC2626');
+    return;
+  }
+
+  SUPPLIERS[idx] = dbSupplierToApp(updated);
+  closeDrawer();
+  renderAll();
+  toast('✅ Supplier updated: ' + f.name);
+}
+
+async function deleteSupplier(idx){
+  const sup = SUPPLIERS[idx];
+  if(!sup) return;
+  if(!confirm('Delete "' + sup.name + '"? This cannot be undone.')) return;
+
+  const { error } = await sbClient.from('suppliers').delete().eq('id', sup.id);
+  if(error){
+    toast('⚠️ Could not delete supplier: ' + error.message, '#DC2626');
+    return;
+  }
+
+  SUPPLIERS.splice(idx, 1);
+  renderAll();
+  toast('🗑️ Supplier deleted: ' + sup.name);
+}
+
+function renderSuppliersPage(){
+  const tbody = document.getElementById('suppliersBody');
   if(!tbody) return;
-  const colorIdx = (SUPPLIERS.length - 1) % SUP_COLORS.length;
-  const col = SUP_COLORS[colorIdx];
-  const initial = (sup.name||'?')[0].toUpperCase();
-  const wa  = sup.whatsapp ? '+91 ' + sup.whatsapp.slice(0,5) + ' ' + sup.whatsapp.slice(5) : '—';
-  const waBtn = sup.whatsapp
-    ? '<button class="op-wa-btn" onclick="window.open(\'https://wa.me/91'+sup.whatsapp+'\',\'_blank\')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>'
-    : '';
-  const tr = document.createElement('tr');
-  tr.innerHTML =
-    '<td><input type="checkbox" class="pp-checkbox"></td>' +
-    '<td><div style="display:flex;align-items:center;gap:12px">' +
-      '<div style="width:38px;height:38px;border-radius:50%;background:'+col.bg+';display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:'+col.text+';flex-shrink:0">'+initial+'</div>' +
-      '<div><div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">'+sup.name+'</div>' +
-      '<div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">'+(sup.email||'—')+'</div></div></div></td>' +
-    '<td style="font-size:13px;color:var(--text-secondary)">—</td>' +
-    '<td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:500;color:var(--text-primary)">'+wa+'</span>'+waBtn+'</div></td>' +
-    '<td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">'+(sup.district||sup.addressDisplay||'—')+'</div><div style="font-size:11.5px;color:var(--text-muted)">'+(sup.state||'')+'</div></td>' +
-    '<td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">0</td>' +
-    '<td><span class="pp-status-badge active">Active</span></td>' +
-    '<td><div class="op-action-btns">' +
-      '<button class="op-eye-btn" title="View" onclick="toast(\'View supplier\')"><i class="ti ti-eye"></i></button>' +
-      '<button class="op-eye-btn" title="Edit" onclick="toast(\'Edit supplier\')"><i class="ti ti-pencil"></i></button>' +
-      '<button class="op-more-btn" title="More"><i class="ti ti-dots-vertical"></i></button>' +
-    '</div></td>';
-  tbody.insertBefore(tr, tbody.firstChild);
-}
 
+  const activeCount   = SUPPLIERS.filter(s => (s.status||'active') === 'active').length;
+  const inactiveCount = SUPPLIERS.length - activeCount;
+
+  const totalEl    = document.getElementById('statTotalSuppliers');
+  const activeEl   = document.getElementById('statActiveSuppliers');
+  const inactiveEl = document.getElementById('statInactiveSuppliers');
+  const prodEl     = document.getElementById('statSupplierProducts');
+  if(totalEl)    totalEl.textContent    = SUPPLIERS.length.toLocaleString('en-IN');
+  if(activeEl)   activeEl.textContent   = activeCount.toLocaleString('en-IN');
+  if(inactiveEl) inactiveEl.textContent = inactiveCount.toLocaleString('en-IN');
+  if(prodEl)     prodEl.textContent     = PRODUCTS.filter(p => p.supplier).length.toLocaleString('en-IN');
+
+  if(SUPPLIERS.length === 0){
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state" style="padding:40px 12px"><i class="ti ti-truck-delivery"></i><h3>No suppliers yet</h3><p>Click <strong>Add Supplier</strong> to add your first supplier</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = SUPPLIERS.map((sup, idx) => {
+    const col = SUP_COLORS[idx % SUP_COLORS.length];
+    const initial = (sup.name||'?')[0].toUpperCase();
+    const wa  = sup.whatsapp ? '+91 ' + sup.whatsapp.slice(0,5) + ' ' + sup.whatsapp.slice(5) : '—';
+    const waBtn = sup.whatsapp
+      ? '<button class="op-wa-btn" onclick="window.open(\'https://wa.me/91'+sup.whatsapp+'\',\'_blank\')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>'
+      : '';
+    const prodCount = PRODUCTS.filter(p => p.supplier === sup.id).length;
+    const isActive = (sup.status||'active') === 'active';
+    return `<tr>
+      <td><input type="checkbox" class="pp-checkbox"></td>
+      <td><div style="display:flex;align-items:center;gap:12px">
+        <div style="width:38px;height:38px;border-radius:50%;background:${col.bg};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:${col.text};flex-shrink:0">${initial}</div>
+        <div><div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">${sup.name}</div>
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">${sup.email||'—'}</div></div></div></td>
+      <td style="font-size:13px;color:var(--text-secondary)">—</td>
+      <td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:500;color:var(--text-primary)">${wa}</span>${waBtn}</div></td>
+      <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">${sup.district||sup.addressDisplay||'—'}</div><div style="font-size:11.5px;color:var(--text-muted)">${sup.state||''}</div></td>
+      <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">${prodCount}</td>
+      <td><span class="pp-status-badge ${isActive?'active':'inactive'}">${isActive?'Active':'Inactive'}</span></td>
+      <td><div class="op-action-btns">
+        <button class="op-eye-btn" title="View" onclick="viewSupplier(${idx})"><i class="ti ti-eye"></i></button>
+        <button class="op-eye-btn" title="Edit" onclick="editSupplier(${idx})"><i class="ti ti-pencil"></i></button>
+        <button class="op-more-btn" title="Delete" onclick="deleteSupplier(${idx})"><i class="ti ti-trash"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
 
 function generateSKU(){
   /* prefix MSD + 3-digit next number based on existing count */
