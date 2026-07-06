@@ -3392,13 +3392,13 @@ function dbProductToApp(row){
 }
 
 function dbSupplierToApp(row){
-  const addrParts = [row.address, row.district, row.state, row.pincode].filter(Boolean);
+  const addrParts = [row.street, row.district, row.state, row.pincode].filter(Boolean);
   return {
     id: row.id,
     name: row.name || '',
     whatsapp: row.whatsapp || '',
     email: row.email || '',
-    street: row.address || '',
+    street: row.street || '',
     state: row.state || '',
     district: row.district || '',
     pincode: row.pincode || '',
@@ -4850,7 +4850,7 @@ async function saveSupplier(){
     name: f.name,
     whatsapp: f.whatsapp,
     email: f.email || null,
-    address: f.street || null,
+    street: f.street || null,
     state: f.state || null,
     district: f.district || null,
     pincode: f.pincode || null,
@@ -4884,7 +4884,7 @@ async function saveEditSupplier(idx){
     name: f.name,
     whatsapp: f.whatsapp,
     email: f.email || null,
-    address: f.street || null,
+    street: f.street || null,
     state: f.state || null,
     district: f.district || null,
     pincode: f.pincode || null
