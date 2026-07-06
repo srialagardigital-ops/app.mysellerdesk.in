@@ -67,8 +67,9 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 
 /* ── AUTH SCREEN (Login / Signup) ──────────────────────────── */
 .auth-wrap {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
+  overflow: hidden;
 }
 
 /* Left banner panel */
@@ -101,6 +102,13 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
   bottom: -120px; left: -120px;
 }
 .auth-banner-content { position: relative; z-index: 2; max-width: 440px; }
+.auth-banner-img-layer { position: absolute; inset: 0; z-index: 0; display: none; }
+.auth-banner-img-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.auth-banner-img-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(150deg, rgba(11,29,58,0.90) 0%, rgba(26,54,104,0.78) 55%, rgba(37,99,235,0.55) 100%);
+}
 .auth-banner-brand {
   display: flex; align-items: center; gap: 12px;
   margin-bottom: 46px;
@@ -132,8 +140,11 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 .auth-form-side {
   flex: 1 1 54%;
   min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
   display: flex;
   align-items: center;
+  align-items: safe center;
   justify-content: center;
   background: var(--bg-app);
   padding: 24px;
@@ -245,6 +256,39 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 }
 .auth-back-link:hover { color: var(--navy-500); }
 .auth-back-link i { font-size: 14px; }
+
+/* WhatsApp support contact bar, fixed to bottom of the auth screen */
+.auth-support-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--bg-white);
+  border-radius: 999px;
+  padding: 9px 18px 9px 10px;
+  box-shadow: var(--shadow-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  z-index: 10;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.auth-support-bar:hover { transform: translateX(-50%) translateY(-2px); box-shadow: 0 10px 26px rgba(11,29,58,0.18), 0 0 0 1px rgba(11,29,58,0.05); }
+.auth-support-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.auth-support-icon i { color: #fff; font-size: 15px; }
+.auth-support-bar .auth-support-num { color: var(--navy-500); }
+@media (max-width: 480px) {
+  .auth-support-bar { font-size: 12px; padding: 8px 14px 8px 8px; }
+}
 
 /* ── SIDEBAR ────────────────────────────────────────────────── */
 .sidebar {
@@ -1515,8 +1559,11 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 <!-- AUTH SCREEN (Login / Signup) -->
 <div class="auth-wrap" id="authScreen">
 
-  <!-- LEFT BANNER -->
-  <div class="auth-banner-side">
+  <!-- LEFT BANNER (content loaded from Supabase — see loadLoginBanner()) -->
+  <div class="auth-banner-side" id="authBannerSide">
+    <div class="auth-banner-img-layer" id="authBannerImgLayer">
+      <img id="authBannerImg" src="" alt="">
+    </div>
     <div class="auth-banner-content">
       <div class="auth-banner-brand">
         <div class="brand-icon"><i class="ti ti-building-store" aria-hidden="true"></i></div>
@@ -1525,9 +1572,9 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           <div class="brand-sub">Roots View</div>
         </div>
       </div>
-      <div class="auth-banner-title">Run your entire store from one place.</div>
-      <div class="auth-banner-desc">Orders, products, customers, suppliers and reports — everything you need to manage your business, in a single dashboard.</div>
-      <div class="auth-banner-features">
+      <div class="auth-banner-title" id="authBannerTitle">Run your entire store from one place.</div>
+      <div class="auth-banner-desc" id="authBannerDesc">Orders, products, customers, suppliers and reports — everything you need to manage your business, in a single dashboard.</div>
+      <div class="auth-banner-features" id="authBannerFeatures">
         <div class="auth-banner-feature">
           <div class="auth-banner-feature-icon"><i class="ti ti-shopping-cart-filled"></i></div>
           <div class="auth-banner-feature-text">Track every order from enquiry to delivery</div>
@@ -1658,6 +1705,12 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
     </form>
   </div>
   </div>
+
+  <a class="auth-support-bar" href="https://wa.me/918122615305" target="_blank" rel="noopener">
+    <span class="auth-support-icon"><i class="ti ti-brand-whatsapp"></i></span>
+    <span>Need help? <span class="auth-support-num">81226 15305</span></span>
+  </a>
+
 </div>
 
 <div class="app" id="appShell" style="display:none">
@@ -4372,6 +4425,7 @@ function toast(msg, bg){
    above) — nothing is kept in localStorage any more. */
 async function bootApp(){
   await loadSellerData();
+  await loadDashboardBannerFromSupabase();
   init();
 }
 
@@ -4526,6 +4580,87 @@ function loadBannerConfig(){
     if(d.planName)   PLAN_INFO.name   = d.planName;
     if(d.planExpiry) PLAN_INFO.expiry = new Date(d.planExpiry + 'T00:00:00');
   }catch(e){}
+}
+
+/* ── Load the shared dashboard banner image (admin-managed, from Supabase)
+   plus this seller's real plan name/expiry (from their `subscriptions` row).
+   A seller's own manual upload (loadBannerConfig(), localStorage) still takes
+   priority over the shared image if they've set one — see call order below. ── */
+async function loadDashboardBannerFromSupabase(){
+  try{
+    // Shared banner image + copy, managed centrally in `app_banners`
+    const { data: banner, error: bannerErr } = await sbClient
+      .from('app_banners')
+      .select('image_url,title,description')
+      .eq('placement', 'seller_dashboard')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+      .limit(1)
+      .maybeSingle();
+    if(bannerErr){ console.warn('Dashboard banner fetch failed:', bannerErr.message); }
+    if(banner && banner.image_url){ BANNER_CONFIG.image = banner.image_url; }
+
+    // This seller's real, current plan — from `subscriptions`, not a hardcoded value
+    if(CURRENT_USER_ID){
+      const { data: sub, error: subErr } = await sbClient
+        .from('subscriptions')
+        .select('plan,status,expires_at,created_at')
+        .eq('user_id', CURRENT_USER_ID)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if(subErr){ console.warn('Subscription fetch failed:', subErr.message); }
+      if(sub){
+        const planLabel = sub.plan ? (sub.plan.charAt(0).toUpperCase() + sub.plan.slice(1) + ' Plan') : BANNER_CONFIG.planName;
+        BANNER_CONFIG.planName   = planLabel;
+        PLAN_INFO.name = planLabel;
+        if(sub.expires_at){
+          BANNER_CONFIG.planExpiry = sub.expires_at.slice(0,10);
+          PLAN_INFO.expiry = new Date(sub.expires_at);
+        }
+      }
+    }
+  }catch(e){
+    console.warn('loadDashboardBannerFromSupabase failed:', e);
+  }
+}
+
+/* ── Load the login screen's left banner (title, description, features,
+   optional background image) from Supabase — public/anon read, no login
+   required. Falls back silently to the hardcoded defaults already in the
+   HTML if the table is empty or unreachable. ── */
+async function loadLoginBanner(){
+  try{
+    const { data, error } = await sbClient
+      .from('app_banners')
+      .select('image_url,title,description,features')
+      .eq('placement', 'login')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+      .limit(1)
+      .maybeSingle();
+    if(error){ console.warn('Login banner fetch failed:', error.message); return; }
+    if(!data) return;
+
+    if(data.title) document.getElementById('authBannerTitle').textContent = data.title;
+    if(data.description) document.getElementById('authBannerDesc').textContent = data.description;
+
+    if(Array.isArray(data.features) && data.features.length){
+      document.getElementById('authBannerFeatures').innerHTML = data.features.map(f => `
+        <div class="auth-banner-feature">
+          <div class="auth-banner-feature-icon"><i class="ti ${f.icon || 'ti-check'}"></i></div>
+          <div class="auth-banner-feature-text">${f.text || ''}</div>
+        </div>
+      `).join('');
+    }
+
+    if(data.image_url){
+      document.getElementById('authBannerImg').src = data.image_url;
+      document.getElementById('authBannerImgLayer').style.display = 'block';
+    }
+  }catch(e){
+    console.warn('loadLoginBanner failed:', e);
+  }
 }
 
 /* ═══════════════════════════════
@@ -6219,6 +6354,11 @@ async function handleSignup(e){
     showAuthScreen();
   }
 })();
+
+/* Load the login banner content (Supabase-managed) regardless of session state
+   — it's shown behind/alongside the login form either way. */
+loadLoginBanner();
+
 </script>
 </body>
 </html>
