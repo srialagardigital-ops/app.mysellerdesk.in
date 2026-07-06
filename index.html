@@ -1915,11 +1915,6 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
         <div class="stat-count" id="cnt-Confirmed">0</div>
         <div class="stat-label">Confirmed</div>
       </div>
-      <div class="stat-card" onclick="filterStatus('Payment Paid')" id="filter-Payment Paid">
-        <div class="stat-dot" style="background:#16A34A"></div>
-        <div class="stat-count" id="cnt-Payment Paid">0</div>
-        <div class="stat-label">Paid</div>
-      </div>
       <div class="stat-card" onclick="filterStatus('Processing')" id="filter-Processing">
         <div class="stat-dot" style="background:#C2410C"></div>
         <div class="stat-count" id="cnt-Processing">0</div>
@@ -2931,9 +2926,9 @@ function openUpgradePlan(){
 
 /* Compute and inject live Reports page data from ORDERS / PRODUCTS / CUSTOMERS.
    "Revenue-counted" orders = any order past Enquiry that hasn't been Cancelled
-   (Confirmed, Payment Paid, Processing, Packing, Shipping, Delivered). */
+   (Confirmed, Processing, Packing, Shipping, Delivered). */
 function renderReportsPage(){
-  const REVENUE_STATUSES = ['Confirmed','Payment Paid','Processing','Packing','Shipping','Delivered'];
+  const REVENUE_STATUSES = ['Confirmed','Processing','Packing','Shipping','Delivered'];
   const revenueOrders = ORDERS.filter(o => REVENUE_STATUSES.includes(o.status));
   const cancelledOrders = ORDERS.filter(o => o.status === 'Cancelled');
 
@@ -2996,9 +2991,9 @@ function renderReportsPage(){
         <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No orders yet</p>
       </div>`;
     } else {
-      const statuses = ['Enquiry','Confirmed','Payment Paid','Processing','Packing','Shipping','Delivered','Cancelled'];
+      const statuses = ['Enquiry','Confirmed','Processing','Packing','Shipping','Delivered','Cancelled'];
       const colors = {
-        'Enquiry':'#0F766E','Confirmed':'#1D4ED8','Payment Paid':'#065F46','Processing':'#92400E',
+        'Enquiry':'#0F766E','Confirmed':'#1D4ED8','Processing':'#92400E',
         'Packing':'#5B21B6','Shipping':'#1e3a8a','Delivered':'#15803D','Cancelled':'#DC2626'
       };
       const counts = {};
@@ -3487,12 +3482,11 @@ let draft = {};
 
 const AVATAR_COLORS = ['#6366F1','#EC4899','#0EA5E9','#10B981','#F59E0B','#8B5CF6','#EF4444','#14B8A6'];
 
-const STATUS_STEPS = ['Enquiry','Confirmed','Payment Paid','Processing','Packing','Shipping','Delivered'];
+const STATUS_STEPS = ['Enquiry','Confirmed','Processing','Packing','Shipping','Delivered'];
 
 const STATUS_BADGE = {
   'Enquiry':     'b-enq',
   'Confirmed':   'b-con',
-  'Payment Paid':'b-paid',
   'Processing':  'b-pro',
   'Packing':     'b-pak',
   'Shipping':    'b-shi',
@@ -3735,7 +3729,7 @@ function buildRow(o, idx){
   };
 
   const nextLabel = {
-    'Enquiry':'Confirm','Confirmed':'Payment','Payment Paid':'Processing',
+    'Enquiry':'Confirm','Confirmed':'Processing',
     'Processing':'Packing','Packing':'Shipping','Shipping':'Delivered'
   }[o.status];
 
@@ -3788,7 +3782,7 @@ function buildRow(o, idx){
 }
 
 function updateCounts(){
-  const allStatuses = ['Enquiry','Confirmed','Payment Paid','Processing','Packing','Shipping','Delivered','Cancelled'];
+  const allStatuses = ['Enquiry','Confirmed','Processing','Packing','Shipping','Delivered','Cancelled'];
   document.getElementById('cnt-All').textContent = ORDERS.length;
   allStatuses.forEach(s => {
     const el = document.getElementById('cnt-'+s);
@@ -3839,7 +3833,7 @@ function renderRecentOrders(){
 
   const badgeClass = {
     'Delivered':'b-delivered','Shipping':'b-shipped','Processing':'b-processing',
-    'Enquiry':'b-pending-ord','Confirmed':'b-pending-ord','Payment Paid':'b-processing',
+    'Enquiry':'b-pending-ord','Confirmed':'b-pending-ord',
     'Packing':'b-processing','Cancelled':'b-pending-ord'
   };
 
@@ -4178,26 +4172,32 @@ function renderOrderViewDrawer(){
   const prod = o.productIdx!=null ? PRODUCTS[o.productIdx] : null;
   const total = prod ? prod.price * (o.qty||1) : 0;
 
-  // Status pills
-  const allStatuses = ['Enquiry','Confirmed','Payment Paid','Processing','Packing','Shipping','Delivered'];
+  // Status pills — sequential only: only the current status and the
+  // single next step in STATUS_STEPS are clickable. Everything else is
+  // shown greyed-out and locked, so stages can't be skipped.
+  const allStatuses = ['Enquiry','Confirmed','Processing','Packing','Shipping','Delivered'];
   const statusColors = {
     'Enquiry':      {bg:'#CCFBF1',color:'#0F766E',border:'#99F6E4'},
     'Confirmed':    {bg:'#DBEAFE',color:'#1D4ED8',border:'#93C5FD'},
-    'Payment Paid': {bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7'},
     'Processing':   {bg:'#FEF3C7',color:'#92400E',border:'#FCD34D'},
     'Packing':      {bg:'#EDE9FE',color:'#5B21B6',border:'#C4B5FD'},
     'Shipping':     {bg:'#DBEAFE',color:'#1e3a8a',border:'#93C5FD'},
     'Delivered':    {bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7'},
   };
+  const curStepIdx = STATUS_STEPS.indexOf(o.status);
   const pillsHtml = allStatuses.map(s => {
     const isActive = o.status === s;
+    const sStepIdx = STATUS_STEPS.indexOf(s);
+    const isNextStep = sStepIdx === curStepIdx + 1;
+    const clickable = isActive || isNextStep;
     const c = statusColors[s] || {bg:'#F3F4F6',color:'#374151',border:'#E5E7EB'};
-    return `<button onclick="event.stopPropagation();quickSetStatus(${idx},'${s}')" style="
+    return `<button ${clickable ? `onclick="event.stopPropagation();quickSetStatus(${idx},'${s}')"` : `onclick="event.stopPropagation();toast('⚠️ Complete steps in order — cannot skip stages','#D97706')"`} style="
       padding:6px 11px;border-radius:8px;font-size:12px;font-weight:${isActive?700:500};
-      cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all .14s;
+      cursor:${clickable?'pointer':'not-allowed'};font-family:var(--font);white-space:nowrap;transition:all .14s;
       border:1.5px solid ${isActive?c.border:'var(--border)'};
       background:${isActive?c.bg:'white'};
-      color:${isActive?c.color:'var(--text-secondary)'};
+      color:${isActive?c.color:(clickable?'var(--text-secondary)':'var(--text-muted)')};
+      opacity:${clickable?1:0.5};
       ${isActive?'box-shadow:0 1px 4px rgba(0,0,0,0.08)':''}"
     >${s}</button>`;
   }).join('');
@@ -4207,7 +4207,6 @@ function renderOrderViewDrawer(){
   const waMessages = {
     'Enquiry': `Hi ${custName}! Thanks for your enquiry. We'll get back to you shortly! 😊`,
     'Confirmed': `Hi ${custName}! Your order ${o.orderId||''} has been confirmed. We'll update you soon! ✅`,
-    'Payment Paid': `Hi ${custName}! We've received your payment for order ${o.orderId||''}. Thank you! 💚`,
     'Processing': `Hi ${custName}! Order ${o.orderId||''} is now being processed. We'll pack it soon! 📦`,
     'Packing': `Hi ${custName}! Your order ${o.orderId||''} is being packed and will be shipped soon! 🎁`,
     'Shipping': `Hi ${custName}! Your order ${o.orderId||''} has been shipped via ${o.courier||'courier'}${o.tracking?' — Tracking: '+o.tracking:''}. 🚚`,
@@ -4332,12 +4331,24 @@ async function quickSetStatus(idx, newStatus){
   const o = ORDERS[idx];
   if(o.status === newStatus) return;
 
-  // Enquiry stage allows no product, but every later stage requires one.
-  // Block the direct status-pill jump if the order still has no product,
-  // and send the user through the proper Confirm Order flow instead.
-  const noProductYet = (o.productIdx===null || o.productIdx===undefined);
-  if(newStatus !== 'Enquiry' && noProductYet){
-    toast('⚠️ Select a product before confirming this order','#D97706');
+  // Cancelling is allowed from any active stage — route through the
+  // existing cancelOrder() so refund-status handling stays consistent.
+  if(newStatus === 'Cancelled'){
+    cancelOrder(idx);
+    return;
+  }
+
+  // Enforce strict one-step-at-a-time progression — no skipping stages.
+  const curStepIdx = STATUS_STEPS.indexOf(o.status);
+  const newStepIdx = STATUS_STEPS.indexOf(newStatus);
+  if(newStepIdx !== curStepIdx + 1){
+    toast('⚠️ Complete steps in order — cannot skip stages','#D97706');
+    return;
+  }
+
+  // Moving into Confirmed must go through the proper Confirm Order flow
+  // (product, address, payment type are mandatory there), never a raw jump.
+  if(newStatus === 'Confirmed'){
     openConfirmOrder(idx);
     return;
   }
@@ -4359,12 +4370,9 @@ function buildActionGrid(o, idx){
     btns += `<button class="act-btn-large" onclick="openEditEnquiry(${idx})"><i class="ti ti-edit"></i>Edit Enquiry</button>`;
     btns += `<button class="act-btn-large red full" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Enquiry</button>`;
   } else if(s==='Confirmed'){
-    btns += `<button class="act-btn-large green" onclick="markPaymentPaid(${idx})"><i class="ti ti-cash"></i>Mark Payment Paid</button>`;
+    btns += `<button class="act-btn-large primary" onclick="advanceStatus(${idx},'Processing')"><i class="ti ti-settings"></i>Start Processing</button>`;
     btns += `<button class="act-btn-large" onclick="openConfirmOrder(${idx})"><i class="ti ti-edit"></i>Edit Order</button>`;
     btns += `<button class="act-btn-large red full" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
-  } else if(s==='Payment Paid'){
-    btns += `<button class="act-btn-large primary" onclick="advanceStatus(${idx},'Processing')"><i class="ti ti-settings"></i>Start Processing</button>`;
-    btns += `<button class="act-btn-large red" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
   } else if(s==='Processing'){
     btns += `<button class="act-btn-large primary" onclick="advanceStatus(${idx},'Packing')"><i class="ti ti-package"></i>Move to Packing</button>`;
     btns += `<button class="act-btn-large red" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
@@ -4512,14 +4520,6 @@ function saveEditEnquiry(idx){
 /* ═══════════════════════════════
    STATUS ACTIONS
 ═══════════════════════════════ */
-function markPaymentPaid(idx){
-  ORDERS[idx].status = 'Payment Paid';
-  renderAll();
-  renderOrderViewDrawer();
-  toast('💳 Payment marked as paid!');
-  syncOrderUpdate(idx);
-}
-
 function advanceStatus(idx, newStatus){
   ORDERS[idx].status = newStatus;
   renderAll();
@@ -4531,7 +4531,7 @@ function advanceStatus(idx, newStatus){
 
 function cancelOrder(idx){
   const o = ORDERS[idx];
-  const hasPaid = ['Payment Paid','Processing','Packing','Shipping','Delivered'].includes(o.status);
+  const hasPaid = ['Processing','Packing','Shipping','Delivered'].includes(o.status);
   o.status = 'Cancelled';
   if(hasPaid) o.refundStatus = 'Refund Pending';
   renderAll();
@@ -4551,13 +4551,12 @@ function setRefundStatus(idx, val){
 function quickStep(idx){
   const o = ORDERS[idx];
   const nextMap = {
-    'Enquiry':'confirm','Confirmed':'payment','Payment Paid':'Processing',
+    'Enquiry':'confirm','Confirmed':'Processing',
     'Processing':'Packing','Packing':'shipping-drawer','Shipping':'Delivered'
   };
   const next = nextMap[o.status];
   if(!next) return;
   if(next==='confirm')          { openConfirmOrder(idx); }
-  else if(next==='payment')     { markPaymentPaid(idx); }
   else if(next==='shipping-drawer') { openShippingDrawer(idx); }
   else { advanceStatus(idx, next); }
 }
@@ -4570,8 +4569,6 @@ const WA_TEMPLATES = {
     `Hi ${o.name||'there'}! 👋 Thanks for your enquiry about *${prod?prod.name:'our products'}*. We'll get back to you shortly with details. 😊`,
   'Confirmed': (o,prod) =>
     `Hi ${o.name}! 🎉 Your order *${o.orderId}* for *${prod?prod.name:''}* (Qty: ${o.qty||1}) has been *confirmed*!\n\n💰 Amount: ₹${prod?(prod.price*(o.qty||1)).toLocaleString('en-IN'):'—'}\n📦 Payment: ${o.payType||'—'}\n\nWe'll update you when it's processed. Thank you! 🙏`,
-  'Payment Paid': (o,prod) =>
-    `Hi ${o.name}! ✅ We've received your payment for order *${o.orderId}*.\n\n🛍️ Product: ${prod?prod.name:''}\n\nYour order is being prepared. We'll notify you soon! 😊`,
   'Processing': (o,prod) =>
     `Hi ${o.name}! ⚙️ Your order *${o.orderId}* is now being *processed*.\n\nWe'll pack it soon and update you with tracking details. Stay tuned! 📦`,
   'Packing': (o,prod) =>
@@ -6013,7 +6010,6 @@ function clearNotifs(){
 const STATUS_PILL_META = [
   { status:'Enquiry',      dot:'#0D9488', cls:'b-enq' },
   { status:'Confirmed',    dot:'#2563EB', cls:'b-con' },
-  { status:'Payment Paid', dot:'#16A34A', cls:'b-paid' },
   { status:'Processing',   dot:'#EA580C', cls:'b-pro' },
   { status:'Packing',      dot:'#7C3AED', cls:'b-pak' },
   { status:'Shipping',     dot:'#1E40AF', cls:'b-shi' },
@@ -6040,10 +6036,11 @@ function openStatusPills(e, idx, badge) {
     btn.innerHTML = `<span class="status-pill-dot" style="background:${m.dot}"></span><span>${m.status}</span>${o.status === m.status ? '<i class="ti ti-check" style="margin-left:auto;font-size:13px;color:var(--navy-500)"></i>' : ''}`;
     btn.onclick = (ev) => {
       ev.stopPropagation();
-      ORDERS[idx].status = m.status;
       closeStatusPills();
-      renderAll();
-      toast('✅ ' + m.status + ' — status updated');
+      // Reuse quickSetStatus so the sequential-progression rule, the
+      // proper Confirm Order flow, and the Supabase sync all apply here too —
+      // this popup used to bypass every one of those.
+      quickSetStatus(idx, m.status);
     };
     popup.appendChild(btn);
   });
