@@ -2307,35 +2307,35 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           <div class="rp-stat-icon" style="background:#EDE9FE"><i class="ti ti-chart-line" style="color:#7C3AED;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Revenue</div>
-            <div class="rp-stat-val">₹0</div>
+            <div class="rp-stat-val" id="rpTotalRevenue">₹0</div>
           </div>
         </div>
         <div class="rp-stat-card">
           <div class="rp-stat-icon" style="background:#F0FDF4"><i class="ti ti-shopping-bag" style="color:#15803D;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Orders</div>
-            <div class="rp-stat-val">0</div>
+            <div class="rp-stat-val" id="rpTotalOrders">0</div>
           </div>
         </div>
         <div class="rp-stat-card">
           <div class="rp-stat-icon" style="background:#FFF7ED"><i class="ti ti-wallet" style="color:#EA580C;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Average Order Value</div>
-            <div class="rp-stat-val">₹0</div>
+            <div class="rp-stat-val" id="rpAvgOrderValue">₹0</div>
           </div>
         </div>
         <div class="rp-stat-card">
           <div class="rp-stat-icon" style="background:#EFF6FF"><i class="ti ti-users" style="color:#1D4ED8;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">New Customers</div>
-            <div class="rp-stat-val">0</div>
+            <div class="rp-stat-val" id="rpNewCustomers">0</div>
           </div>
         </div>
         <div class="rp-stat-card" style="border-right:none">
           <div class="rp-stat-icon" style="background:#FFF1F2"><i class="ti ti-repeat" style="color:#E11D48;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Return Rate</div>
-            <div class="rp-stat-val">0%</div>
+            <div class="rp-stat-val" id="rpReturnRate">0%</div>
           </div>
         </div>
       </div>
@@ -2365,11 +2365,11 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
             <div class="op-filter-select" style="font-size:12px;padding:6px 12px">Revenue <i class="ti ti-chevron-down"></i></div>
           </div>
           <div class="rp-metrics-row">
-            <div><div class="rp-metric-val">₹0</div></div>
-            <div><div class="rp-metric-val">0</div></div>
-            <div><div class="rp-metric-val">0</div></div>
+            <div><div class="rp-metric-val" id="rpMetricRevenue">₹0</div></div>
+            <div><div class="rp-metric-val" id="rpMetricOrders">0</div></div>
+            <div><div class="rp-metric-val" id="rpMetricCustomers">0</div></div>
           </div>
-          <div class="rp-chart-area" style="display:flex;align-items:center;justify-content:center">
+          <div class="rp-chart-area" id="rpSalesChartArea" style="display:flex;align-items:center;justify-content:center">
             <div class="empty-state" style="padding:24px 12px">
               <i class="ti ti-chart-line"></i>
               <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No sales data yet</p>
@@ -2380,7 +2380,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
         <!-- Order Status donut -->
         <div class="card rp-donut-card">
           <div class="card-title" style="margin-bottom:18px">Order Status</div>
-          <div class="rp-donut-wrap" style="display:flex;align-items:center;justify-content:center;min-height:160px">
+          <div class="rp-donut-wrap" id="rpStatusDonutWrap" style="display:flex;align-items:center;justify-content:center;min-height:160px">
             <div class="empty-state" style="padding:24px 12px">
               <i class="ti ti-chart-donut"></i>
               <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No orders yet</p>
@@ -2404,7 +2404,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
                 <th>Revenue</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="rpTopProductsBody">
               <tr>
                 <td colspan="4">
                   <div class="empty-state" style="padding:24px 12px">
@@ -2744,7 +2744,7 @@ function nav(page, el) {
   document.getElementById('page-' + page).classList.add('active');
   document.getElementById('page-title').textContent = titles[page][0];
   document.getElementById('page-sub').textContent   = titles[page][1];
-  if(page === 'reports') renderChannelChart();
+  if(page === 'reports'){ renderChannelChart(); renderReportsPage(); }
 }
 
 /* ── TOPBAR USER DROPDOWN ── */
@@ -2927,6 +2927,147 @@ function logoutUser(){
 /* ── SIDEBAR PLAN UPGRADE ── */
 function openUpgradePlan(){
   toast('🚀 Redirecting to upgrade plans…','#7C3AED');
+}
+
+/* Compute and inject live Reports page data from ORDERS / PRODUCTS / CUSTOMERS.
+   "Revenue-counted" orders = any order past Enquiry that hasn't been Cancelled
+   (Confirmed, Payment Paid, Processing, Packing, Shipping, Delivered). */
+function renderReportsPage(){
+  const REVENUE_STATUSES = ['Confirmed','Payment Paid','Processing','Packing','Shipping','Delivered'];
+  const revenueOrders = ORDERS.filter(o => REVENUE_STATUSES.includes(o.status));
+  const cancelledOrders = ORDERS.filter(o => o.status === 'Cancelled');
+
+  const orderRevenue = (o) => {
+    const p = (o.productIdx!=null) ? PRODUCTS[o.productIdx] : null;
+    return p ? (p.price||0) * (o.qty||1) : 0;
+  };
+
+  const totalRevenue   = revenueOrders.reduce((sum,o) => sum + orderRevenue(o), 0);
+  const totalOrders    = ORDERS.length;
+  const avgOrderValue  = revenueOrders.length ? Math.round(totalRevenue / revenueOrders.length) : 0;
+  const newCustomers   = Object.keys(CUSTOMERS).length;
+  const returnRate     = totalOrders ? Math.round((cancelledOrders.length / totalOrders) * 1000) / 10 : 0;
+
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  set('rpTotalRevenue',  '₹' + totalRevenue.toLocaleString('en-IN'));
+  set('rpTotalOrders',   totalOrders);
+  set('rpAvgOrderValue', '₹' + avgOrderValue.toLocaleString('en-IN'));
+  set('rpNewCustomers',  newCustomers);
+  set('rpReturnRate',    returnRate + '%');
+  set('rpMetricRevenue',   '₹' + totalRevenue.toLocaleString('en-IN'));
+  set('rpMetricOrders',    revenueOrders.length);
+  set('rpMetricCustomers', newCustomers);
+
+  // Simple bar-style sales trend by weekday, so there's something visual
+  // without needing a full charting library.
+  const chartArea = document.getElementById('rpSalesChartArea');
+  if(chartArea){
+    if(revenueOrders.length === 0){
+      chartArea.innerHTML = `<div class="empty-state" style="padding:24px 12px">
+        <i class="ti ti-chart-line"></i>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No sales data yet</p>
+      </div>`;
+    } else {
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const byDay = [0,0,0,0,0,0,0];
+      revenueOrders.forEach(o => {
+        if(!o.createdAt) return;
+        const d = new Date(o.createdAt);
+        if(!isNaN(d)) byDay[d.getDay()] += orderRevenue(o);
+      });
+      const max = Math.max(...byDay, 1);
+      chartArea.innerHTML = `
+        <div style="display:flex;align-items:flex-end;gap:10px;width:100%;height:100%;padding:8px 4px">
+          ${days.map((d,i) => `
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+              <div style="width:100%;max-width:32px;background:linear-gradient(180deg,#6366F1,#818CF8);border-radius:6px 6px 0 0;height:${Math.max(4,(byDay[i]/max)*100)}%"></div>
+              <span style="font-size:10.5px;color:var(--text-muted)">${d}</span>
+            </div>`).join('')}
+        </div>`;
+    }
+  }
+
+  // Order Status donut
+  const statusWrap = document.getElementById('rpStatusDonutWrap');
+  if(statusWrap){
+    if(totalOrders === 0){
+      statusWrap.innerHTML = `<div class="empty-state" style="padding:24px 12px">
+        <i class="ti ti-chart-donut"></i>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No orders yet</p>
+      </div>`;
+    } else {
+      const statuses = ['Enquiry','Confirmed','Payment Paid','Processing','Packing','Shipping','Delivered','Cancelled'];
+      const colors = {
+        'Enquiry':'#0F766E','Confirmed':'#1D4ED8','Payment Paid':'#065F46','Processing':'#92400E',
+        'Packing':'#5B21B6','Shipping':'#1e3a8a','Delivered':'#15803D','Cancelled':'#DC2626'
+      };
+      const counts = {};
+      statuses.forEach(s => counts[s] = 0);
+      ORDERS.forEach(o => { if(counts[o.status] !== undefined) counts[o.status]++; });
+
+      const C = 2 * Math.PI * 70;
+      let offset = 0;
+      const segSvg = statuses.map(s => {
+        const pct = counts[s] / totalOrders;
+        if(pct === 0) return '';
+        const dash = pct * C;
+        const circle = `<circle cx="90" cy="90" r="70" fill="none" stroke="${colors[s]}" stroke-width="28"
+          stroke-dasharray="${dash.toFixed(2)} ${(C-dash).toFixed(2)}"
+          stroke-dashoffset="${(C/4 - offset).toFixed(2)}"/>`;
+        offset += dash;
+        return circle;
+      }).join('');
+
+      const legend = statuses.filter(s => counts[s] > 0).map(s => `
+        <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-secondary)">
+          <span style="width:9px;height:9px;border-radius:2px;background:${colors[s]};display:inline-block"></span>
+          ${s} (${counts[s]})
+        </div>`).join('');
+
+      statusWrap.innerHTML = `
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center">
+          <svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" style="width:150px;height:150px;flex-shrink:0">
+            ${segSvg}
+            <circle cx="90" cy="90" r="56" fill="white"/>
+            <text x="90" y="86" text-anchor="middle" font-size="20" font-weight="800" fill="#0B1D3A" font-family="Inter,sans-serif">${totalOrders}</text>
+            <text x="90" y="102" text-anchor="middle" font-size="10.5" fill="#8496B0" font-family="Inter,sans-serif">Orders</text>
+          </svg>
+          <div style="display:flex;flex-direction:column;gap:6px">${legend}</div>
+        </div>`;
+    }
+  }
+
+  // Top Selling Products
+  const prodBody = document.getElementById('rpTopProductsBody');
+  if(prodBody){
+    const agg = {};
+    revenueOrders.forEach(o => {
+      if(o.productIdx==null) return;
+      const p = PRODUCTS[o.productIdx];
+      if(!p) return;
+      if(!agg[p.id]) agg[p.id] = { name:p.name, orders:0, qty:0, revenue:0 };
+      agg[p.id].orders  += 1;
+      agg[p.id].qty     += (o.qty||1);
+      agg[p.id].revenue += orderRevenue(o);
+    });
+    const rows = Object.values(agg).sort((a,b) => b.revenue - a.revenue).slice(0,5);
+    if(rows.length === 0){
+      prodBody.innerHTML = `<tr><td colspan="4">
+        <div class="empty-state" style="padding:24px 12px">
+          <i class="ti ti-box"></i>
+          <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No product sales yet</p>
+        </div>
+      </td></tr>`;
+    } else {
+      prodBody.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.name}</td>
+          <td>${r.orders}</td>
+          <td>${r.qty}</td>
+          <td>₹${r.revenue.toLocaleString('en-IN')}</td>
+        </tr>`).join('');
+    }
+  }
 }
 
 function renderChannelChart(){
@@ -3891,6 +4032,7 @@ function openConfirmOrder(idx){
     if(!draft.address  && cust.address)  draft.address  = cust.address;
     if(!draft.state    && cust.state)    draft.state    = cust.state;
     if(!draft.district && (cust.district||cust.city)) draft.district = cust.district || cust.city;
+    if(!draft.pincode  && cust.pincode)  draft.pincode  = cust.pincode;
   }
 
   drawerMode = 'confirm-order';
@@ -3970,6 +4112,11 @@ function renderConfirmDrawer(){
         <input class="form-input" id="cDistrict" type="text" placeholder="District" value="${draft.district||''}" oninput="draft.district=this.value" ${draft.state?'':'disabled'}>` }
       </div>
     </div>
+
+    <div class="form-group" style="max-width:180px">
+      <label class="form-label">Pincode <span class="req">*</span></label>
+      <input class="form-input" id="cPincode" type="tel" maxlength="6" placeholder="6-digit pincode" value="${draft.pincode||''}" oninput="draft.pincode=this.value.replace(/\\D/g,'')">
+    </div>
   `;
   const footer = `
     <button class="mo-btn-sec" onclick="openOrderView(${currentOrderIdx})">Back</button>
@@ -3990,17 +4137,19 @@ async function confirmOrder(){
   const payType = document.getElementById('cPayType')?.value || draft.payType;
   const state = document.getElementById('cState')?.value || draft.state;
   const district = document.getElementById('cDistrict')?.value || draft.district;
+  const pincode = document.getElementById('cPincode')?.value || draft.pincode;
   if(!name){ toast('⚠️ Customer name is required','#D97706'); return; }
   if(draft.productIdx===null||draft.productIdx===undefined){ toast('⚠️ Select a product','#D97706'); return; }
   if(!addr){ toast('⚠️ Delivery address is required','#D97706'); return; }
   if(!state){ toast('⚠️ Select a state','#D97706'); return; }
   if(!district){ toast('⚠️ District is required','#D97706'); return; }
+  if(!pincode || pincode.length!==6){ toast('⚠️ Valid 6-digit pincode is required','#D97706'); return; }
   if(!payType){ toast('⚠️ Select payment type','#D97706'); return; }
 
   const idx = currentOrderIdx;
   const o = ORDERS[idx];
   o.name = name; o.address = addr; o.payType = payType;
-  o.state = state; o.district = district;
+  o.state = state; o.district = district; o.pincode = pincode;
   o.productIdx = draft.productIdx; o.qty = parseInt(draft.qty)||1;
   o.status = 'Confirmed';
   if(!o.orderId) o.orderId = await generateOrderNumber();
