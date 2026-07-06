@@ -1996,28 +1996,28 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           <div class="pp-stat-icon" style="background:#EDE9FE"><i class="ti ti-box" style="color:#7C3AED;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Total Products</div>
-            <div class="op-stat-val">0</div>
+            <div class="op-stat-val" id="statTotalProducts">0</div>
           </div>
         </div>
         <div class="pp-stat-card">
           <div class="pp-stat-icon" style="background:#F0FDF4"><i class="ti ti-circle-check" style="color:#15803D;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Active Products</div>
-            <div class="op-stat-val">0</div>
+            <div class="op-stat-val" id="statActiveProducts">0</div>
           </div>
         </div>
         <div class="pp-stat-card">
           <div class="pp-stat-icon" style="background:#FFF7ED"><i class="ti ti-package" style="color:#EA580C;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Out of Stock</div>
-            <div class="op-stat-val">0</div>
+            <div class="op-stat-val" id="statOutOfStock">0</div>
           </div>
         </div>
         <div class="pp-stat-card" style="border-right:none">
           <div class="pp-stat-icon" style="background:#FFF1F2"><i class="ti ti-home" style="color:#E11D48;font-size:22px"></i></div>
           <div>
             <div class="op-stat-label">Drafts</div>
-            <div class="op-stat-val">0</div>
+            <div class="op-stat-val" id="statDraftProducts">0</div>
           </div>
         </div>
       </div>
@@ -2059,7 +2059,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="productsBody">
             <tr>
               <td colspan="8">
                 <div class="empty-state" style="padding:40px 12px">
@@ -2199,7 +2199,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">Total Customers</div>
-            <div class="cust-stat-val">0</div>
+            <div class="cust-stat-val" id="statTotalCustomers">0</div>
           </div>
         </div>
         <div class="cust-stat-card">
@@ -2208,7 +2208,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">New Customers</div>
-            <div class="cust-stat-val">0</div>
+            <div class="cust-stat-val" id="statNewCustomers">0</div>
           </div>
         </div>
         <div class="cust-stat-card">
@@ -2217,7 +2217,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">Repeat Customers</div>
-            <div class="cust-stat-val">0</div>
+            <div class="cust-stat-val" id="statRepeatCustomers">0</div>
           </div>
         </div>
         <div class="cust-stat-card">
@@ -2226,7 +2226,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">Avg. Order Value</div>
-            <div class="cust-stat-val">₹0</div>
+            <div class="cust-stat-val" id="statAvgOrderValue">₹0</div>
           </div>
         </div>
         <div class="cust-stat-card" style="border-right:none">
@@ -2235,7 +2235,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
           </div>
           <div>
             <div class="op-stat-label">Total Spent</div>
-            <div class="cust-stat-val">₹0</div>
+            <div class="cust-stat-val" id="statCustTotalSpent">₹0</div>
           </div>
         </div>
       </div>
@@ -2270,7 +2270,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="customersBody">
             <tr>
               <td colspan="9">
                 <div class="empty-state" style="padding:40px 12px">
@@ -3522,6 +3522,8 @@ function renderAll(){
   updateCounts();
   renderDashboardStats();
   renderRecentOrders();
+  renderProductsPage();
+  renderCustomersPage();
   const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
   const filtered = ORDERS.filter((o,i) => {
     if(currentFilter !== 'All' && o.status !== currentFilter) return false;
@@ -4855,6 +4857,63 @@ function compressAndUploadImage(file, callback){
   reader.readAsDataURL(file);
 }
 
+function renderProductsPage(){
+  const tbody = document.getElementById('productsBody');
+  if(!tbody) return;
+
+  const activeCount = PRODUCTS.filter(p => (p.status||'active') !== 'draft' && (p.stock||0) > 0).length;
+  const outCount    = PRODUCTS.filter(p => (p.stock||0) === 0).length;
+  const draftCount  = PRODUCTS.filter(p => p.status === 'draft').length;
+
+  const totalEl  = document.getElementById('statTotalProducts');
+  const activeEl = document.getElementById('statActiveProducts');
+  const outEl    = document.getElementById('statOutOfStock');
+  const draftEl  = document.getElementById('statDraftProducts');
+  if(totalEl)  totalEl.textContent  = PRODUCTS.length.toLocaleString('en-IN');
+  if(activeEl) activeEl.textContent = activeCount.toLocaleString('en-IN');
+  if(outEl)    outEl.textContent    = outCount.toLocaleString('en-IN');
+  if(draftEl)  draftEl.textContent  = draftCount.toLocaleString('en-IN');
+
+  if(PRODUCTS.length === 0){
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state" style="padding:40px 12px"><i class="ti ti-box"></i><h3>No products yet</h3><p>Click <strong>Add Product</strong> to create your first listing</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = PRODUCTS.map((p, idx) => {
+    const supObj = SUPPLIERS.find(s => s.id === p.supplier);
+    const supName = supObj ? supObj.name : '—';
+    const imgHtml = p.img
+      ? `<img src="${p.img}">`
+      : `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:18px">${p.em||'📦'}</div>`;
+    const isOut = (p.stock||0) === 0;
+    const isDraft = p.status === 'draft';
+    const statusClass = isOut ? 'draft' : (isDraft ? 'draft' : 'active');
+    const statusLabel = isOut ? 'Out of Stock' : (isDraft ? 'Draft' : 'Active');
+    return `<tr>
+      <td><input type="checkbox" class="pp-checkbox"></td>
+      <td>
+        <div class="pp-product-cell">
+          <div class="pp-prod-img">${imgHtml}</div>
+          <div>
+            <div class="pp-prod-name">${p.name}</div>
+            <span class="pp-prod-status-inline ${statusClass}">${statusLabel}</span>
+          </div>
+        </div>
+      </td>
+      <td style="font-size:13px;color:var(--text-secondary)">${p.sku||'—'}</td>
+      <td style="font-size:13px;color:var(--text-secondary)">${supName}</td>
+      <td style="font-size:13px;font-weight:600;color:var(--text-primary)">₹${(p.price||0).toLocaleString('en-IN')}</td>
+      <td style="font-size:13px;${isOut?'color:#DC2626;font-weight:600':''}">${p.stock}</td>
+      <td><span class="pp-prod-status-inline ${statusClass}">${statusLabel}</span></td>
+      <td><div class="op-action-btns">
+        <button class="op-eye-btn" title="View" onclick="viewProduct(${idx})"><i class="ti ti-eye"></i></button>
+        <button class="op-eye-btn" title="Edit" onclick="editProduct(${idx})"><i class="ti ti-pencil"></i></button>
+        <button class="op-more-btn" title="More" onclick="moreProduct(${idx})"><i class="ti ti-dots-vertical"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
 function openAddProduct(){
   const autoSku = generateSKU();
   const supOptions = SUPPLIERS.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
@@ -4927,7 +4986,7 @@ function previewProductImage(input){
   });
 }
 
-function saveNewProduct(){
+async function saveNewProduct(){
   const name     = document.getElementById('apName')?.value.trim();
   const price    = parseInt(document.getElementById('apPrice')?.value)||0;
   const stock    = parseInt(document.getElementById('apStock')?.value)||0;
@@ -4936,10 +4995,33 @@ function saveNewProduct(){
   const imgData  = window._apImgData || null;
   if(!name){ toast('⚠️ Product name is required','#D97706'); return; }
   if(!price){ toast('⚠️ Price is required','#D97706'); return; }
-  PRODUCTS.push({ name, sku, supplier, price, stock, img: imgData, em:'📦' });
+  if(!CURRENT_USER_ID){ toast('⚠️ Not logged in','#DC2626'); return; }
+
+  const btn = document.querySelector('.mo-btn-pri');
+  if(btn){ btn.disabled = true; btn.textContent = 'Saving…'; }
+
+  const { data: inserted, error } = await sbClient.from('products').insert({
+    seller_id: CURRENT_USER_ID,
+    name,
+    sku,
+    supplier_id: supplier || null,
+    price,
+    stock,
+    image_url: imgData,
+    status: 'active'
+  }).select().single();
+
+  if(btn){ btn.disabled = false; btn.textContent = 'Add Product'; }
+
+  if(error){
+    toast('⚠️ Could not add product: ' + error.message, '#DC2626');
+    return;
+  }
+
+  PRODUCTS.push(dbProductToApp(inserted));
   window._apImgData = null;
-  saveData();
   closeDrawer();
+  renderAll();
   toast('✅ Product added: ' + name);
 }
 
@@ -5035,19 +5117,38 @@ function previewEditProductImage(input){
   });
 }
 
-function saveEditProduct(idx){
-  const p = STATIC_PRODUCTS[idx];
+async function saveEditProduct(idx){
+  const p = PRODUCTS[idx];
   if(!p){ toast('Product not found'); return; }
-  p.name     = document.getElementById('epName')?.value.trim() || p.name;
-  p.price    = parseInt(document.getElementById('epPrice')?.value)||p.price;
-  p.stock    = parseInt(document.getElementById('epStock')?.value)||0;
-  p.supplier = document.getElementById('epSupplier')?.value || p.supplier || '';
-  if(window._epImgData){ p.img = window._epImgData; window._epImgData = null; }
-  if(PRODUCTS[idx]){ PRODUCTS[idx].name = p.name; PRODUCTS[idx].price = p.price; PRODUCTS[idx].stock = p.stock; PRODUCTS[idx].category = p.category; PRODUCTS[idx].supplier = p.supplier; if(p.img) PRODUCTS[idx].img = p.img; }
-  saveData();
+  const name     = document.getElementById('epName')?.value.trim() || p.name;
+  const price    = parseInt(document.getElementById('epPrice')?.value)||p.price;
+  const stock    = parseInt(document.getElementById('epStock')?.value)||0;
+  const supplier = document.getElementById('epSupplier')?.value || p.supplier || '';
+  const imgData  = window._epImgData || p.img || null;
+
+  const btn = document.querySelector('.mo-btn-pri');
+  if(btn){ btn.disabled = true; btn.textContent = 'Saving…'; }
+
+  const { data: updated, error } = await sbClient.from('products').update({
+    name,
+    price,
+    stock,
+    supplier_id: supplier || null,
+    image_url: imgData
+  }).eq('id', p.id).select().single();
+
+  if(btn){ btn.disabled = false; btn.textContent = 'Save Changes'; }
+
+  if(error){
+    toast('⚠️ Could not update product: ' + error.message, '#DC2626');
+    return;
+  }
+
+  PRODUCTS[idx] = dbProductToApp(updated);
+  window._epImgData = null;
   closeDrawer();
-  toast('✅ Product updated: ' + p.name);
   renderAll();
+  toast('✅ Product updated: ' + name);
 }
 
 function moreProduct(idx){
@@ -5066,22 +5167,49 @@ function moreProduct(idx){
   openDrawer('Product Options', p.name, body, footer);
 }
 
-function duplicateProduct(idx){
-  const p = STATIC_PRODUCTS[idx] || PRODUCTS[idx];
+async function duplicateProduct(idx){
+  const p = PRODUCTS[idx];
   if(!p) return;
-  PRODUCTS.push({ name: p.name + ' (Copy)', em: p.em||'📦', price: p.price, stock: p.stock, img: null });
-  saveData();
+  if(!CURRENT_USER_ID){ toast('⚠️ Not logged in','#DC2626'); return; }
+
+  const { data: inserted, error } = await sbClient.from('products').insert({
+    seller_id: CURRENT_USER_ID,
+    name: p.name + ' (Copy)',
+    sku: generateSKU(),
+    supplier_id: p.supplier || null,
+    price: p.price,
+    stock: p.stock,
+    image_url: p.img || null,
+    status: 'active'
+  }).select().single();
+
+  if(error){
+    toast('⚠️ Could not duplicate product: ' + error.message, '#DC2626');
+    return;
+  }
+
+  PRODUCTS.push(dbProductToApp(inserted));
   closeDrawer();
+  renderAll();
   toast('📋 Duplicated: ' + p.name);
 }
 
-function deleteProduct(idx){
-  const p = STATIC_PRODUCTS[idx];
+async function deleteProduct(idx){
+  const p = PRODUCTS[idx];
   if(!p) return;
-  if(confirm('Delete "' + p.name + '"? This cannot be undone.')){
-    closeDrawer();
-    toast('🗑️ Product deleted: ' + p.name);
+  if(!confirm('Delete "' + p.name + '"? This cannot be undone.')) return;
+
+  const { error } = await sbClient.from('products').delete().eq('id', p.id);
+
+  if(error){
+    toast('⚠️ Could not delete product: ' + error.message, '#DC2626');
+    return;
   }
+
+  PRODUCTS.splice(idx, 1);
+  closeDrawer();
+  renderAll();
+  toast('🗑️ Product deleted: ' + p.name);
 }
 
 function filterProdTab(el, filter){
@@ -5134,7 +5262,7 @@ function openAddCustomer(){
   openDrawer('Add Customer', 'Add a new customer to your list', body, footer);
 }
 
-function saveNewCustomer(){
+async function saveNewCustomer(){
   const name     = document.getElementById('acName')?.value.trim();
   const phone    = (document.getElementById('acPhone')?.value||'').replace(/\D/g,'');
   const email    = document.getElementById('acEmail')?.value.trim() || '';
@@ -5146,45 +5274,73 @@ function saveNewCustomer(){
   if(!phone || phone.length!==10){ toast('⚠️ Valid 10-digit mobile required','#D97706'); return; }
   if(pincode && pincode.length!==6){ toast('⚠️ Pincode must be 6 digits','#D97706'); return; }
   if(CUSTOMERS[phone]){ toast('⚠️ Customer with this mobile already exists','#D97706'); return; }
-  CUSTOMERS[phone] = { name, mobile: phone, email, address, district, state, pincode, city: district };
-  saveData();
+  if(!CURRENT_USER_ID){ toast('⚠️ Not logged in','#DC2626'); return; }
+
+  const btn = document.querySelector('.mo-btn-pri');
+  if(btn){ btn.disabled = true; btn.textContent = 'Saving…'; }
+
+  const { data: inserted, error } = await sbClient.from('customers').insert({
+    seller_id: CURRENT_USER_ID,
+    mobile: phone,
+    name
+  }).select().single();
+
+  if(btn){ btn.disabled = false; btn.textContent = 'Add Customer'; }
+
+  if(error){
+    toast('⚠️ Could not add customer: ' + error.message, '#DC2626');
+    return;
+  }
+
+  // Note: only mobile + name are stored in Supabase for now (matching the
+  // existing `customers` table columns used elsewhere in the app). Email,
+  // address, district, state and pincode are kept locally so they show in
+  // the UI this session, but won't survive a refresh unless those columns
+  // are added to the `customers` table.
+  CUSTOMERS[phone] = { id: inserted.id, name, mobile: phone, email, address, district, state, pincode, city: district };
   closeDrawer();
+  renderAll();
   toast('✅ Customer added: ' + name);
 }
 
+/* In-memory list snapshot backing the Customers page table, rebuilt on every
+   renderCustomersPage() call. viewCustomer/editCustomer/deleteCustomer index into this. */
+let CUSTOMER_LIST = [];
+
 function viewCustomer(idx){
-  const c = STATIC_CUSTOMERS[idx];
+  const c = CUSTOMER_LIST[idx];
   if(!c) return;
   const addrParts = [c.address, c.district||c.city, c.state, c.pincode].filter(Boolean);
+  const stat = CUSTOMER_STATS[c.mobile] || { count: 0, spent: 0 };
   const body = `
     <p class="sec-title">Customer Info</p>
-    <div class="order-detail-row"><span class="order-detail-label">Name</span><span class="order-detail-val">${c.name}</span></div>
-    <div class="order-detail-row"><span class="order-detail-label">Mobile</span><span class="order-detail-val">+91 ${c.phone} <i class="ti ti-copy op-copy" onclick="copyText('${c.phone}')" style="margin-left:4px;cursor:pointer"></i></span></div>
+    <div class="order-detail-row"><span class="order-detail-label">Name</span><span class="order-detail-val">${c.name||'—'}</span></div>
+    <div class="order-detail-row"><span class="order-detail-label">Mobile</span><span class="order-detail-val">+91 ${c.mobile} <i class="ti ti-copy op-copy" onclick="copyText('${c.mobile}')" style="margin-left:4px;cursor:pointer"></i></span></div>
     ${c.email ? `<div class="order-detail-row"><span class="order-detail-label">Email</span><span class="order-detail-val">${c.email}</span></div>` : ''}
     ${addrParts.length ? `<div class="order-detail-row"><span class="order-detail-label">Address</span><span class="order-detail-val" style="line-height:1.5">${addrParts.join(', ')}</span></div>` : ''}
-    <div class="order-detail-row"><span class="order-detail-label">Total Orders</span><span class="order-detail-val">${c.orders}</span></div>
-    <div class="order-detail-row"><span class="order-detail-label">Total Spent</span><span class="order-detail-val" style="color:var(--navy-600);font-size:15px">${c.spent}</span></div>
-    <div class="order-detail-row"><span class="order-detail-label">Status</span><span class="order-detail-val">${c.status}</span></div>
+    <div class="order-detail-row"><span class="order-detail-label">Total Orders</span><span class="order-detail-val">${stat.count}</span></div>
+    <div class="order-detail-row"><span class="order-detail-label">Total Spent</span><span class="order-detail-val" style="color:var(--navy-600);font-size:15px">₹${stat.spent.toLocaleString('en-IN')}</span></div>
+    <div class="order-detail-row"><span class="order-detail-label">Status</span><span class="order-detail-val">${stat.count>0?'Active':'Inactive'}</span></div>
   `;
   const footer = `
     <button class="mo-btn-sec" onclick="closeDrawer()">Close</button>
-    <button class="act-btn-large wa" style="flex:1" onclick="waCustomer('${c.phone}')"><i class="ti ti-brand-whatsapp"></i>WhatsApp</button>
+    <button class="act-btn-large wa" style="flex:1" onclick="waCustomer('${c.mobile}')"><i class="ti ti-brand-whatsapp"></i>WhatsApp</button>
   `;
-  openDrawer(c.name, 'Customer Profile', body, footer);
+  openDrawer(c.name||'Customer', 'Customer Profile', body, footer);
 }
 
-function editCustomer(idx, phone){
-  const c = STATIC_CUSTOMERS[idx];
+function editCustomer(idx){
+  const c = CUSTOMER_LIST[idx];
   if(!c) return;
   const body = `
     <p class="sec-title">Edit Customer</p>
     <div class="form-group">
       <label class="form-label">Name</label>
-      <input class="form-input" id="ecName" type="text" value="${c.name}">
+      <input class="form-input" id="ecName" type="text" value="${c.name||''}">
     </div>
     <div class="form-group">
       <label class="form-label">Mobile</label>
-      <input class="form-input" value="+91 ${c.phone}" readonly>
+      <input class="form-input" value="+91 ${c.mobile}" readonly>
     </div>
     <div class="form-group">
       <label class="form-label">Email <span style="font-size:11px;color:var(--text-muted);font-weight:400">(optional)</span></label>
@@ -5204,28 +5360,139 @@ function editCustomer(idx, phone){
     <button class="mo-btn-sec" onclick="closeDrawer()">Cancel</button>
     <button class="mo-btn-pri" onclick="saveEditCustomer(${idx})"><i class="ti ti-device-floppy"></i>Save Changes</button>
   `;
-  openDrawer('Edit Customer', c.name, body, footer);
+  openDrawer('Edit Customer', c.name||'Customer', body, footer);
 }
 
-function saveEditCustomer(idx){
-  const c = STATIC_CUSTOMERS[idx];
+async function saveEditCustomer(idx){
+  const c = CUSTOMER_LIST[idx];
   if(!c) return;
-  c.name     = document.getElementById('ecName')?.value.trim() || c.name;
-  c.email    = document.getElementById('ecEmail')?.value.trim() || '';
-  c.address  = document.getElementById('ecAddress')?.value.trim() || '';
-  c.district = document.getElementById('ecDistrict')?.value.trim() || c.district || '';
-  c.city     = c.district;
-  c.state    = document.getElementById('ecState')?.value.trim() || c.state;
-  c.pincode  = (document.getElementById('ecPincode')?.value||'').replace(/\D/g,'');
-  if(CUSTOMERS[c.phone]) CUSTOMERS[c.phone].name = c.name;
-  saveData();
+  const name = document.getElementById('ecName')?.value.trim() || c.name;
+
+  const btn = document.querySelector('.mo-btn-pri');
+  if(btn){ btn.disabled = true; btn.textContent = 'Saving…'; }
+
+  if(c.id){
+    const { error } = await sbClient.from('customers').update({ name: name || null }).eq('id', c.id);
+    if(btn){ btn.disabled = false; btn.textContent = 'Save Changes'; }
+    if(error){
+      toast('⚠️ Could not update customer: ' + error.message, '#DC2626');
+      return;
+    }
+  } else if(btn){
+    btn.disabled = false; btn.textContent = 'Save Changes';
+  }
+
+  const rec = CUSTOMERS[c.mobile];
+  if(rec){
+    rec.name     = name;
+    rec.email    = document.getElementById('ecEmail')?.value.trim() || '';
+    rec.address  = document.getElementById('ecAddress')?.value.trim() || '';
+    rec.district = document.getElementById('ecDistrict')?.value.trim() || rec.district || '';
+    rec.city     = rec.district;
+    rec.state    = document.getElementById('ecState')?.value.trim() || rec.state || '';
+    rec.pincode  = (document.getElementById('ecPincode')?.value||'').replace(/\D/g,'');
+  }
+
   closeDrawer();
-  toast('✅ Customer updated: ' + c.name);
+  renderAll();
+  toast('✅ Customer updated: ' + name);
+}
+
+async function deleteCustomer(idx){
+  const c = CUSTOMER_LIST[idx];
+  if(!c) return;
+  if(!confirm('Delete "' + (c.name||c.mobile) + '"? This cannot be undone.')) return;
+
+  if(c.id){
+    const { error } = await sbClient.from('customers').delete().eq('id', c.id);
+    if(error){
+      toast('⚠️ Could not delete customer: ' + error.message, '#DC2626');
+      return;
+    }
+  }
+
+  delete CUSTOMERS[c.mobile];
+  renderAll();
+  toast('🗑️ Customer deleted: ' + (c.name||c.mobile));
 }
 
 function waCustomer(phone){
   const url = 'https://wa.me/91' + phone;
   window.open(url, '_blank');
+}
+
+/* Orders/spend per mobile number, recomputed on every render so the
+   Customers page and each customer's profile always match the Orders data. */
+let CUSTOMER_STATS = {};
+
+function renderCustomersPage(){
+  const tbody = document.getElementById('customersBody');
+  if(!tbody) return;
+
+  CUSTOMER_LIST = Object.values(CUSTOMERS);
+
+  CUSTOMER_STATS = {};
+  ORDERS.forEach(o => {
+    if(!o.mobile) return;
+    if(!CUSTOMER_STATS[o.mobile]) CUSTOMER_STATS[o.mobile] = { count: 0, spent: 0 };
+    CUSTOMER_STATS[o.mobile].count += 1;
+    if(o.status !== 'Enquiry' && o.status !== 'Cancelled') CUSTOMER_STATS[o.mobile].spent += orderAmount(o);
+  });
+
+  const totalSpentAll  = Object.values(CUSTOMER_STATS).reduce((s,x)=>s+x.spent,0);
+  const totalOrdersAll = Object.values(CUSTOMER_STATS).reduce((s,x)=>s+x.count,0);
+  const repeatCount    = Object.values(CUSTOMER_STATS).filter(x=>x.count>1).length;
+  const newCount       = CUSTOMER_LIST.filter(c => !CUSTOMER_STATS[c.mobile] || CUSTOMER_STATS[c.mobile].count<=1).length;
+
+  const totalEl  = document.getElementById('statTotalCustomers');
+  const newEl    = document.getElementById('statNewCustomers');
+  const repeatEl = document.getElementById('statRepeatCustomers');
+  const avgEl    = document.getElementById('statAvgOrderValue');
+  const spentEl  = document.getElementById('statCustTotalSpent');
+  if(totalEl)  totalEl.textContent  = CUSTOMER_LIST.length.toLocaleString('en-IN');
+  if(newEl)    newEl.textContent    = newCount.toLocaleString('en-IN');
+  if(repeatEl) repeatEl.textContent = repeatCount.toLocaleString('en-IN');
+  if(avgEl)    avgEl.textContent    = '₹' + (totalOrdersAll ? Math.round(totalSpentAll/totalOrdersAll) : 0).toLocaleString('en-IN');
+  if(spentEl)  spentEl.textContent  = '₹' + totalSpentAll.toLocaleString('en-IN');
+
+  if(CUSTOMER_LIST.length === 0){
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state" style="padding:40px 12px"><i class="ti ti-users"></i><h3>No customers yet</h3><p>Click <strong>Add Customer</strong> to add your first customer</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = CUSTOMER_LIST.map((c, idx) => {
+    const stat = CUSTOMER_STATS[c.mobile] || { count: 0, spent: 0 };
+    const initial = (c.name || c.mobile || '?').charAt(0).toUpperCase();
+    const bg = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+    const locParts = [c.district||c.city, c.state].filter(Boolean);
+    const active = stat.count > 0;
+    return `<tr>
+      <td><input type="checkbox" class="cbox"></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="cust-avatar" style="background:${bg}">${initial}</div>
+          <div class="cust-name">${c.name || 'Unnamed'}</div>
+        </div>
+      </td>
+      <td>
+        <div class="contact-phone">+91 ${c.mobile}</div>
+        ${c.email ? `<div class="contact-email">${c.email}</div>` : ''}
+      </td>
+      <td>
+        <div class="location-city">${locParts[0] || '—'}</div>
+        ${locParts[1] ? `<div class="location-state">${locParts[1]}</div>` : ''}
+      </td>
+      <td class="orders-count">${stat.count}</td>
+      <td class="spent-val">₹${stat.spent.toLocaleString('en-IN')}</td>
+      <td class="since-date">—</td>
+      <td><span class="cust-status-badge ${active?'active':'inactive'}">${active?'Active':'Inactive'}</span></td>
+      <td><div class="op-action-btns">
+        <button class="op-eye-btn" title="View" onclick="viewCustomer(${idx})"><i class="ti ti-eye"></i></button>
+        <button class="op-eye-btn" title="Edit" onclick="editCustomer(${idx})"><i class="ti ti-pencil"></i></button>
+        <button class="op-more-btn" title="Delete" onclick="deleteCustomer(${idx})"><i class="ti ti-trash"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
 }
 
 function resetCustFilter(){
