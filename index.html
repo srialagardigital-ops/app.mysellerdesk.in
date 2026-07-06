@@ -3882,6 +3882,17 @@ function openConfirmOrder(idx){
   currentOrderIdx = idx;
   const o = ORDERS[idx];
   draft = { ...o };
+
+  // Prefill delivery address from the customer's saved profile if this
+  // order doesn't already have its own address (e.g. fresh from Enquiry).
+  // Still fully editable — this only sets the starting value.
+  const cust = CUSTOMERS[o.mobile];
+  if(cust){
+    if(!draft.address  && cust.address)  draft.address  = cust.address;
+    if(!draft.state    && cust.state)    draft.state    = cust.state;
+    if(!draft.district && (cust.district||cust.city)) draft.district = cust.district || cust.city;
+  }
+
   drawerMode = 'confirm-order';
   renderConfirmDrawer();
 }
@@ -4171,6 +4182,17 @@ function saveOrderView(idx){
 async function quickSetStatus(idx, newStatus){
   const o = ORDERS[idx];
   if(o.status === newStatus) return;
+
+  // Enquiry stage allows no product, but every later stage requires one.
+  // Block the direct status-pill jump if the order still has no product,
+  // and send the user through the proper Confirm Order flow instead.
+  const noProductYet = (o.productIdx===null || o.productIdx===undefined);
+  if(newStatus !== 'Enquiry' && noProductYet){
+    toast('⚠️ Select a product before confirming this order','#D97706');
+    openConfirmOrder(idx);
+    return;
+  }
+
   o.status = newStatus;
   if(newStatus==='Confirmed' && !o.orderId) o.orderId = await generateOrderNumber();
   renderAll();
