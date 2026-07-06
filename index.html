@@ -3451,7 +3451,17 @@ async function loadSellerData(){
 
     Object.keys(CUSTOMERS).forEach(k => delete CUSTOMERS[k]);
     (custRes.data || []).forEach(row => {
-      if(row.mobile) CUSTOMERS[row.mobile] = { id: row.id, name: row.name || '', mobile: row.mobile };
+      if(row.mobile) CUSTOMERS[row.mobile] = {
+        id: row.id,
+        name: row.name || '',
+        mobile: row.mobile,
+        email: row.email || '',
+        address: row.address || '',
+        district: row.district || '',
+        city: row.district || '',
+        state: row.state || '',
+        pincode: row.pincode || ''
+      };
     });
 
     ORDERS.splice(0, ORDERS.length, ...(ordRes.data || []).map(dbOrderToApp));
@@ -5429,7 +5439,12 @@ async function saveNewCustomer(){
   const { data: inserted, error } = await sbClient.from('customers').insert({
     seller_id: CURRENT_USER_ID,
     mobile: phone,
-    name
+    name,
+    email: email || null,
+    address: address || null,
+    district: district || null,
+    state: state || null,
+    pincode: pincode || null
   }).select().single();
 
   if(btn){ btn.disabled = false; btn.textContent = 'Add Customer'; }
@@ -5513,13 +5528,25 @@ function editCustomer(idx){
 async function saveEditCustomer(idx){
   const c = CUSTOMER_LIST[idx];
   if(!c) return;
-  const name = document.getElementById('ecName')?.value.trim() || c.name;
+  const name     = document.getElementById('ecName')?.value.trim() || c.name;
+  const email    = document.getElementById('ecEmail')?.value.trim() || '';
+  const address  = document.getElementById('ecAddress')?.value.trim() || '';
+  const district = document.getElementById('ecDistrict')?.value.trim() || '';
+  const state    = document.getElementById('ecState')?.value.trim() || '';
+  const pincode  = (document.getElementById('ecPincode')?.value||'').replace(/\D/g,'');
 
   const btn = document.querySelector('.mo-btn-pri');
   if(btn){ btn.disabled = true; btn.textContent = 'Saving…'; }
 
   if(c.id){
-    const { error } = await sbClient.from('customers').update({ name: name || null }).eq('id', c.id);
+    const { error } = await sbClient.from('customers').update({
+      name: name || null,
+      email: email || null,
+      address: address || null,
+      district: district || null,
+      state: state || null,
+      pincode: pincode || null
+    }).eq('id', c.id);
     if(btn){ btn.disabled = false; btn.textContent = 'Save Changes'; }
     if(error){
       toast('⚠️ Could not update customer: ' + error.message, '#DC2626');
@@ -5532,12 +5559,12 @@ async function saveEditCustomer(idx){
   const rec = CUSTOMERS[c.mobile];
   if(rec){
     rec.name     = name;
-    rec.email    = document.getElementById('ecEmail')?.value.trim() || '';
-    rec.address  = document.getElementById('ecAddress')?.value.trim() || '';
-    rec.district = document.getElementById('ecDistrict')?.value.trim() || rec.district || '';
+    rec.email    = email;
+    rec.address  = address;
+    rec.district = district || rec.district || '';
     rec.city     = rec.district;
-    rec.state    = document.getElementById('ecState')?.value.trim() || rec.state || '';
-    rec.pincode  = (document.getElementById('ecPincode')?.value||'').replace(/\D/g,'');
+    rec.state    = state || rec.state || '';
+    rec.pincode  = pincode;
   }
 
   closeDrawer();
