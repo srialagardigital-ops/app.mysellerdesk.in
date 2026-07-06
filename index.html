@@ -3475,6 +3475,7 @@ let CURRENT_USER_ID = null;
 let orderSeq = 1000;
 let currentFilter = 'All';
 let currentOrderIdx = null; // index in ORDERS
+let orderViewSnapshot = null; // {status, refundStatus} snapshot taken when the view drawer opens — used to revert if closed without clicking Save
 let drawerMode = ''; // 'new-enquiry' | 'confirm-order' | 'view-order' | 'update-payment' | 'shipping'
 
 // Draft state for active drawer
@@ -3879,9 +3880,21 @@ function openDrawer(title, sub, bodyHtml, footerHtml){
   setTimeout(bindInputs, 50);
 }
 function closeDrawer(){
+  // If the order-view drawer is closed without clicking Save, undo any
+  // unsaved status/refund changes so they never reach the server.
+  if(drawerMode === 'view-order' && currentOrderIdx != null){
+    const o = ORDERS[currentOrderIdx];
+    if(o && orderViewSnapshot){
+      let reverted = false;
+      if(o.status !== orderViewSnapshot.status){ o.status = orderViewSnapshot.status; reverted = true; }
+      if(o.refundStatus !== orderViewSnapshot.refundStatus){ o.refundStatus = orderViewSnapshot.refundStatus; reverted = true; }
+      if(reverted) renderAll();
+    }
+  }
   document.getElementById('drawerOverlay').classList.remove('open');
   draft = {};
   currentOrderIdx = null;
+  orderViewSnapshot = null;
 }
 function handleOverlayClick(e){
   if(e.target === document.getElementById('drawerOverlay')) closeDrawer();
@@ -4163,6 +4176,7 @@ function openOrderView(idx){
   currentOrderIdx = idx;
   const o = ORDERS[idx];
   drawerMode = 'view-order';
+  orderViewSnapshot = o ? { status: o.status, refundStatus: o.refundStatus } : null;
   renderOrderViewDrawer();
 }
 
@@ -4322,6 +4336,7 @@ function renderOrderViewDrawer(){
 }
 
 function saveOrderView(idx){
+  orderViewSnapshot = ORDERS[idx] ? { status: ORDERS[idx].status, refundStatus: ORDERS[idx].refundStatus } : null;
   renderAll();
   toast('✅ Order saved!');
   syncOrderUpdate(idx);
@@ -4357,8 +4372,8 @@ async function quickSetStatus(idx, newStatus){
   if(newStatus==='Confirmed' && !o.orderId) o.orderId = await generateOrderNumber();
   renderAll();
   renderOrderViewDrawer();
-  toast('✅ Status updated to '+newStatus);
-  syncOrderUpdate(idx);
+  toast('Status set to '+newStatus+' — click Save to confirm','#2563EB');
+  // Not synced to the server yet — closing without pressing Save will revert this.
 }
 
 function buildActionGrid(o, idx){
@@ -4377,7 +4392,7 @@ function buildActionGrid(o, idx){
     btns += `<button class="act-btn-large primary" onclick="advanceStatus(${idx},'Packing')"><i class="ti ti-package"></i>Move to Packing</button>`;
     btns += `<button class="act-btn-large red" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
   } else if(s==='Packing'){
-    btns += `<button class="act-btn-large primary" onclick="openShippingDrawer(${idx})"><i class="ti ti-truck"></i>Ship Order</button>`;
+    btns += `<button class="act-btn-large primary" onclick="openShippingDrawer(${idx})"><i class="ti ti-truck-delivery"></i>Generate Shipping Label</button>`;
     btns += `<button class="act-btn-large red" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
   } else if(s==='Shipping'){
     btns += `<button class="act-btn-large green full" onclick="advanceStatus(${idx},'Delivered')"><i class="ti ti-circle-check"></i>Mark as Delivered 🎉</button>`;
@@ -4433,9 +4448,9 @@ function openShippingDrawer(idx){
   `;
   const footer = `
     <button class="mo-btn-sec" onclick="openOrderView(${idx})">Back</button>
-    <button class="mo-btn-pri" onclick="saveShipping(${idx})"><i class="ti ti-truck"></i>Save & Ship</button>
+    <button class="mo-btn-pri" onclick="saveShipping(${idx})"><i class="ti ti-truck-delivery"></i>Save & Generate Label</button>
   `;
-  openDrawer('Ship Order', 'Enter courier and tracking details', body, footer);
+  openDrawer('Generate Shipping Label', 'Enter courier and tracking details', body, footer);
 }
 
 function onCourierChange(sel) {
@@ -4465,6 +4480,7 @@ function saveShipping(idx){
   closeDrawer();
   toast('🚚 Order shipped! Tracking: ' + (tracking||'—'));
   syncOrderUpdate(idx);
+  generateShippingLabel(idx);
 }
 
 /* ═══════════════════════════════
@@ -4521,12 +4537,18 @@ function saveEditEnquiry(idx){
    STATUS ACTIONS
 ═══════════════════════════════ */
 function advanceStatus(idx, newStatus){
-  ORDERS[idx].status = newStatus;
+  const o = ORDERS[idx];
+  o.status = newStatus;
   renderAll();
-  renderOrderViewDrawer();
   const emojis = {Processing:'⚙️',Packing:'📦',Delivered:'🎉'};
-  toast((emojis[newStatus]||'✅') + ' Status updated to ' + newStatus);
-  syncOrderUpdate(idx);
+  if(drawerMode === 'view-order' && currentOrderIdx === idx){
+    renderOrderViewDrawer();
+    toast((emojis[newStatus]||'✅') + ' Status set to ' + newStatus + ' — click Save to confirm','#2563EB');
+    // Not synced yet — stays local until Save is clicked, reverted if the drawer is closed first.
+  } else {
+    toast((emojis[newStatus]||'✅') + ' Status updated to ' + newStatus);
+    syncOrderUpdate(idx);
+  }
 }
 
 function cancelOrder(idx){
@@ -4535,17 +4557,27 @@ function cancelOrder(idx){
   o.status = 'Cancelled';
   if(hasPaid) o.refundStatus = 'Refund Pending';
   renderAll();
-  renderOrderViewDrawer();
-  toast('❌ Order cancelled' + (hasPaid ? ' — refund required':''));
-  syncOrderUpdate(idx);
+  if(drawerMode === 'view-order' && currentOrderIdx === idx){
+    renderOrderViewDrawer();
+    toast('❌ Order marked Cancelled' + (hasPaid ? ' — refund required' : '') + ' — click Save to confirm','#2563EB');
+    // Not synced yet — stays local until Save is clicked, reverted if the drawer is closed first.
+  } else {
+    // Triggered from elsewhere (e.g. the Confirm Order drawer) — this click
+    // is itself the deliberate confirm action, so commit immediately.
+    drawerMode = 'view-order';
+    orderViewSnapshot = { status: o.status, refundStatus: o.refundStatus };
+    renderOrderViewDrawer();
+    toast('❌ Order cancelled' + (hasPaid ? ' — refund required':''));
+    syncOrderUpdate(idx);
+  }
 }
 
 function setRefundStatus(idx, val){
   ORDERS[idx].refundStatus = val;
   renderAll();
   renderOrderViewDrawer();
-  toast((val==='Refund Completed'?'✅':'⏳') + ' ' + val);
-  syncOrderUpdate(idx);
+  toast((val==='Refund Completed'?'✅':'⏳') + ' ' + val + ' — click Save to confirm','#2563EB');
+  // Not synced yet — stays local until Save is clicked, reverted if the drawer is closed first.
 }
 
 function quickStep(idx){
@@ -5229,9 +5261,7 @@ function renderProductsPage(){
       <td style="font-size:13px;${isOut?'color:#DC2626;font-weight:600':''}">${p.stock}</td>
       <td><span class="pp-prod-status-inline ${statusClass}">${statusLabel}</span></td>
       <td><div class="op-action-btns">
-        <button class="op-eye-btn" title="View" onclick="viewProduct(${idx})"><i class="ti ti-eye"></i></button>
         <button class="op-eye-btn" title="Edit" onclick="editProduct(${idx})"><i class="ti ti-pencil"></i></button>
-        <button class="op-more-btn" title="More" onclick="moreProduct(${idx})"><i class="ti ti-dots-vertical"></i></button>
       </div></td>
     </tr>`;
   }).join('');
@@ -5423,6 +5453,7 @@ function editProduct(idx){
   const footer = `
     <button class="mo-btn-sec" onclick="closeDrawer()">Cancel</button>
     <button class="mo-btn-pri" onclick="saveEditProduct(${idx})"><i class="ti ti-device-floppy"></i>Save Changes</button>
+    <button onclick="deleteProduct(${idx})" title="Delete Product" style="padding:9px 12px;border:1.5px solid var(--red-border);border-radius:var(--radius-md);background:var(--red-bg);color:var(--red-text);cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center"><i class="ti ti-trash"></i></button>
   `;
   openDrawer('Edit Product', p.name, body, footer);
 }
@@ -5687,6 +5718,7 @@ function editCustomer(idx){
   const footer = `
     <button class="mo-btn-sec" onclick="closeDrawer()">Cancel</button>
     <button class="mo-btn-pri" onclick="saveEditCustomer(${idx})"><i class="ti ti-device-floppy"></i>Save Changes</button>
+    <button onclick="deleteCustomer(${idx})" title="Delete Customer" style="padding:9px 12px;border:1.5px solid var(--red-border);border-radius:var(--radius-md);background:var(--red-bg);color:var(--red-text);cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center"><i class="ti ti-trash"></i></button>
   `;
   openDrawer('Edit Customer', c.name||'Customer', body, footer);
 }
@@ -5752,6 +5784,7 @@ async function deleteCustomer(idx){
   }
 
   delete CUSTOMERS[c.mobile];
+  closeDrawer();
   renderAll();
   toast('🗑️ Customer deleted: ' + (c.name||c.mobile));
 }
@@ -5827,9 +5860,7 @@ function renderCustomersPage(){
       <td class="since-date">—</td>
       <td><span class="cust-status-badge ${active?'active':'inactive'}">${active?'Active':'Inactive'}</span></td>
       <td><div class="op-action-btns">
-        <button class="op-eye-btn" title="View" onclick="viewCustomer(${idx})"><i class="ti ti-eye"></i></button>
         <button class="op-eye-btn" title="Edit" onclick="editCustomer(${idx})"><i class="ti ti-pencil"></i></button>
-        <button class="op-more-btn" title="Delete" onclick="deleteCustomer(${idx})"><i class="ti ti-trash"></i></button>
       </div></td>
     </tr>`;
   }).join('');
