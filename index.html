@@ -69,9 +69,73 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 .auth-wrap {
   min-height: 100vh;
   display: flex;
+}
+
+/* Left banner panel */
+.auth-banner-side {
+  flex: 1 1 46%;
+  min-width: 0;
+  background: linear-gradient(150deg, #0B1D3A 0%, #1A3668 55%, #2563EB 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 56px;
+  color: #fff;
+}
+.auth-banner-side::before {
+  content: '';
+  position: absolute;
+  width: 480px; height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,130,246,0.35) 0%, transparent 70%);
+  top: -140px; right: -160px;
+}
+.auth-banner-side::after {
+  content: '';
+  position: absolute;
+  width: 380px; height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,58,237,0.22) 0%, transparent 70%);
+  bottom: -120px; left: -120px;
+}
+.auth-banner-content { position: relative; z-index: 2; max-width: 440px; }
+.auth-banner-brand {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 46px;
+}
+.auth-banner-brand .brand-icon { width: 42px; height: 42px; }
+.auth-banner-brand .brand-icon i { font-size: 19px; }
+.auth-banner-brand .brand-name { font-size: 17px; font-weight: 700; color: #fff; }
+.auth-banner-brand .brand-sub { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 1px; }
+
+.auth-banner-title { font-size: 30px; font-weight: 700; line-height: 1.28; margin-bottom: 14px; letter-spacing: -0.01em; }
+.auth-banner-desc { font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.72); margin-bottom: 36px; }
+
+.auth-banner-features { display: flex; flex-direction: column; gap: 16px; }
+.auth-banner-feature { display: flex; align-items: center; gap: 13px; }
+.auth-banner-feature-icon {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  display: flex; align-items: center; justify-content: center;
+}
+.auth-banner-feature-icon i { font-size: 16px; color: #93C5FD; }
+.auth-banner-feature-text { font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,0.88); }
+
+@media (max-width: 900px) {
+  .auth-banner-side { display: none; }
+}
+
+/* Right form panel */
+.auth-form-side {
+  flex: 1 1 54%;
+  min-width: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0B1D3A 0%, #1A3668 55%, #2563EB 100%);
+  background: var(--bg-app);
   padding: 24px;
 }
 .auth-card {
@@ -79,7 +143,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
   max-width: 400px;
   background: var(--bg-white);
   border-radius: var(--radius-lg);
-  box-shadow: 0 20px 50px rgba(11,29,58,0.35);
+  box-shadow: 0 20px 50px rgba(11,29,58,0.14), 0 0 0 1px rgba(11,29,58,0.04);
   padding: 32px 30px 28px;
 }
 .auth-brand {
@@ -150,6 +214,37 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 }
 .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .auth-btn:hover:not(:disabled) { opacity: 0.92; }
+
+/* Password field with show/hide eye toggle */
+.password-field { position: relative; }
+.password-field .form-input { padding-right: 40px; }
+.password-toggle-icon {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  user-select: none;
+}
+.password-toggle-icon:hover { color: var(--navy-500); }
+
+/* Forgot password link */
+.auth-forgot-row { display: flex; justify-content: flex-end; margin-top: -10px; margin-bottom: 16px; }
+.auth-forgot-link {
+  font-size: 12.5px; font-weight: 600; color: var(--navy-500);
+  cursor: pointer; text-decoration: none;
+}
+.auth-forgot-link:hover { text-decoration: underline; }
+.auth-back-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12.5px; font-weight: 600; color: var(--text-secondary);
+  cursor: pointer; margin-bottom: 18px;
+}
+.auth-back-link:hover { color: var(--navy-500); }
+.auth-back-link i { font-size: 14px; }
 
 /* ── SIDEBAR ────────────────────────────────────────────────── */
 .sidebar {
@@ -1419,6 +1514,38 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 
 <!-- AUTH SCREEN (Login / Signup) -->
 <div class="auth-wrap" id="authScreen">
+
+  <!-- LEFT BANNER -->
+  <div class="auth-banner-side">
+    <div class="auth-banner-content">
+      <div class="auth-banner-brand">
+        <div class="brand-icon"><i class="ti ti-building-store" aria-hidden="true"></i></div>
+        <div>
+          <div class="brand-name">SellerDesk</div>
+          <div class="brand-sub">Roots View</div>
+        </div>
+      </div>
+      <div class="auth-banner-title">Run your entire store from one place.</div>
+      <div class="auth-banner-desc">Orders, products, customers, suppliers and reports — everything you need to manage your business, in a single dashboard.</div>
+      <div class="auth-banner-features">
+        <div class="auth-banner-feature">
+          <div class="auth-banner-feature-icon"><i class="ti ti-shopping-cart-filled"></i></div>
+          <div class="auth-banner-feature-text">Track every order from enquiry to delivery</div>
+        </div>
+        <div class="auth-banner-feature">
+          <div class="auth-banner-feature-icon"><i class="ti ti-chart-bar"></i></div>
+          <div class="auth-banner-feature-text">See real-time reports and revenue insights</div>
+        </div>
+        <div class="auth-banner-feature">
+          <div class="auth-banner-feature-icon"><i class="ti ti-cloud-upload"></i></div>
+          <div class="auth-banner-feature-text">Your data, backed up automatically every day</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM PANEL -->
+  <div class="auth-form-side">
   <div class="auth-card">
     <div class="auth-brand">
       <div class="brand-icon"><i class="ti ti-building-store" aria-hidden="true"></i></div>
@@ -1428,7 +1555,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
       </div>
     </div>
 
-    <div class="auth-tabs">
+    <div class="auth-tabs" id="authTabsRow">
       <div class="auth-tab active" id="tabLoginBtn" onclick="switchAuthTab('login')">Log In</div>
       <div class="auth-tab" id="tabSignupBtn" onclick="switchAuthTab('signup')">Sign Up</div>
     </div>
@@ -1445,9 +1572,27 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
       </div>
       <div class="form-group">
         <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="loginPassword" placeholder="Your password" required autocomplete="current-password">
+        <div class="password-field">
+          <input class="form-input" type="password" id="loginPassword" placeholder="Your password" required autocomplete="current-password">
+          <span class="password-toggle-icon" onclick="togglePasswordVisibility('loginPassword', this)"><i class="ti ti-eye"></i></span>
+        </div>
+      </div>
+      <div class="auth-forgot-row">
+        <span class="auth-forgot-link" onclick="showForgotPassword()">Forgot password?</span>
       </div>
       <button class="auth-btn" type="submit" id="loginBtn">Log In</button>
+    </form>
+
+    <!-- FORGOT PASSWORD FORM -->
+    <form class="auth-form" id="forgotForm" onsubmit="return handleForgotPassword(event)">
+      <div class="auth-back-link" onclick="backToLogin()"><i class="ti ti-arrow-left"></i>Back to Log In</div>
+      <div class="auth-title">Reset your password</div>
+      <div class="auth-desc">Enter your account email — we'll send you a link to reset your password.</div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="forgotEmail" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <button class="auth-btn" type="submit" id="forgotBtn">Send Reset Link</button>
     </form>
 
     <!-- SIGNUP FORM -->
@@ -1496,15 +1641,22 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
       <p class="sec-title" style="margin-top:16px;margin-bottom:4px">Password</p>
       <div class="form-group">
         <label class="form-label">Password <span class="req">*</span></label>
-        <input class="form-input" type="password" id="signupPassword" placeholder="Minimum 6 characters" required minlength="6" autocomplete="new-password">
+        <div class="password-field">
+          <input class="form-input" type="password" id="signupPassword" placeholder="Minimum 6 characters" required minlength="6" autocomplete="new-password">
+          <span class="password-toggle-icon" onclick="togglePasswordVisibility('signupPassword', this)"><i class="ti ti-eye"></i></span>
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label">Confirm Password <span class="req">*</span></label>
-        <input class="form-input" type="password" id="signupConfirmPassword" placeholder="Re-enter password" required minlength="6" autocomplete="new-password">
+        <div class="password-field">
+          <input class="form-input" type="password" id="signupConfirmPassword" placeholder="Re-enter password" required minlength="6" autocomplete="new-password">
+          <span class="password-toggle-icon" onclick="togglePasswordVisibility('signupConfirmPassword', this)"><i class="ti ti-eye"></i></span>
+        </div>
       </div>
 
       <button class="auth-btn" type="submit" id="signupBtn">Create Account</button>
     </form>
+  </div>
   </div>
 </div>
 
@@ -2681,6 +2833,17 @@ function saveEditProfile(){
       logo_url: SELLER_PROFILE.logo || null,
     }).eq('id', CURRENT_USER_ID).then(({error}) => {
       if(error){ console.warn('Profile sync failed:', error.message); toast('⚠️ Could not save profile to server: ' + error.message, '#DC2626'); }
+    });
+
+    // Keep `seller_details` in sync too — the admin panel's Reports page reads
+    // district/whatsapp_number from this table (not from `sellers`), so without
+    // this the admin Reports page never sees seller district/contact data.
+    sbClient.from('seller_details').upsert({
+      user_id: CURRENT_USER_ID,
+      district,
+      whatsapp_number: whatsapp
+    }, { onConflict: 'user_id' }).then(({error}) => {
+      if(error){ console.warn('seller_details sync failed:', error.message); }
     });
   }
 }
@@ -5777,7 +5940,59 @@ function switchAuthTab(tab){
   document.getElementById('tabSignupBtn').classList.toggle('active', tab==='signup');
   document.getElementById('loginForm').classList.toggle('active', tab==='login');
   document.getElementById('signupForm').classList.toggle('active', tab==='signup');
+  document.getElementById('forgotForm').classList.remove('active');
+  document.getElementById('authTabsRow').style.display = 'flex';
   hideAuthMsg();
+}
+
+/* Show/hide password toggle (eye icon) used on login & signup password fields */
+function togglePasswordVisibility(inputId, iconEl){
+  const input = document.getElementById(inputId);
+  if(!input) return;
+  const icon = iconEl.querySelector('i');
+  if(input.type === 'password'){
+    input.type = 'text';
+    icon.classList.remove('ti-eye');
+    icon.classList.add('ti-eye-off');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('ti-eye-off');
+    icon.classList.add('ti-eye');
+  }
+}
+
+/* Forgot password flow */
+function showForgotPassword(){
+  document.getElementById('authTabsRow').style.display = 'none';
+  document.getElementById('loginForm').classList.remove('active');
+  document.getElementById('signupForm').classList.remove('active');
+  document.getElementById('forgotForm').classList.add('active');
+  const loginEmail = document.getElementById('loginEmail').value.trim();
+  if(loginEmail) document.getElementById('forgotEmail').value = loginEmail;
+  hideAuthMsg();
+}
+function backToLogin(){
+  switchAuthTab('login');
+}
+async function handleForgotPassword(e){
+  e.preventDefault();
+  hideAuthMsg();
+  const email = document.getElementById('forgotEmail').value.trim();
+  const btn = document.getElementById('forgotBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+
+  const { error } = await sbClient.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.href
+  });
+
+  btn.disabled = false; btn.textContent = 'Send Reset Link';
+
+  if(error){
+    showAuthMsg('⚠️ ' + error.message, 'error');
+    return false;
+  }
+  showAuthMsg('✅ If an account exists for ' + email + ', a reset link has been sent. Check your inbox.', 'success');
+  return false;
 }
 
 function renderSignupDistrict(){
@@ -5816,6 +6031,20 @@ function showAppScreen(){
   document.getElementById('appShell').style.display = 'flex';
 }
 
+/* Keep the `seller_details` table (district, whatsapp_number) in sync with the
+   `sellers` row. The admin panel's Reports page reads from `seller_details`,
+   not from `sellers`, so this table must be kept up to date separately. */
+function syncSellerDetails(userId, district, whatsapp){
+  if(!userId) return;
+  sbClient.from('seller_details').upsert({
+    user_id: userId,
+    district: district || null,
+    whatsapp_number: whatsapp || null
+  }, { onConflict: 'user_id' }).then(({error}) => {
+    if(error){ console.warn('seller_details sync failed:', error.message); }
+  });
+}
+
 /* Ensure a `sellers` row exists for this authenticated user, then load it into SELLER_PROFILE */
 async function ensureSellerRow(user){
   try{
@@ -5837,6 +6066,9 @@ async function ensureSellerRow(user){
       SELLER_PROFILE.pincode  = existing.pincode || SELLER_PROFILE.pincode;
       SELLER_PROFILE.logo     = existing.logo_url || null;
       SELLER_PROFILE.status   = existing.status || 'pending';
+      // Backfill seller_details for accounts that pre-date this sync (or were
+      // created only via the on_auth_user_created trigger, which never wrote here).
+      syncSellerDetails(user.id, existing.district, existing.whatsapp);
       return;
     }
 
@@ -5864,6 +6096,8 @@ async function ensureSellerRow(user){
     else{
       localStorage.removeItem(PENDING_PROFILE_KEY + '_' + user.email);
     }
+
+    syncSellerDetails(user.id, newSeller.district, newSeller.whatsapp);
 
     SELLER_PROFILE.name = newSeller.name;
     SELLER_PROFILE.email = newSeller.email;
