@@ -1823,6 +1823,8 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
             </button>
           </div>
         </div>
+        <!-- Dots (shown only when there's more than one active admin banner) -->
+        <div id="dashBannerDots" style="position:absolute;left:0;right:0;bottom:14px;z-index:2;display:none;align-items:center;justify-content:center;gap:7px"></div>
       </div>
 
       <!-- Stat Cards -->
@@ -4728,6 +4730,7 @@ async function bootApp(){
   await loadSellerData();
   await loadDashboardBannerFromSupabase();
   renderDashBanner();
+  resetDashBannerAutoRotate();
   init();
 }
 
@@ -4756,60 +4759,93 @@ let BANNER_CONFIG = {
   planExpiry: PLAN_INFO.expiry ? PLAN_INFO.expiry.toISOString().slice(0,10) : ''
 };
 
+/* All currently-active admin banners for the dashboard slot, and which one
+   is showing right now (for the dot-indicator carousel below). */
+let DASH_BANNERS = [];
+let dashBannerIdx = 0;
+let dashBannerAutoTimer = null;
+
 /* ── Render dashboard banner from config ── */
 function renderDashBanner(){
-  const cfg = BANNER_CONFIG;
-
-  /* Image */
-  const imgLayer   = document.getElementById('dashBannerImgLayer');
-  const img        = document.getElementById('dashBannerImg');
-  const overlay    = document.getElementById('dashBannerOverlay');
-  if(cfg.image && imgLayer && img){
-    img.src = cfg.image;
-    imgLayer.style.display = 'block';
-    if(overlay) overlay.style.display = 'block';
-  } else {
-    if(imgLayer) imgLayer.style.display = 'none';
-    if(overlay)  overlay.style.display  = 'none';
-  }
-
-  /* Plan name badge */
+  const imgLayer  = document.getElementById('dashBannerImgLayer');
+  const img       = document.getElementById('dashBannerImg');
+  const overlay   = document.getElementById('dashBannerOverlay');
   const planBadge = document.getElementById('dashPlanBadge');
   const planName  = document.getElementById('dashPlanName');
-  if(cfg.planName && planBadge && planName){
-    planName.textContent = cfg.planName;
-    planBadge.style.display = 'block';
-  } else if(planBadge){
-    planBadge.style.display = 'none';
-  }
-
-  /* Expiry */
   const planExpiryWrap = document.getElementById('dashPlanExpiry');
   const planExpiryText = document.getElementById('dashPlanExpiryText');
-  const renewWrap      = document.getElementById('dashPlanRenewWrap');
-  if(cfg.planExpiry && planExpiryWrap && planExpiryText){
-    const exp      = new Date(cfg.planExpiry + 'T00:00:00');
-    const now      = new Date();
-    const diffMs   = exp - now;
-    const diffDays = Math.ceil(diffMs / (1000*60*60*24));
-    const expStr   = exp.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-    if(diffMs <= 0){
-      planExpiryText.textContent = 'Plan expired on ' + expStr;
-      planExpiryText.style.color = '#FCA5A5';
-      if(renewWrap) renewWrap.style.display = 'block';
-    } else if(diffDays <= 30){
-      planExpiryText.textContent = 'Plan expires in ' + diffDays + ' day' + (diffDays===1?'':'s') + ' · ' + expStr;
-      planExpiryText.style.color = diffDays <= 7 ? '#FCD34D' : 'rgba(255,255,255,0.80)';
-      if(renewWrap) renewWrap.style.display = diffDays <= 7 ? 'block' : 'none';
+  const renewWrap = document.getElementById('dashPlanRenewWrap');
+  const dotsWrap  = document.getElementById('dashBannerDots');
+
+  const hasBanners = DASH_BANNERS.length > 0;
+  const current = hasBanners ? DASH_BANNERS[dashBannerIdx] : null;
+
+  /* Image */
+  if(current && current.image && imgLayer && img){
+    img.src = current.image;
+    imgLayer.style.display = 'block';
+  } else if(imgLayer){
+    imgLayer.style.display = 'none';
+  }
+
+  if(hasBanners){
+    /* An admin-managed banner is showing — keep it clean: no darkening
+       overlay, no plan badge, no expiry text, no renew button on top of it. */
+    if(overlay) overlay.style.display = 'none';
+    if(planBadge) planBadge.style.display = 'none';
+    if(planExpiryWrap) planExpiryWrap.style.display = 'none';
+    if(renewWrap) renewWrap.style.display = 'none';
+  } else {
+    /* No admin banner set up for this slot — fall back to the default
+       gradient card with the plan name / expiry / renew reminder. */
+    if(overlay) overlay.style.display = 'none';
+
+    const cfg = BANNER_CONFIG;
+    if(cfg.planName && planBadge && planName){
+      planName.textContent = cfg.planName;
+      planBadge.style.display = 'block';
+    } else if(planBadge){
+      planBadge.style.display = 'none';
+    }
+
+    if(cfg.planExpiry && planExpiryWrap && planExpiryText){
+      const exp      = new Date(cfg.planExpiry + 'T00:00:00');
+      const now      = new Date();
+      const diffMs   = exp - now;
+      const diffDays = Math.ceil(diffMs / (1000*60*60*24));
+      const expStr   = exp.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+      if(diffMs <= 0){
+        planExpiryText.textContent = 'Plan expired on ' + expStr;
+        planExpiryText.style.color = '#FCA5A5';
+        if(renewWrap) renewWrap.style.display = 'block';
+      } else if(diffDays <= 30){
+        planExpiryText.textContent = 'Plan expires in ' + diffDays + ' day' + (diffDays===1?'':'s') + ' · ' + expStr;
+        planExpiryText.style.color = diffDays <= 7 ? '#FCD34D' : 'rgba(255,255,255,0.80)';
+        if(renewWrap) renewWrap.style.display = diffDays <= 7 ? 'block' : 'none';
+      } else {
+        planExpiryText.textContent = 'Valid till ' + expStr;
+        planExpiryText.style.color = 'rgba(255,255,255,0.70)';
+        if(renewWrap) renewWrap.style.display = 'none';
+      }
+      planExpiryWrap.style.display = 'block';
     } else {
-      planExpiryText.textContent = 'Valid till ' + expStr;
-      planExpiryText.style.color = 'rgba(255,255,255,0.70)';
+      if(planExpiryWrap) planExpiryWrap.style.display = 'none';
       if(renewWrap) renewWrap.style.display = 'none';
     }
-    planExpiryWrap.style.display = 'block';
-  } else {
-    if(planExpiryWrap) planExpiryWrap.style.display = 'none';
-    if(renewWrap)      renewWrap.style.display       = 'none';
+  }
+
+  /* Dot indicators — only shown when there's more than one active banner */
+  if(dotsWrap){
+    if(hasBanners && DASH_BANNERS.length > 1){
+      dotsWrap.style.display = 'flex';
+      dotsWrap.innerHTML = DASH_BANNERS.map((b,i) => `
+        <button type="button" onclick="goToDashBannerSlide(${i})" aria-label="Slide ${i+1}"
+          style="width:${i===dashBannerIdx?'20px':'7px'};height:7px;border-radius:4px;border:none;padding:0;cursor:pointer;background:${i===dashBannerIdx?'#fff':'rgba(255,255,255,0.45)'};transition:width .2s,background .2s"></button>
+      `).join('');
+    } else {
+      dotsWrap.style.display = 'none';
+      dotsWrap.innerHTML = '';
+    }
   }
 
   /* Also refresh notification badge */
@@ -4817,6 +4853,22 @@ function renderDashBanner(){
   const unread = notifs.filter(n=>!n.read).length;
   const badge  = document.getElementById('notifBadge');
   if(badge){ badge.textContent = unread; badge.style.display = unread ? 'flex' : 'none'; }
+}
+
+/* ── Dashboard banner carousel controls ── */
+function goToDashBannerSlide(i){
+  dashBannerIdx = i;
+  renderDashBanner();
+  resetDashBannerAutoRotate();
+}
+function resetDashBannerAutoRotate(){
+  if(dashBannerAutoTimer){ clearInterval(dashBannerAutoTimer); dashBannerAutoTimer = null; }
+  if(DASH_BANNERS.length > 1){
+    dashBannerAutoTimer = setInterval(() => {
+      dashBannerIdx = (dashBannerIdx + 1) % DASH_BANNERS.length;
+      renderDashBanner();
+    }, 5000);
+  }
 }
 
 /* ── Given a list of banner rows (from the `banners` table) for one
@@ -4836,22 +4888,28 @@ function bn_pickActiveBanner(rows){
   if(!rows || !rows.length) return null;
   return rows.find(bn_isRowActiveNow) || null;
 }
+function bn_pickAllActiveBanners(rows){
+  if(!rows || !rows.length) return [];
+  return rows.filter(b => bn_isRowActiveNow(b) && b.image);
+}
 
-/* ── Load the shared dashboard banner image (admin-managed, from Supabase)
-   plus this seller's real plan name/expiry (from their `subscriptions` row).
-   Sellers can no longer set their own banner — the dashboard banner is
-   100% admin-managed via the `banners` table. ── */
+/* ── Load the shared dashboard banner image(s) (admin-managed, from
+   Supabase) plus this seller's real plan name/expiry (from their
+   `subscriptions` row). Sellers can no longer set their own banner — the
+   dashboard banner is 100% admin-managed via the `banners` table. If more
+   than one banner is active for this slot, they rotate as a carousel with
+   dot indicators (see DASH_BANNERS / renderDashBanner). ── */
 async function loadDashboardBannerFromSupabase(){
   try{
-    // Shared banner image + copy, managed centrally in `banners`
+    // Shared banner image(s) + copy, managed centrally in `banners`
     const { data: rows, error: bannerErr } = await sbClient
       .from('banners')
       .select('image,title,subtitle,status,start_date,end_date')
       .eq('location', 'dashboard')
       .order('created_at', { ascending: false });
     if(bannerErr){ console.warn('Dashboard banner fetch failed:', bannerErr.message); }
-    const banner = bn_pickActiveBanner(rows);
-    if(banner && banner.image){ BANNER_CONFIG.image = banner.image; }
+    DASH_BANNERS = bn_pickAllActiveBanners(rows);
+    dashBannerIdx = 0;
 
     // This seller's real, current plan — from `subscriptions`, not a hardcoded value
     if(CURRENT_USER_ID){
