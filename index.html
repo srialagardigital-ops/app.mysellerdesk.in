@@ -112,17 +112,16 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
   background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
-.auth-banner-content { position: relative; z-index: 2; max-width: 460px; }
+.auth-banner-content { position: absolute; top: 40px; left: 56px; z-index: 2; max-width: 460px; }
 .auth-banner-img-layer { position: absolute; inset: 0; z-index: 0; display: none; }
 .auth-banner-img-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .auth-banner-img-layer::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(150deg, rgba(59,30,143,0.93) 0%, rgba(75,36,184,0.88) 55%, rgba(91,47,209,0.75) 100%);
+  background: linear-gradient(150deg, rgba(59,30,143,0.20) 0%, rgba(75,36,184,0.12) 55%, rgba(91,47,209,0.08) 100%);
 }
 .auth-banner-brand {
   display: flex; align-items: center; gap: 12px;
-  margin-bottom: 40px;
 }
 .auth-banner-brand .brand-icon {
   width: 42px; height: 42px; border-radius: 12px;
@@ -132,6 +131,14 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 }
 .auth-banner-brand .brand-icon i { font-size: 20px; color: #5B2FD1; }
 .auth-banner-brand .brand-name { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+.brand-beta-badge {
+  display: inline-block;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+  color: #fff; background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 5px; padding: 2px 6px;
+  margin-left: 6px; vertical-align: middle;
+}
 .auth-banner-brand .brand-sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 1px; }
 
 .auth-banner-eyebrow { display: none; }
@@ -1638,48 +1645,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
       <div class="auth-banner-brand">
         <div class="brand-icon"><i class="ti ti-shopping-bag"></i></div>
         <div>
-          <div class="brand-name">MySellerDesk</div>
-        </div>
-      </div>
-      <div class="auth-banner-eyebrow">Seller Platform</div>
-      <div class="auth-banner-title" id="authBannerTitle">Grow Your Business with MySellerDesk</div>
-      <div class="auth-banner-rule"></div>
-      <div class="auth-banner-desc" id="authBannerDesc">Manage orders, customers, products and grow your online business — all in one place.</div>
-      <div class="auth-banner-features" id="authBannerFeatures">
-        <div class="auth-banner-feature">
-          <span class="auth-banner-feature-icon"><i class="ti ti-shopping-cart"></i></span>
-          <div>
-            <span class="auth-banner-feature-num">Manage Orders</span>
-            <div class="auth-banner-feature-text">Process, track and deliver orders smoothly</div>
-          </div>
-        </div>
-        <div class="auth-banner-feature">
-          <span class="auth-banner-feature-icon"><i class="ti ti-users"></i></span>
-          <div>
-            <span class="auth-banner-feature-num">Customers &amp; Insights</span>
-            <div class="auth-banner-feature-text">Know your customers and improve relationships</div>
-          </div>
-        </div>
-        <div class="auth-banner-feature">
-          <span class="auth-banner-feature-icon"><i class="ti ti-package"></i></span>
-          <div>
-            <span class="auth-banner-feature-num">Products &amp; Inventory</span>
-            <div class="auth-banner-feature-text">Add, update and manage your products with ease</div>
-          </div>
-        </div>
-        <div class="auth-banner-feature">
-          <span class="auth-banner-feature-icon"><i class="ti ti-chart-bar"></i></span>
-          <div>
-            <span class="auth-banner-feature-num">Reports &amp; Growth</span>
-            <div class="auth-banner-feature-text">Analyze performance and grow your business</div>
-          </div>
-        </div>
-        <div class="auth-banner-feature">
-          <span class="auth-banner-feature-icon"><i class="ti ti-shield-check"></i></span>
-          <div>
-            <span class="auth-banner-feature-num">Secure &amp; Reliable</span>
-            <div class="auth-banner-feature-text">Your data is safe and always protected</div>
-          </div>
+          <div class="brand-name">MySellerDesk <span class="brand-beta-badge">BETA</span></div>
         </div>
       </div>
     </div>
@@ -2769,6 +2735,22 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 </div><!-- .app -->
 
 <script>
+/* ── XSS-safe escaping ─────────────────────────────────────────
+   Used everywhere user-entered data (customer/product/supplier
+   names, addresses, image URLs, notes, etc.) is inserted into
+   innerHTML, so a malicious string like <script> or an
+   attribute-breakout ("onerror=...) can never execute as code —
+   it just renders as harmless plain text. */
+function escapeHtml(value){
+  if(value === null || value === undefined) return '';
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /* ── CLICKABLE STATUS DEMO (frontend-only, no backend) ───────────
    Click any status badge below to cycle it to the next state.
    Note: this only updates that badge's look — the KPI numbers and
@@ -2829,6 +2811,8 @@ const titles = {
   reports:   ['Reports',   'Business insights and analytics.'],
   settings:  ['Settings',  'Manage your business settings and preferences.']
 };
+let LAST_PAGE_MEM = 'dashboard'; // in-memory only — not persisted to localStorage
+
 function nav(page, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   el.classList.add('active');
@@ -2837,17 +2821,17 @@ function nav(page, el) {
   document.getElementById('page-title').textContent = titles[page][0];
   document.getElementById('page-sub').textContent   = titles[page][1];
   if(page === 'reports'){ renderChannelChart(); renderReportsPage(); }
-  try{ localStorage.setItem('sd_last_page', page); }catch(e){}
+  LAST_PAGE_MEM = page;
 }
 
-/* Restore whichever page the user was on before a refresh. */
+/* Restore whichever page the user was on before a refresh (in-memory only,
+   so this resets to Dashboard on an actual page reload — nothing is saved
+   in the browser). */
 function restorePageFromHash(){
   if(location.hash){
     try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
   }
-  let requested = '';
-  try{ requested = localStorage.getItem('sd_last_page') || ''; }catch(e){}
-  const page = (requested && titles[requested]) ? requested : 'dashboard';
+  const page = (LAST_PAGE_MEM && titles[LAST_PAGE_MEM]) ? LAST_PAGE_MEM : 'dashboard';
   const el = document.querySelector('.nav-item[data-page="' + page + '"]') || document.querySelector('.nav-item[data-page="dashboard"]');
   if(el) nav(page, el);
 }
@@ -3028,6 +3012,34 @@ function logoutUser(){
     }, 900);
   }
 }
+
+/* ── Auto-logout after 10 minutes of inactivity ───────────────────
+   Runs only while the seller is logged in (appShell visible). Any
+   mouse/keyboard/touch/scroll activity resets the 10-minute timer.
+   No activity for 10 minutes → session is signed out automatically. */
+const IDLE_LOGOUT_MS = 10 * 60 * 1000; // 10 minutes
+let idleLogoutTimer = null;
+
+function resetIdleLogoutTimer(){
+  if(idleLogoutTimer) clearTimeout(idleLogoutTimer);
+  // Only track idle time while the seller is actually logged in.
+  const appShell = document.getElementById('appShell');
+  if(!appShell || appShell.style.display === 'none') return;
+  idleLogoutTimer = setTimeout(handleIdleLogout, IDLE_LOGOUT_MS);
+}
+
+async function handleIdleLogout(){
+  const appShell = document.getElementById('appShell');
+  if(!appShell || appShell.style.display === 'none') return; // already logged out
+  toast('⏱️ Logged out due to 10 minutes of inactivity');
+  try{ await sbClient.auth.signOut(); }catch(e){}
+  setTimeout(() => window.location.reload(), 900);
+}
+
+['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(evt => {
+  document.addEventListener(evt, resetIdleLogoutTimer, { passive: true });
+});
+
 
 /* ── SIDEBAR PLAN UPGRADE ── */
 function openUpgradePlan(){
@@ -3928,10 +3940,12 @@ function renderAll(){
 function buildRow(o, idx){
   const col = AVATAR_COLORS[idx % AVATAR_COLORS.length];
   const init = (o.name || o.mobile || '?').charAt(0).toUpperCase();
-  const displayName = o.name || ('+91 ' + o.mobile);
+  const displayName = escapeHtml(o.name) || ('+91 ' + escapeHtml(o.mobile));
   const prod = o.productIdx !== null && o.productIdx !== undefined ? PRODUCTS[o.productIdx] : null;
+  // Order IDs are system-generated (not free-typed by customers), but still
+  // escaped here since they're rendered into HTML.
   const idDisplay = o.orderId
-    ? `<span>${o.orderId}</span> <i class="ti ti-copy op-copy" title="Copy" onclick="event.stopPropagation();copyText('${o.orderId}')"></i>`
+    ? `<span>${escapeHtml(o.orderId)}</span> <i class="ti ti-copy op-copy" title="Copy" onclick="event.stopPropagation();copyText('${escapeHtml(o.orderId).replace(/'/g,"\\'")}')"></i>`
     : `<span style="color:var(--text-muted);font-style:italic;font-size:11px">Pending</span>`;
 
   const payBadge = () => {
@@ -3963,13 +3977,13 @@ function buildRow(o, idx){
   return `<tr style="cursor:default">
     <td>
       <div class="op-order-id">${idDisplay}</div>
-      <div class="op-channel" style="display:flex;align-items:center;gap:4px;margin-top:3px">${chIcon}<span>${o.channel||'Manual'}</span></div>
+      <div class="op-channel" style="display:flex;align-items:center;gap:4px;margin-top:3px">${chIcon}<span>${escapeHtml(o.channel)||'Manual'}</span></div>
     </td>
     <td>
       <div class="op-customer">
         <div>
           <div class="op-cust-name">${displayName}</div>
-          <div class="op-cust-phone">+91 ${o.mobile}</div>
+          <div class="op-cust-phone">+91 ${escapeHtml(o.mobile)}</div>
         </div>
       </div>
     </td>
@@ -4188,9 +4202,9 @@ function renderNewEnquiryDrawer(){
       <div class="prod-picker">
         ${PRODUCTS.map((p,i)=>`
           <div class="prod-option ${draft.productIdx===i?'selected':''}" onclick="selectProduct(${i})">
-            <div class="prod-option-img">${p.img ? `<img src="${p.img}">` : p.em}</div>
+            <div class="prod-option-img">${p.img ? `<img src="${escapeHtml(p.img)}">` : escapeHtml(p.em)}</div>
             <div style="flex:1">
-              <div class="prod-option-name">${p.name}</div>
+              <div class="prod-option-name">${escapeHtml(p.name)}</div>
               <div class="prod-option-price">₹${p.price.toLocaleString('en-IN')}</div>
               <div class="prod-option-stock ${p.stock===0?'out':p.stock<5?'low':''}">${p.stock===0?'❌ Out of stock':p.stock<5?'⚠️ Only '+p.stock+' left':'✓ '+p.stock+' in stock'}</div>
             </div>
@@ -4212,7 +4226,7 @@ function onMobileInput(val){
   if(!info) return;
   if(draft.mobile.length === 10 && CUSTOMERS[draft.mobile]){
     const c = CUSTOMERS[draft.mobile];
-    info.innerHTML = `<div class="cust-found"><i class="ti ti-user-check"></i><div><div class="cust-found-text">${c.name||'Existing customer'} found</div><div class="cust-found-sub">Order history will be linked</div></div></div>`;
+    info.innerHTML = `<div class="cust-found"><i class="ti ti-user-check"></i><div><div class="cust-found-text">${escapeHtml(c.name)||'Existing customer'} found</div><div class="cust-found-sub">Order history will be linked</div></div></div>`;
     // auto-fill name
     if(c.name && !draft.name){
       const nameEl = document.getElementById('inName');
@@ -4316,9 +4330,9 @@ function renderConfirmDrawer(){
     <div class="prod-picker" style="max-height:220px;overflow-y:auto">
       ${PRODUCTS.map((p,i)=>`
         <div class="prod-option ${draft.productIdx===i?'selected':''}" onclick="selectConfirmProduct(${i})">
-          <div class="prod-option-img">${p.em}</div>
+          <div class="prod-option-img">${escapeHtml(p.em)}</div>
           <div style="flex:1">
-            <div class="prod-option-name">${p.name}</div>
+            <div class="prod-option-name">${escapeHtml(p.name)}</div>
             <div class="prod-option-price">₹${p.price.toLocaleString('en-IN')}</div>
             <div class="prod-option-stock ${p.stock===0?'out':p.stock<5?'low':''}">${p.stock===0?'❌ Out of stock':p.stock<5?'⚠️ Only '+p.stock:p.stock+' in stock'}</div>
           </div>
@@ -4518,15 +4532,15 @@ function renderOrderViewDrawer(){
     <div style="background:var(--bg-subtle);border-radius:10px;padding:12px 14px;margin-bottom:16px">
       <div class="order-detail-row" style="padding:6px 0">
         <span class="order-detail-label">Product</span>
-        <span class="order-detail-val">${prod ? prod.em+' '+prod.name : '—'}</span>
+        <span class="order-detail-val">${prod ? prod.em+' '+escapeHtml(prod.name) : '—'}</span>
       </div>
       <div class="order-detail-row" style="padding:6px 0">
         <span class="order-detail-label">Amount</span>
         <span class="order-detail-val" style="color:var(--navy-600);font-size:15px">₹${total.toLocaleString('en-IN')}</span>
       </div>
-      ${o.payType?`<div class="order-detail-row" style="padding:6px 0"><span class="order-detail-label">Payment</span><span class="order-detail-val">${o.payType}</span></div>`:''}
-      ${o.courier?`<div class="order-detail-row" style="padding:6px 0"><span class="order-detail-label">Courier</span><span class="order-detail-val">${o.courier}${o.tracking?' · '+o.tracking:''}</span></div>`:''}
-      ${o.address?`<div class="order-detail-row" style="padding:6px 0"><span class="order-detail-label">Address</span><span class="order-detail-val" style="max-width:180px;text-align:right;font-size:12px">${o.address}${o.district?', '+o.district:''}${o.state?', '+o.state:''}</span></div>`:''}
+      ${o.payType?`<div class="order-detail-row" style="padding:6px 0"><span class="order-detail-label">Payment</span><span class="order-detail-val">${escapeHtml(o.payType)}</span></div>`:''}
+      ${o.courier?`<div class="order-detail-row" style="padding:6px 0"><span class="order-detail-label">Courier</span><span class="order-detail-val">${escapeHtml(o.courier)}${o.tracking?' · '+escapeHtml(o.tracking):''}</span></div>`:''}
+      ${o.address?`<div class="order-detail-row" style="padding:6px 0"><span class="order-detail-label">Address</span><span class="order-detail-val" style="max-width:180px;text-align:right;font-size:12px">${escapeHtml(o.address)}${o.district?', '+escapeHtml(o.district):''}${o.state?', '+escapeHtml(o.state):''}</span></div>`:''}
     </div>
 
     <!-- UPDATE STATUS section -->
@@ -4546,12 +4560,12 @@ function renderOrderViewDrawer(){
           <i class="ti ti-brand-whatsapp" style="color:white;font-size:18px"></i>
         </div>
         <div>
-          <div style="font-size:13px;font-weight:700;color:#065F46">Send update to ${custName.split(' ')[0]}</div>
-          <div style="font-size:11.5px;color:#16A34A;margin-top:1px">Auto message for "${o.status}"</div>
+          <div style="font-size:13px;font-weight:700;color:#065F46">Send update to ${escapeHtml(custName.split(' ')[0])}</div>
+          <div style="font-size:11.5px;color:#16A34A;margin-top:1px">Auto message for "${escapeHtml(o.status)}"</div>
         </div>
       </div>
       <div style="padding:12px 14px;border-bottom:1px solid #d1fae5">
-        <div style="font-size:13px;color:#065F46;line-height:1.55;font-style:italic">${waMsg}</div>
+        <div style="font-size:13px;color:#065F46;line-height:1.55;font-style:italic">${escapeHtml(waMsg)}</div>
       </div>
       <div style="padding:10px 14px">
         <button onclick="sendWhatsApp(${idx})" style="
@@ -4754,8 +4768,8 @@ function openEditEnquiry(idx){
       <div class="prod-picker">
         ${PRODUCTS.map((p,i)=>`
           <div class="prod-option ${draft.productIdx===i?'selected':''}" onclick="draft.productIdx=${draft.productIdx===i?'null':i};openEditEnquiry(${idx})">
-            <div class="prod-option-img">${p.em}</div>
-            <div style="flex:1"><div class="prod-option-name">${p.name}</div><div class="prod-option-price">₹${p.price.toLocaleString('en-IN')}</div></div>
+            <div class="prod-option-img">${escapeHtml(p.em)}</div>
+            <div style="flex:1"><div class="prod-option-name">${escapeHtml(p.name)}</div><div class="prod-option-price">₹${p.price.toLocaleString('en-IN')}</div></div>
             <div class="prod-option-check">${draft.productIdx===i?'<i class="ti ti-check"></i>':''}</div>
           </div>`).join('')}
       </div>
@@ -5140,13 +5154,8 @@ async function loadLoginBanner(){
     const data = bn_pickActiveBanner(rows);
     if(!data) return;
 
-    if(data.title) document.getElementById('authBannerTitle').textContent = data.title;
-    if(data.subtitle) document.getElementById('authBannerDesc').textContent = data.subtitle;
-
-    // Note: the admin Banner Management screen no longer has a "features"
-    // list field, so the feature bullets below always keep their hardcoded
-    // defaults from the HTML — only the title/description/image are
-    // admin-managed now.
+    // Note: the login banner now only shows the fixed logo/BETA badge —
+    // title/subtitle text fields are no longer displayed on this screen.
 
     if(data.image){
       document.getElementById('authBannerImg').src = data.image;
@@ -5416,20 +5425,21 @@ function renderSuppliersPage(){
   tbody.innerHTML = SUPPLIERS.map((sup, idx) => {
     const col = SUP_COLORS[idx % SUP_COLORS.length];
     const initial = (sup.name||'?')[0].toUpperCase();
-    const wa  = sup.whatsapp ? '+91 ' + sup.whatsapp.slice(0,5) + ' ' + sup.whatsapp.slice(5) : '—';
-    const waBtn = sup.whatsapp
-      ? '<button class="op-wa-btn" onclick="window.open(\'https://wa.me/91'+sup.whatsapp+'\',\'_blank\')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>'
+    const waDigits = (sup.whatsapp||'').replace(/\D/g,''); // keep digits only — safe for URL + onclick
+    const wa  = waDigits ? '+91 ' + waDigits.slice(0,5) + ' ' + waDigits.slice(5) : '—';
+    const waBtn = waDigits
+      ? '<button class="op-wa-btn" onclick="window.open(\'https://wa.me/91'+waDigits+'\',\'_blank\')" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>'
       : '';
     const prodCount = PRODUCTS.filter(p => p.supplier === sup.id).length;
     const isActive = (sup.status||'active') === 'active';
     return `<tr>
       <td><input type="checkbox" class="pp-checkbox"></td>
       <td><div style="display:flex;align-items:center;gap:12px">
-        <div style="width:38px;height:38px;border-radius:50%;background:${col.bg};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:${col.text};flex-shrink:0">${initial}</div>
-        <div><div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">${sup.name}</div>
-        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">${sup.email||'—'}</div></div></div></td>
+        <div style="width:38px;height:38px;border-radius:50%;background:${col.bg};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:${col.text};flex-shrink:0">${escapeHtml(initial)}</div>
+        <div><div style="font-size:13.5px;font-weight:700;color:var(--text-primary)">${escapeHtml(sup.name)}</div>
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">${escapeHtml(sup.email)||'—'}</div></div></div></td>
       <td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:500;color:var(--text-primary)">${wa}</span>${waBtn}</div></td>
-      <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">${sup.district||sup.addressDisplay||'—'}</div><div style="font-size:11.5px;color:var(--text-muted)">${sup.state||''}</div></td>
+      <td><div style="font-size:13px;font-weight:500;color:var(--text-primary)">${escapeHtml(sup.district||sup.addressDisplay)||'—'}</div><div style="font-size:11.5px;color:var(--text-muted)">${escapeHtml(sup.state)||''}</div></td>
       <td style="font-size:14px;font-weight:700;color:var(--text-primary);text-align:center">${prodCount}</td>
       <td><span class="pp-status-badge ${isActive?'active':'inactive'}">${isActive?'Active':'Inactive'}</span></td>
       <td><div class="op-action-btns">
@@ -5498,10 +5508,10 @@ function renderProductsPage(){
 
   tbody.innerHTML = PRODUCTS.map((p, idx) => {
     const supObj = SUPPLIERS.find(s => s.id === p.supplier);
-    const supName = supObj ? supObj.name : '—';
+    const supName = supObj ? escapeHtml(supObj.name) : '—';
     const imgHtml = p.img
-      ? `<img src="${p.img}">`
-      : `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:18px">${p.em||'📦'}</div>`;
+      ? `<img src="${escapeHtml(p.img)}">`
+      : `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:18px">${escapeHtml(p.em)||'📦'}</div>`;
     const isOut = (p.stock||0) === 0;
     const isDraft = p.status === 'draft';
     const statusClass = isOut ? 'draft' : (isDraft ? 'draft' : 'active');
@@ -5512,12 +5522,12 @@ function renderProductsPage(){
         <div class="pp-product-cell">
           <div class="pp-prod-img">${imgHtml}</div>
           <div>
-            <div class="pp-prod-name">${p.name}</div>
+            <div class="pp-prod-name">${escapeHtml(p.name)}</div>
             <span class="pp-prod-status-inline ${statusClass}">${statusLabel}</span>
           </div>
         </div>
       </td>
-      <td style="font-size:13px;color:var(--text-secondary)">${p.sku||'—'}</td>
+      <td style="font-size:13px;color:var(--text-secondary)">${escapeHtml(p.sku)||'—'}</td>
       <td style="font-size:13px;color:var(--text-secondary)">${supName}</td>
       <td style="font-size:13px;font-weight:600;color:var(--text-primary)">₹${(p.price||0).toLocaleString('en-IN')}</td>
       <td style="font-size:13px;${isOut?'color:#DC2626;font-weight:600':''}">${p.stock}</td>
@@ -6105,17 +6115,17 @@ function renderCustomersPage(){
       <td><input type="checkbox" class="cbox"></td>
       <td>
         <div style="display:flex;align-items:center;gap:12px">
-          <div class="cust-avatar" style="background:${bg}">${initial}</div>
-          <div class="cust-name">${c.name || 'Unnamed'}</div>
+          <div class="cust-avatar" style="background:${bg}">${escapeHtml(initial)}</div>
+          <div class="cust-name">${escapeHtml(c.name) || 'Unnamed'}</div>
         </div>
       </td>
       <td>
-        <div class="contact-phone">+91 ${c.mobile}</div>
-        ${c.email ? `<div class="contact-email">${c.email}</div>` : ''}
+        <div class="contact-phone">+91 ${escapeHtml(c.mobile)}</div>
+        ${c.email ? `<div class="contact-email">${escapeHtml(c.email)}</div>` : ''}
       </td>
       <td>
-        <div class="location-city">${locParts[0] || '—'}</div>
-        ${locParts[1] ? `<div class="location-state">${locParts[1]}</div>` : ''}
+        <div class="location-city">${escapeHtml(locParts[0]) || '—'}</div>
+        ${locParts[1] ? `<div class="location-state">${escapeHtml(locParts[1])}</div>` : ''}
       </td>
       <td class="orders-count">${stat.count}</td>
       <td class="spent-val">₹${stat.spent.toLocaleString('en-IN')}</td>
@@ -6152,17 +6162,7 @@ function generateReport(){
    SETTINGS
 ═══════════════════════════════ */
 function backupNow(){
-  const data = localStorage.getItem(STORE_KEY);
-  if(!data){ toast('⚠️ No data to backup','#D97706'); return; }
-  const blob = new Blob([data], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'sellerdesk-backup-' + new Date().toISOString().slice(0,10) + '.json';
-  a.click();
-  const now = new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  const el = document.querySelector('.st-last-backup');
-  if(el) el.textContent = now;
-  toast('✅ Backup downloaded!');
+  toast('⚠️ Backup feature coming soon', '#D97706');
 }
 
 function deleteAccount(){
@@ -6964,9 +6964,18 @@ renderDashBanner();
 ═══════════════════════════════ */
 const SUPABASE_URL = 'https://ouurdpvnkglkkeowooyc.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91dXJkcHZua2dsa2tlb3dvb3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MDE1NjMsImV4cCI6MjA5Nzk3NzU2M30.f8vE-LkV7VDO-R34FB52Pzg10Ug3A2sQy9h1Fs64bNw';
-const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: false,   // don't write the login session to localStorage — nothing saved locally
+    autoRefreshToken: true,
+    detectSessionInUrl: false
+  }
+});
 
-const PENDING_PROFILE_KEY = 'sd_pending_signup_profile';
+/* In-memory only (never written to localStorage) — holds signup form data
+   briefly in case ensureSellerRow() needs a fallback before the DB row exists. */
+const pendingSignupProfiles = {};
+
 
 function switchAuthTab(tab){
   document.getElementById('tabLoginBtn').classList.toggle('active', tab==='login');
@@ -7076,11 +7085,17 @@ function showAuthScreen(){
   document.getElementById('appBootLoader').style.display = 'none';
   document.getElementById('authScreen').style.display = 'flex';
   document.getElementById('appShell').style.display = 'none';
+  const waWidget = document.getElementById('waSupportWidget');
+  if(waWidget) waWidget.style.display = 'none';
+  if(idleLogoutTimer){ clearTimeout(idleLogoutTimer); idleLogoutTimer = null; }
 }
 function showAppScreen(){
   document.getElementById('appBootLoader').style.display = 'none';
   document.getElementById('authScreen').style.display = 'none';
   document.getElementById('appShell').style.display = 'flex';
+  const waWidget = document.getElementById('waSupportWidget');
+  if(waWidget) waWidget.style.display = 'block';
+  resetIdleLogoutTimer();
 }
 
 /* Keep the `seller_details` table (district, whatsapp_number) in sync with the
@@ -7127,11 +7142,7 @@ async function ensureSellerRow(user){
     // Fallback only: normally the on_auth_user_created DB trigger already inserts
     // this row at signup time (even before email verification). This branch just
     // covers older accounts created before the trigger existed.
-    let pending = {};
-    try{
-      const raw = localStorage.getItem(PENDING_PROFILE_KEY + '_' + user.email);
-      if(raw) pending = JSON.parse(raw);
-    }catch(e){}
+    let pending = pendingSignupProfiles[user.email] || {};
 
     const newSeller = {
       id: user.id,
@@ -7146,7 +7157,7 @@ async function ensureSellerRow(user){
     const { error: insertErr } = await sbClient.from('sellers').insert(newSeller);
     if(insertErr){ console.warn('Seller row create failed:', insertErr.message); }
     else{
-      localStorage.removeItem(PENDING_PROFILE_KEY + '_' + user.email);
+      delete pendingSignupProfiles[user.email];
     }
 
     syncSellerDetails(user.id, newSeller.district, newSeller.whatsapp);
@@ -7258,11 +7269,10 @@ async function handleSignup(e){
 
   btn.disabled = true; btn.textContent = 'Creating account…';
 
-  // Keep a local backup too (not required anymore since the DB trigger handles it,
-  // but harmless as a fallback).
-  try{
-    localStorage.setItem(PENDING_PROFILE_KEY + '_' + email, JSON.stringify({ name, whatsapp, address, state, district, pincode }));
-  }catch(e){}
+  // Keep a brief in-memory backup (not written to localStorage — nothing is
+  // persisted in the browser). Not required anymore since the DB trigger
+  // handles it, but harmless as a fallback.
+  pendingSignupProfiles[email] = { name, whatsapp, address, state, district, pincode };
 
   // Pass profile fields as auth user metadata — a DB trigger (on_auth_user_created)
   // reads this to create the `sellers` row immediately, even before email is verified.
@@ -7395,7 +7405,7 @@ loadLoginBanner();
 }
 </style>
 
-<div id="waSupportWidget">
+<div id="waSupportWidget" style="display:none">
   <div id="waChatBox">
     <div class="wa-chat-header">
       <i class="ti ti-brand-whatsapp"></i>
