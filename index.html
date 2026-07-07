@@ -1874,7 +1874,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
               This Month <i class="ti ti-chevron-down" style="font-size:12px;margin-left:2px"></i>
             </div>
           </div>
-          <div class="db-chart-wrap" style="display:flex;align-items:center;justify-content:center;min-height:200px">
+          <div class="db-chart-wrap" id="dashSalesChartArea" style="display:flex;align-items:center;justify-content:center;min-height:200px">
             <div class="empty-state" style="padding:24px 12px">
               <i class="ti ti-chart-line"></i>
               <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No sales data yet</p>
@@ -3311,6 +3311,9 @@ function updateOrderPreview() {
 .act-btn-large.wa:hover{background:#1ebe5d}
 .act-btn-large.full{grid-column:1/-1}
 .act-btn-large i{font-size:17px;flex-shrink:0}
+.act-btn-danger-link{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;margin-top:2px;border:1px dashed var(--red-border);background:transparent;color:var(--red-text);font-family:var(--font);font-size:12.5px;font-weight:600;cursor:pointer;border-radius:var(--radius-md);transition:all .14s;opacity:0.85}
+.act-btn-danger-link:hover{background:var(--red-bg);opacity:1}
+.act-btn-danger-link i{font-size:14px}
 
 /* Drawer footer buttons */
 .mo-btn-pri{flex:2;padding:12px;background:linear-gradient(135deg,#2563EB,#1D4ED8);color:white;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
@@ -3814,6 +3817,36 @@ function renderDashboardStats(){
   totalSalesEl.textContent     = '₹' + totalSales.toLocaleString('en-IN');
   totalProductsEl.textContent  = PRODUCTS.length.toLocaleString('en-IN');
   totalCustomersEl.textContent = Object.keys(CUSTOMERS).length.toLocaleString('en-IN');
+
+  // Sales Overview mini chart — This Month, grouped by weekday, real order data.
+  const chartArea = document.getElementById('dashSalesChartArea');
+  if(chartArea){
+    const now = new Date();
+    const thisMonthOrders = revenueOrders.filter(o => {
+      if(!o.createdAt) return false;
+      const d = new Date(o.createdAt);
+      return !isNaN(d) && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+    if(thisMonthOrders.length === 0){
+      chartArea.innerHTML = `<div class="empty-state" style="padding:24px 12px">
+        <i class="ti ti-chart-line"></i>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">No sales data yet</p>
+      </div>`;
+    } else {
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const byDay = [0,0,0,0,0,0,0];
+      thisMonthOrders.forEach(o => { const d = new Date(o.createdAt); byDay[d.getDay()] += orderAmount(o); });
+      const max = Math.max(...byDay, 1);
+      chartArea.innerHTML = `
+        <div style="display:flex;align-items:flex-end;gap:10px;width:100%;height:100%;padding:8px 4px">
+          ${days.map((d,i) => `
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end" title="${d}: ₹${byDay[i].toLocaleString('en-IN')}">
+              <div style="width:100%;max-width:32px;background:linear-gradient(180deg,#6366F1,#818CF8);border-radius:6px 6px 0 0;height:${Math.max(4,(byDay[i]/max)*100)}%"></div>
+              <span style="font-size:10.5px;color:var(--text-muted)">${d}</span>
+            </div>`).join('')}
+        </div>`;
+    }
+  }
 }
 
 /* ═══════════════════════════════
@@ -3841,12 +3874,12 @@ function renderRecentOrders(){
   wrap.innerHTML = recent.map(o => {
     const prod = (o.productIdx != null) ? PRODUCTS[o.productIdx] : null;
     const amt = orderAmount(o);
-    const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    const imgHtml = prod && prod.img ? `<img src="${prod.img}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">` : (prod ? (prod.em||'📦') : '📦');
     return `<div class="db-order-row">
-      <div class="db-order-img" style="background:#E8EDF5">${prod ? (prod.em||'📦') : '📦'}</div>
+      <div class="db-order-img" style="background:#E8EDF5;overflow:hidden">${imgHtml}</div>
       <div class="db-order-info">
         <div class="db-order-id">${o.orderId || '<span style="color:var(--text-muted);font-style:italic">Pending</span>'}</div>
-        <div class="db-order-date">${dateStr}</div>
+        <div class="db-order-date">${o.name || '—'}</div>
       </div>
       <span class="db-order-status ${badgeClass[o.status]||'b-pending-ord'}">${o.status}</span>
       <div class="db-order-amt">${amt ? '₹'+amt.toLocaleString('en-IN') : '—'}</div>
@@ -4052,16 +4085,22 @@ function renderConfirmDrawer(){
   const qty = parseInt(draft.qty)||1;
   const total = prod ? prod.price * qty : 0;
   const stockWarn = prod && prod.stock < qty ? `<div class="stock-warn"><i class="ti ti-alert-triangle"></i><span class="stock-warn-text">Only ${prod.stock} in stock — you're ordering ${qty}</span></div>` : '';
+  // Once an order has been confirmed, the customer's identity (name/mobile)
+  // should no longer change here — only product, quantity, and delivery
+  // details can be edited. Name stays editable only during the first-time
+  // Enquiry → Confirm step.
+  const lockIdentity = o && o.status !== 'Enquiry';
 
   const body = `
     <p class="sec-title">Customer Details</p>
     <div class="form-group">
       <label class="form-label">Customer Name <span class="req">*</span></label>
-      <input class="form-input" id="cName" type="text" placeholder="Full name" value="${draft.name||''}" oninput="draft.name=this.value">
+      <input class="form-input" id="cName" type="text" placeholder="Full name" value="${draft.name||''}"
+        ${lockIdentity ? 'readonly style="background:var(--bg-subtle);color:var(--text-muted);cursor:default"' : 'oninput="draft.name=this.value"'}>
     </div>
     <div class="form-group">
       <label class="form-label">Mobile Number</label>
-      <input class="form-input" value="+91 ${draft.mobile}" readonly>
+      <input class="form-input" value="+91 ${draft.mobile}" readonly style="background:var(--bg-subtle);color:var(--text-muted);cursor:default">
     </div>
 
     <p class="sec-title" style="margin-top:18px">Product</p>
@@ -4382,17 +4421,17 @@ function buildActionGrid(o, idx){
   if(s==='Enquiry'){
     btns += `<button class="act-btn-large primary" onclick="openConfirmOrder(${idx})"><i class="ti ti-check"></i>Confirm Order</button>`;
     btns += `<button class="act-btn-large" onclick="openEditEnquiry(${idx})"><i class="ti ti-edit"></i>Edit Enquiry</button>`;
-    btns += `<button class="act-btn-large red full" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Enquiry</button>`;
+    btns += `<button class="act-btn-danger-link" onclick="confirmCancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Enquiry</button>`;
   } else if(s==='Confirmed'){
     btns += `<button class="act-btn-large primary" onclick="advanceStatus(${idx},'Processing')"><i class="ti ti-settings"></i>Start Processing</button>`;
     btns += `<button class="act-btn-large" onclick="openConfirmOrder(${idx})"><i class="ti ti-edit"></i>Edit Order</button>`;
-    btns += `<button class="act-btn-large red full" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
+    btns += `<button class="act-btn-danger-link" onclick="confirmCancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
   } else if(s==='Processing'){
     btns += `<button class="act-btn-large primary" onclick="advanceStatus(${idx},'Packing')"><i class="ti ti-package"></i>Move to Packing</button>`;
-    btns += `<button class="act-btn-large red" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
+    btns += `<button class="act-btn-danger-link" onclick="confirmCancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
   } else if(s==='Packing'){
     btns += `<button class="act-btn-large primary" onclick="openShippingDrawer(${idx})"><i class="ti ti-truck-delivery"></i>Generate Shipping Label</button>`;
-    btns += `<button class="act-btn-large red" onclick="cancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
+    btns += `<button class="act-btn-danger-link" onclick="confirmCancelOrder(${idx})"><i class="ti ti-x"></i>Cancel Order</button>`;
   } else if(s==='Shipping'){
     btns += `<button class="act-btn-large green full" onclick="advanceStatus(${idx},'Delivered')"><i class="ti ti-circle-check"></i>Mark as Delivered 🎉</button>`;
   } else if(s==='Delivered'){
@@ -4535,6 +4574,19 @@ function saveEditEnquiry(idx){
 /* ═══════════════════════════════
    STATUS ACTIONS
 ═══════════════════════════════ */
+function confirmCancelOrder(idx){
+  const o = ORDERS[idx];
+  if(!o) return;
+  if(!confirm('Cancel the order for "' + (o.name||o.mobile) + '"?')) return;
+  const hasPaid = ['Processing','Packing','Shipping','Delivered'].includes(o.status);
+  o.status = 'Cancelled';
+  if(hasPaid) o.refundStatus = 'Refund Pending';
+  renderAll();
+  closeDrawer();
+  toast('❌ Order cancelled' + (hasPaid ? ' — refund required':''));
+  syncOrderUpdate(idx);
+}
+
 function advanceStatus(idx, newStatus){
   const o = ORDERS[idx];
   o.status = newStatus;
