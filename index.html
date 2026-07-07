@@ -7,7 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B1D3A'/%3E%3Ctext x='32' y='42' font-family='Arial, Helvetica, sans-serif' font-size='26' font-weight='700' fill='%23FFFFFF' text-anchor='middle'%3EMS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -44,6 +44,9 @@
   --teal-bg:  #CCFBF1; --teal-text:  #134E4A; --teal-border:  #5EEAD4;
 
   --font: 'Inter', -apple-system, sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --gold: #B4893A;
+  --gold-light: #D9B876;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
@@ -73,11 +76,13 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
   overflow: hidden;
 }
 
-/* Left banner panel */
+/* Left banner panel — vivid purple, dotted grid accent (matches brand reference) */
 .auth-banner-side {
-  flex: 1 1 46%;
+  flex: 1 1 44%;
   min-width: 0;
-  background: linear-gradient(150deg, #0B1D3A 0%, #1A3668 55%, #2563EB 100%);
+  background:
+    radial-gradient(600px 420px at 8% 100%, rgba(255,255,255,0.06), transparent 60%),
+    linear-gradient(160deg, #3B1E8F 0%, #4B24B8 42%, #5B2FD1 100%);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -86,52 +91,74 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
   padding: 60px 56px;
   color: #fff;
 }
+/* Dotted grid accent, top-right — echoes the reference design */
 .auth-banner-side::before {
   content: '';
   position: absolute;
-  width: 480px; height: 480px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(59,130,246,0.35) 0%, transparent 70%);
-  top: -140px; right: -160px;
+  top: 36px; right: 40px;
+  width: 150px; height: 90px;
+  background-image: radial-gradient(rgba(255,255,255,0.28) 1.6px, transparent 1.6px);
+  background-size: 14px 14px;
+  -webkit-mask-image: radial-gradient(ellipse at top right, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse at top right, #000 55%, transparent 100%);
+  pointer-events: none;
 }
 .auth-banner-side::after {
   content: '';
   position: absolute;
-  width: 380px; height: 380px;
+  bottom: -120px; right: -100px;
+  width: 340px; height: 340px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,58,237,0.22) 0%, transparent 70%);
-  bottom: -120px; left: -120px;
+  background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+  pointer-events: none;
 }
-.auth-banner-content { position: relative; z-index: 2; max-width: 440px; }
+.auth-banner-content { position: relative; z-index: 2; max-width: 460px; }
 .auth-banner-img-layer { position: absolute; inset: 0; z-index: 0; display: none; }
 .auth-banner-img-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .auth-banner-img-layer::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(150deg, rgba(11,29,58,0.90) 0%, rgba(26,54,104,0.78) 55%, rgba(37,99,235,0.55) 100%);
+  background: linear-gradient(150deg, rgba(59,30,143,0.93) 0%, rgba(75,36,184,0.88) 55%, rgba(91,47,209,0.75) 100%);
 }
 .auth-banner-brand {
   display: flex; align-items: center; gap: 12px;
-  margin-bottom: 46px;
+  margin-bottom: 40px;
 }
-.auth-banner-brand .brand-icon { width: 42px; height: 42px; }
-.auth-banner-brand .brand-icon i { font-size: 19px; }
-.auth-banner-brand .brand-name { font-size: 17px; font-weight: 700; color: #fff; }
-.auth-banner-brand .brand-sub { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 1px; }
-
-.auth-banner-title { font-size: 30px; font-weight: 700; line-height: 1.28; margin-bottom: 14px; letter-spacing: -0.01em; }
-.auth-banner-desc { font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.72); margin-bottom: 36px; }
-
-.auth-banner-features { display: flex; flex-direction: column; gap: 16px; }
-.auth-banner-feature { display: flex; align-items: center; gap: 13px; }
-.auth-banner-feature-icon {
-  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
-  background: rgba(255,255,255,0.10);
-  border: 1px solid rgba(255,255,255,0.14);
+.auth-banner-brand .brand-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: #fff;
   display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
 }
-.auth-banner-feature-icon i { font-size: 16px; color: #93C5FD; }
-.auth-banner-feature-text { font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,0.88); }
+.auth-banner-brand .brand-icon i { font-size: 20px; color: #5B2FD1; }
+.auth-banner-brand .brand-name { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+.auth-banner-brand .brand-sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+
+.auth-banner-eyebrow { display: none; }
+.auth-banner-title { font-family: var(--font); font-size: 36px; font-weight: 800; line-height: 1.25; letter-spacing: -0.015em; color: #fff; }
+.auth-banner-rule { display: none; }
+.auth-banner-desc { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.78); margin-top: 18px; margin-bottom: 38px; max-width: 380px; }
+
+.auth-banner-features { display: flex; flex-direction: column; gap: 20px; }
+.auth-banner-feature {
+  display: flex; align-items: flex-start; gap: 14px;
+  border: none; padding: 0;
+}
+.auth-banner-feature + .auth-banner-feature { border: none; padding-left: 0; }
+.auth-banner-feature-icon {
+  display: flex !important;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+}
+.auth-banner-feature-icon i { font-size: 19px; color: #fff; }
+.auth-banner-feature-num {
+  font-family: var(--font); font-size: 14.5px; font-weight: 700; color: #fff;
+  display: block; margin-bottom: 3px; text-transform: none; letter-spacing: 0;
+}
+.auth-banner-feature-text { font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.68); line-height: 1.5; text-transform: none; letter-spacing: 0; }
 
 @media (max-width: 900px) {
   .auth-banner-side { display: none; }
@@ -144,57 +171,121 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
   height: 100vh;
   overflow-y: auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  align-items: safe center;
   justify-content: center;
-  background: var(--bg-app);
+  background: #F4F5FA;
   padding: 24px;
+  position: relative;
 }
 .auth-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 408px;
   background: var(--bg-white);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 20px 50px rgba(11,29,58,0.14), 0 0 0 1px rgba(11,29,58,0.04);
-  padding: 32px 30px 28px;
+  border-radius: 18px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 1px 2px rgba(11,29,58,0.04), 0 20px 44px rgba(76,29,196,0.12);
+  padding: 28px 34px 24px;
+  margin-top: 8px;
 }
 .auth-brand {
-  display: flex; align-items: center; gap: 11px;
-  margin-bottom: 26px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 .auth-brand .brand-icon {
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #6D3CE8, #4B24B8);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 3px 10px rgba(37,99,235,0.45);
   flex-shrink: 0;
+  box-shadow: 0 10px 22px rgba(91,47,209,0.30);
+  margin-bottom: 10px;
 }
-.auth-brand .brand-icon i { color: #fff; font-size: 17px; }
-.auth-brand .brand-name { font-size: 15px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
-.auth-brand .brand-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.auth-brand .brand-icon i { color: #fff; font-size: 21px; }
+.auth-brand .brand-name { font-size: 18px; font-weight: 800; color: var(--text-primary); line-height: 1.25; letter-spacing: -0.01em; }
+.auth-brand .brand-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
 
 .auth-tabs {
   display: flex;
+  justify-content: center;
+  gap: 8px;
+  border-bottom: none;
   background: var(--bg-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 10px;
   padding: 4px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 .auth-tab {
   flex: 1;
   text-align: center;
-  padding: 9px 0;
+  padding: 8px 0;
   font-size: 13px; font-weight: 700;
   color: var(--text-muted);
-  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.15s;
+  position: relative;
+  letter-spacing: 0.01em;
+  border-radius: 7px;
+  transition: color 0.15s, background 0.15s;
 }
-.auth-tab.active { background: var(--bg-white); color: var(--navy-500); box-shadow: var(--shadow-xs); }
+.auth-tab.active { color: #fff; background: linear-gradient(135deg, #6D3CE8, #4B24B8); }
+.auth-tab.active::after { content: none; }
 
-.auth-title { font-size: 19px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-.auth-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+.auth-title { font-size: 19px; font-weight: 800; color: var(--text-primary); margin-bottom: 5px; letter-spacing: -0.01em; text-align: center; }
+.auth-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; text-align: center; }
+
+/* Corporate form treatment scoped to the auth card only */
+.auth-card .form-label { text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; }
+.auth-card .form-input, .auth-card .form-select { border-radius: 10px; }
+.auth-card .form-input:focus, .auth-card .form-select:focus { border-color: #6D3CE8; box-shadow: 0 0 0 3px rgba(109,60,232,0.12); }
+
+/* Icon-prefixed inputs (email / password), scoped to auth card only */
+.auth-icon-field { position: relative; }
+.auth-icon-field .auth-input-icon {
+  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); font-size: 17px; pointer-events: none; z-index: 1;
+}
+.auth-icon-field .form-input { padding-left: 40px; }
+.auth-icon-field .password-toggle-icon { right: 13px; }
+
+/* Remember me + forgot password row */
+.auth-remember-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: -8px; margin-bottom: 18px;
+}
+.auth-remember-check {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 600; color: var(--text-secondary);
+  cursor: pointer; user-select: none;
+}
+.auth-remember-check input[type="checkbox"] {
+  width: 15px; height: 15px; accent-color: #6D3CE8; cursor: pointer; margin: 0;
+}
+
+/* Switch-mode footer line ("New to MySellerDesk? Create an account") */
+.auth-switch-line { text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 16px; }
+.auth-switch-line span { color: #6D3CE8; font-weight: 700; cursor: pointer; }
+.auth-switch-line span:hover { text-decoration: underline; }
+
+/* Trust badges row, below the card */
+.auth-trust-row {
+  width: 100%; max-width: 460px;
+  display: flex; justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-bottom: 56px;
+}
+.auth-trust-item { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+.auth-trust-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: #EDE7FB;
+  display: flex; align-items: center; justify-content: center;
+}
+.auth-trust-icon i { font-size: 17px; color: #6D3CE8; }
+.auth-trust-label { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+.auth-trust-desc { font-size: 10.5px; color: var(--text-muted); line-height: 1.35; }
 
 .auth-form { display: none; }
 .auth-form.active { display: block; }
@@ -213,19 +304,22 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 
 .auth-btn {
   width: 100%;
-  padding: 11px 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 0;
   border: none;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6D3CE8, #4B24B8);
   color: #fff;
   font-size: 14px; font-weight: 700;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  box-shadow: var(--shadow-colored);
+  box-shadow: 0 8px 20px rgba(91,47,209,0.30);
   margin-top: 6px;
-  transition: opacity 0.15s;
+  transition: filter 0.15s, transform 0.1s;
 }
-.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.auth-btn:hover:not(:disabled) { opacity: 0.92; }
+.auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.auth-btn:hover:not(:disabled) { filter: brightness(1.08); }
+.auth-btn:active:not(:disabled) { transform: translateY(1px); }
 
 /* Password field with show/hide eye toggle */
 .password-field { position: relative; }
@@ -246,7 +340,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 /* Forgot password link */
 .auth-forgot-row { display: flex; justify-content: flex-end; margin-top: -10px; margin-bottom: 16px; }
 .auth-forgot-link {
-  font-size: 12.5px; font-weight: 600; color: var(--navy-500);
+  font-size: 12.5px; font-weight: 700; color: #6D3CE8;
   cursor: pointer; text-decoration: none;
 }
 .auth-forgot-link:hover { text-decoration: underline; }
@@ -255,41 +349,9 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
   font-size: 12.5px; font-weight: 600; color: var(--text-secondary);
   cursor: pointer; margin-bottom: 18px;
 }
-.auth-back-link:hover { color: var(--navy-500); }
+.auth-back-link:hover { color: #6D3CE8; }
 .auth-back-link i { font-size: 14px; }
 
-/* WhatsApp support contact bar, fixed to bottom of the auth screen */
-.auth-support-bar {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  background: var(--bg-white);
-  border-radius: 999px;
-  padding: 9px 18px 9px 10px;
-  box-shadow: var(--shadow-md);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  text-decoration: none;
-  z-index: 10;
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-.auth-support-bar:hover { transform: translateX(-50%) translateY(-2px); box-shadow: 0 10px 26px rgba(11,29,58,0.18), 0 0 0 1px rgba(11,29,58,0.05); }
-.auth-support-icon {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: #25D366;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.auth-support-icon i { color: #fff; font-size: 15px; }
-.auth-support-bar .auth-support-num { color: var(--navy-500); }
-@media (max-width: 480px) {
-  .auth-support-bar { font-size: 12px; padding: 8px 14px 8px 8px; }
-}
 
 /* ── SIDEBAR ────────────────────────────────────────────────── */
 .sidebar {
@@ -1574,25 +1636,50 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
     </div>
     <div class="auth-banner-content">
       <div class="auth-banner-brand">
-        <div class="brand-icon"><span style="color:#fff;font-weight:700;font-size:16px;letter-spacing:-0.5px;">MS</span></div>
+        <div class="brand-icon"><i class="ti ti-shopping-bag"></i></div>
         <div>
           <div class="brand-name">MySellerDesk</div>
         </div>
       </div>
-      <div class="auth-banner-title" id="authBannerTitle">Run your entire store from one place.</div>
-      <div class="auth-banner-desc" id="authBannerDesc">Orders, products, customers, suppliers and reports — everything you need to manage your business, in a single dashboard.</div>
+      <div class="auth-banner-eyebrow">Seller Platform</div>
+      <div class="auth-banner-title" id="authBannerTitle">Grow Your Business with MySellerDesk</div>
+      <div class="auth-banner-rule"></div>
+      <div class="auth-banner-desc" id="authBannerDesc">Manage orders, customers, products and grow your online business — all in one place.</div>
       <div class="auth-banner-features" id="authBannerFeatures">
         <div class="auth-banner-feature">
-          <div class="auth-banner-feature-icon"><i class="ti ti-shopping-cart-filled"></i></div>
-          <div class="auth-banner-feature-text">Track every order from enquiry to delivery</div>
+          <span class="auth-banner-feature-icon"><i class="ti ti-shopping-cart"></i></span>
+          <div>
+            <span class="auth-banner-feature-num">Manage Orders</span>
+            <div class="auth-banner-feature-text">Process, track and deliver orders smoothly</div>
+          </div>
         </div>
         <div class="auth-banner-feature">
-          <div class="auth-banner-feature-icon"><i class="ti ti-chart-bar"></i></div>
-          <div class="auth-banner-feature-text">See real-time reports and revenue insights</div>
+          <span class="auth-banner-feature-icon"><i class="ti ti-users"></i></span>
+          <div>
+            <span class="auth-banner-feature-num">Customers &amp; Insights</span>
+            <div class="auth-banner-feature-text">Know your customers and improve relationships</div>
+          </div>
         </div>
         <div class="auth-banner-feature">
-          <div class="auth-banner-feature-icon"><i class="ti ti-cloud-upload"></i></div>
-          <div class="auth-banner-feature-text">Your data, backed up automatically every day</div>
+          <span class="auth-banner-feature-icon"><i class="ti ti-package"></i></span>
+          <div>
+            <span class="auth-banner-feature-num">Products &amp; Inventory</span>
+            <div class="auth-banner-feature-text">Add, update and manage your products with ease</div>
+          </div>
+        </div>
+        <div class="auth-banner-feature">
+          <span class="auth-banner-feature-icon"><i class="ti ti-chart-bar"></i></span>
+          <div>
+            <span class="auth-banner-feature-num">Reports &amp; Growth</span>
+            <div class="auth-banner-feature-text">Analyze performance and grow your business</div>
+          </div>
+        </div>
+        <div class="auth-banner-feature">
+          <span class="auth-banner-feature-icon"><i class="ti ti-shield-check"></i></span>
+          <div>
+            <span class="auth-banner-feature-num">Secure &amp; Reliable</span>
+            <div class="auth-banner-feature-text">Your data is safe and always protected</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1600,11 +1687,13 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 
   <!-- RIGHT FORM PANEL -->
   <div class="auth-form-side">
+
   <div class="auth-card">
     <div class="auth-brand">
-      <div class="brand-icon"><span style="color:#fff;font-weight:700;font-size:14px;letter-spacing:-0.5px;">MS</span></div>
+      <div class="brand-icon"><i class="ti ti-shopping-bag"></i></div>
       <div>
-        <div class="brand-name">MySellerDesk</div>
+        <div class="brand-name" id="authCardTitle">Welcome Back! 👋</div>
+        <div class="brand-sub" id="authCardSub">Sign in to your MySellerDesk seller account</div>
       </div>
     </div>
 
@@ -1617,41 +1706,46 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 
     <!-- LOGIN FORM -->
     <form class="auth-form active" id="loginForm" onsubmit="return handleLogin(event)">
-      <div class="auth-title">Welcome back</div>
-      <div class="auth-desc">Log in to manage your store.</div>
       <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input" type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+        <label class="form-label">Email Address</label>
+        <div class="auth-icon-field">
+          <i class="ti ti-mail auth-input-icon"></i>
+          <input class="form-input" type="email" id="loginEmail" placeholder="Enter your email address" required autocomplete="email">
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label">Password</label>
-        <div class="password-field">
-          <input class="form-input" type="password" id="loginPassword" placeholder="Your password" required autocomplete="current-password">
+        <div class="password-field auth-icon-field">
+          <i class="ti ti-lock auth-input-icon"></i>
+          <input class="form-input" type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
           <span class="password-toggle-icon" onclick="togglePasswordVisibility('loginPassword', this)"><i class="ti ti-eye"></i></span>
         </div>
       </div>
-      <div class="auth-forgot-row">
-        <span class="auth-forgot-link" onclick="showForgotPassword()">Forgot password?</span>
+      <div class="auth-remember-row">
+        <label class="auth-remember-check"><input type="checkbox" id="loginRemember"> Remember me</label>
+        <span class="auth-forgot-link" onclick="showForgotPassword()">Forgot Password?</span>
       </div>
-      <button class="auth-btn" type="submit" id="loginBtn">Log In</button>
+      <button class="auth-btn" type="submit" id="loginBtn"><i class="ti ti-login-2"></i> Sign In</button>
+
+      <div class="auth-switch-line">New to MySellerDesk? <span onclick="switchAuthTab('signup')">Create an account</span></div>
     </form>
 
     <!-- FORGOT PASSWORD FORM -->
     <form class="auth-form" id="forgotForm" onsubmit="return handleForgotPassword(event)">
       <div class="auth-back-link" onclick="backToLogin()"><i class="ti ti-arrow-left"></i>Back to Log In</div>
-      <div class="auth-title">Reset your password</div>
-      <div class="auth-desc">Enter your account email — we'll send you a link to reset your password.</div>
+      <div class="auth-desc" style="margin-top:-4px">Enter your account email — we'll send you a link to reset your password.</div>
       <div class="form-group">
         <label class="form-label">Email</label>
-        <input class="form-input" type="email" id="forgotEmail" placeholder="you@example.com" required autocomplete="email">
+        <div class="auth-icon-field">
+          <i class="ti ti-mail auth-input-icon"></i>
+          <input class="form-input" type="email" id="forgotEmail" placeholder="you@example.com" required autocomplete="email">
+        </div>
       </div>
       <button class="auth-btn" type="submit" id="forgotBtn">Send Reset Link</button>
     </form>
 
     <!-- SIGNUP FORM -->
     <form class="auth-form" id="signupForm" onsubmit="return handleSignup(event)">
-      <div class="auth-title">Create your account</div>
-      <div class="auth-desc">Set up your MySellerDesk store in a minute.</div>
       <div class="form-group">
         <label class="form-label">Seller / Business Name <span class="req">*</span></label>
         <input class="form-input" type="text" id="signupName" placeholder="Your name or business name" required>
@@ -1710,12 +1804,25 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
       <button class="auth-btn" type="submit" id="signupBtn">Create Account</button>
     </form>
   </div>
-  </div>
 
-  <a class="auth-support-bar" href="https://wa.me/918122615305" target="_blank" rel="noopener">
-    <span class="auth-support-icon"><i class="ti ti-brand-whatsapp"></i></span>
-    <span>Need help? <span class="auth-support-num">81226 15305</span></span>
-  </a>
+  <div class="auth-trust-row">
+    <div class="auth-trust-item">
+      <div class="auth-trust-icon"><i class="ti ti-shield-check"></i></div>
+      <div class="auth-trust-label">100% Secure</div>
+      <div class="auth-trust-desc">Your data is safe and protected</div>
+    </div>
+    <div class="auth-trust-item">
+      <div class="auth-trust-icon"><i class="ti ti-headset"></i></div>
+      <div class="auth-trust-label">24/7 Support</div>
+      <div class="auth-trust-desc">We're here to help you anytime</div>
+    </div>
+    <div class="auth-trust-item">
+      <div class="auth-trust-icon"><i class="ti ti-bolt"></i></div>
+      <div class="auth-trust-label">Easy to Use</div>
+      <div class="auth-trust-desc">Simple and powerful seller tools</div>
+    </div>
+  </div>
+  </div>
 
 </div>
 
@@ -1726,7 +1833,7 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
   <div class="sidebar-brand">
     <div class="brand-icon"><span style="color:#fff;font-weight:700;font-size:14px;letter-spacing:-0.5px;">MS</span></div>
     <div>
-      <div class="brand-name">MySellerDesk</div>
+      <div class="brand-name">MySellerDesk <span style="background:rgba(255,255,255,0.14);color:rgba(255,255,255,0.85);font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.04em;vertical-align:middle;margin-left:2px">BETA</span></div>
     </div>
   </div>
   <div class="nav-section">
@@ -1807,22 +1914,6 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
         </div>
         <!-- Gradient overlay on top of image -->
         <div id="dashBannerOverlay" style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,29,58,0.62) 0%,rgba(11,29,58,0.18) 100%);display:none"></div>
-        <!-- Content -->
-        <div style="position:relative;z-index:1;padding:28px 36px;display:flex;align-items:center;justify-content:space-between;width:100%">
-          <div>
-            <div id="dashPlanBadge" style="display:none;margin-bottom:10px">
-              <span id="dashPlanName" style="background:rgba(255,255,255,0.18);color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:0.04em;backdrop-filter:blur(4px)"></span>
-            </div>
-            <div id="dashPlanExpiry" style="display:none;margin-top:6px">
-              <span id="dashPlanExpiryText" style="color:rgba(255,255,255,0.75);font-size:13px;font-weight:500"></span>
-            </div>
-          </div>
-          <div id="dashPlanRenewWrap" style="display:none">
-            <button onclick="toast('🚀 Redirecting to upgrade plans…','#7C3AED')" style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);color:#fff;font-family:var(--font);font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;cursor:pointer;backdrop-filter:blur(4px);transition:all 0.14s" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
-              <i class="ti ti-crown" style="margin-right:6px"></i>Renew Plan
-            </button>
-          </div>
-        </div>
         <!-- Dots (shown only when there's more than one active admin banner) -->
         <div id="dashBannerDots" style="position:absolute;left:0;right:0;bottom:14px;z-index:2;display:none;align-items:center;justify-content:center;gap:7px"></div>
       </div>
@@ -2940,7 +3031,10 @@ function logoutUser(){
 
 /* ── SIDEBAR PLAN UPGRADE ── */
 function openUpgradePlan(){
-  toast('🚀 Redirecting to upgrade plans…','#7C3AED');
+  document.getElementById('plansModalOverlay').classList.add('open');
+}
+function closePlansModal(){
+  document.getElementById('plansModalOverlay').classList.remove('open');
 }
 
 /* Compute and inject live Reports page data from ORDERS / PRODUCTS / CUSTOMERS.
@@ -3248,6 +3342,39 @@ function updateOrderPreview() {
 .drawer{background:white;width:360px;min-width:320px;max-width:400px;height:100vh;border-radius:0;border-left:1px solid var(--border-light);box-shadow:-8px 0 40px rgba(11,29,58,.16);display:flex;flex-direction:column;animation:slideRight .22s cubic-bezier(.32,.72,0,1)}
 @keyframes slideRight{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
 
+/* ── PLANS COMPARISON MODAL ─────────────────────────────────── */
+.plans-modal-overlay{display:none;position:fixed;inset:0;background:rgba(11,29,58,.45);z-index:950;align-items:center;justify-content:center;padding:28px;backdrop-filter:blur(2px)}
+.plans-modal-overlay.open{display:flex}
+.plans-modal{background:var(--bg-app);width:100%;max-width:1000px;max-height:90vh;overflow-y:auto;border-radius:18px;box-shadow:0 24px 60px rgba(11,29,58,.28);animation:plansModalIn .2s cubic-bezier(.32,.72,0,1);position:relative}
+@keyframes plansModalIn{from{transform:translateY(16px) scale(.98);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.plans-modal-head{padding:26px 32px 6px;text-align:center;position:relative}
+.plans-modal-title{font-size:20px;font-weight:800;color:var(--text-primary);letter-spacing:-0.01em}
+.plans-modal-sub{font-size:13px;color:var(--text-secondary);margin-top:4px}
+.plans-modal-close{position:absolute;top:20px;right:22px;width:32px;height:32px;border-radius:50%;background:var(--bg-white);border:1px solid var(--border-light);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:background .12s}
+.plans-modal-close:hover{background:var(--bg-subtle)}
+.plans-modal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:22px 32px 32px}
+@media (max-width:820px){.plans-modal-grid{grid-template-columns:1fr}}
+
+.plan-card-box{background:var(--bg-white);border-radius:16px;border:1.5px solid var(--border-light);padding:26px 24px 24px;position:relative}
+.plan-card-box.featured{border-color:#F59E0B;box-shadow:0 8px 26px rgba(245,158,11,.14)}
+.plan-card-box.elite{border-color:#7C3AED;box-shadow:0 8px 26px rgba(124,58,237,.14)}
+.plan-ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:0.03em;color:#fff;padding:5px 14px;border-radius:20px;white-space:nowrap}
+.plan-ribbon.orange{background:linear-gradient(135deg,#F59E0B,#EA580C)}
+.plan-ribbon.purple{background:linear-gradient(135deg,#8B5CF6,#6D28D9)}
+.plan-name{font-size:17px;font-weight:800;color:var(--text-primary);margin-bottom:10px}
+.plan-name.purple-text{color:#6D28D9}
+.plan-trial-badge{display:inline-block;background:var(--green-bg);color:var(--green-text);font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+.plan-price{font-size:32px;font-weight:900;color:var(--text-primary);letter-spacing:-0.02em;line-height:1}
+.plan-price.purple-text{color:#6D28D9}
+.plan-price-period{font-size:12.5px;color:var(--text-muted);font-weight:600;margin:4px 0 18px}
+.plan-save-tag{background:#EDE9FE;color:#6D28D9;font-size:12px;font-weight:700;padding:9px 12px;border-radius:9px;margin-bottom:16px;line-height:1.4}
+.plan-feature-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px}
+.plan-feature-list li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--text-primary);line-height:1.4}
+.plan-feature-list li.disabled{color:var(--text-muted)}
+.plan-feature-list li i{font-size:15px;margin-top:1px;flex-shrink:0}
+.plan-feature-list li.yes i{color:#16A34A}
+.plan-feature-list li.no i{color:#DC2626}
+
 .drawer-handle{display:none}
 .drawer-header{padding:18px 20px 14px;border-bottom:1px solid var(--border-light);flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .drawer-title{font-size:16px;font-weight:800;color:var(--text-primary);letter-spacing:-.02em}
@@ -3410,6 +3537,68 @@ function updateOrderPreview() {
   .action-grid{grid-template-columns:1fr 1fr}
 }
 </style>
+
+<!-- PLANS COMPARISON MODAL -->
+<div class="plans-modal-overlay" id="plansModalOverlay" onclick="if(event.target===this) closePlansModal()">
+  <div class="plans-modal">
+    <div class="plans-modal-head">
+      <div class="plans-modal-title">Choose the Plan That Fits Your Business</div>
+      <div class="plans-modal-sub">Compare features across Starter, Growth and Elite</div>
+      <div class="plans-modal-close" onclick="closePlansModal()"><i class="ti ti-x"></i></div>
+    </div>
+    <div class="plans-modal-grid">
+
+      <!-- STARTER -->
+      <div class="plan-card-box">
+        <div class="plan-name">Starter</div>
+        <span class="plan-trial-badge">30-day free trial</span>
+        <div class="plan-price">₹0</div>
+        <div class="plan-price-period">/ 30 days</div>
+        <ul class="plan-feature-list">
+          <li class="yes"><i class="ti ti-check"></i>Digital bill <span style="color:var(--text-muted);font-weight:500">(with watermark)</span></li>
+          <li class="yes"><i class="ti ti-check"></i>WhatsApp messaging</li>
+          <li class="yes"><i class="ti ti-check"></i>Customer &amp; product manage</li>
+          <li class="no disabled"><i class="ti ti-x"></i>PDF download &amp; print</li>
+          <li class="no disabled"><i class="ti ti-x"></i>A5 Shipping label + QR</li>
+          <li class="no disabled"><i class="ti ti-x"></i>Unlimited orders</li>
+        </ul>
+      </div>
+
+      <!-- GROWTH -->
+      <div class="plan-card-box featured">
+        <div class="plan-ribbon orange"><i class="ti ti-flame"></i>MOST POPULAR</div>
+        <div class="plan-name">Growth</div>
+        <div class="plan-price">₹199</div>
+        <div class="plan-price-period">/ month</div>
+        <ul class="plan-feature-list">
+          <li class="yes"><i class="ti ti-check"></i><b>Unlimited</b>&nbsp;orders</li>
+          <li class="yes"><i class="ti ti-check"></i>Bill — no watermark</li>
+          <li class="yes"><i class="ti ti-check"></i>PDF download &amp; print</li>
+          <li class="yes"><i class="ti ti-check"></i>A5 Shipping label + QR</li>
+          <li class="yes"><i class="ti ti-check"></i>WhatsApp messaging</li>
+          <li class="yes"><i class="ti ti-check"></i>Priority support</li>
+        </ul>
+      </div>
+
+      <!-- ELITE -->
+      <div class="plan-card-box elite">
+        <div class="plan-ribbon purple"><i class="ti ti-crown"></i>ELITE</div>
+        <div class="plan-name purple-text">Elite</div>
+        <div class="plan-price purple-text">₹1,999</div>
+        <div class="plan-price-period">/ year</div>
+        <div class="plan-save-tag">Save ₹389 vs monthly · Best value ₹167/mo</div>
+        <ul class="plan-feature-list">
+          <li class="yes"><i class="ti ti-check"></i>Everything in Growth</li>
+          <li class="yes"><i class="ti ti-check"></i>1 full year access</li>
+          <li class="yes"><i class="ti ti-check"></i>Unlimited orders &amp; labels</li>
+          <li class="yes"><i class="ti ti-check"></i>PDF &amp; print — no watermark</li>
+          <li class="yes"><i class="ti ti-check"></i>VIP support</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- ORDER DRAWER (Enquiry → Confirm → Payment → Packing → Shipping → Delivered) -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="handleOverlayClick(event)">
@@ -6077,7 +6266,7 @@ function renderNotifPanel(){
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:${n.read?'500':'700'};color:var(--text-primary);margin-bottom:2px">${n.title}</div>
         <div style="font-size:12px;color:var(--text-secondary);line-height:1.45">${n.body}</div>
-        ${n.type==='plan-expired'||n.type==='plan-validity' ? `<div onclick="event.stopPropagation();toast('🚀 Redirecting to upgrade plans…','#7C3AED')" style="margin-top:6px;display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:var(--navy-500);cursor:pointer">Renew Plan <i class="ti ti-arrow-right" style="font-size:12px"></i></div>` : ''}
+        ${n.type==='plan-expired'||n.type==='plan-validity' ? `<div onclick="event.stopPropagation();openUpgradePlan()" style="margin-top:6px;display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:var(--navy-500);cursor:pointer">Renew Plan <i class="ti ti-arrow-right" style="font-size:12px"></i></div>` : ''}
       </div>
       ${!n.read ? '<div style="width:8px;height:8px;border-radius:50%;background:var(--navy-500);flex-shrink:0;margin-top:5px"></div>' : ''}
     </div>
@@ -6786,6 +6975,17 @@ function switchAuthTab(tab){
   document.getElementById('signupForm').classList.toggle('active', tab==='signup');
   document.getElementById('forgotForm').classList.remove('active');
   document.getElementById('authTabsRow').style.display = 'flex';
+  const titleEl = document.getElementById('authCardTitle');
+  const subEl = document.getElementById('authCardSub');
+  if(titleEl && subEl){
+    if(tab === 'login'){
+      titleEl.textContent = 'Welcome Back! 👋';
+      subEl.textContent = 'Sign in to your MySellerDesk seller account';
+    } else {
+      titleEl.textContent = 'Create Your Account';
+      subEl.textContent = 'Set up your MySellerDesk store in a minute';
+    }
+  }
   hideAuthMsg();
 }
 
@@ -6813,6 +7013,12 @@ function showForgotPassword(){
   document.getElementById('forgotForm').classList.add('active');
   const loginEmail = document.getElementById('loginEmail').value.trim();
   if(loginEmail) document.getElementById('forgotEmail').value = loginEmail;
+  const titleEl = document.getElementById('authCardTitle');
+  const subEl = document.getElementById('authCardSub');
+  if(titleEl && subEl){
+    titleEl.textContent = 'Reset Password';
+    subEl.textContent = 'We\'ll email you a reset link';
+  }
   hideAuthMsg();
 }
 function backToLogin(){
@@ -6957,6 +7163,34 @@ async function ensureSellerRow(user){
   }
 }
 
+/* ── WhatsApp Support ("Need Help?") ──────────────────────────
+   Opens WhatsApp with a pre-filled message using the logged-in
+   seller's name, WhatsApp number and email from SELLER_PROFILE
+   (already in memory — no extra DB/API call needed).
+   Update SUPPORT_WHATSAPP_NUMBER below with the real support number
+   (in international format, no + or spaces, e.g. 91XXXXXXXXXX). */
+const SUPPORT_WHATSAPP_NUMBER = '91XXXXXXXXXX';
+
+function openWhatsAppSupport(){
+  const name     = (SELLER_PROFILE && SELLER_PROFILE.name)     || 'N/A';
+  const whatsapp = (SELLER_PROFILE && SELLER_PROFILE.whatsapp) || 'N/A';
+  const email    = (SELLER_PROFILE && SELLER_PROFILE.email)    || 'N/A';
+
+  const message =
+`Hi MySellerDesk Support,
+
+Seller name: ${name}
+WhatsApp no: ${whatsapp}
+Email Id: ${email}
+
+Issue: 
+
+Business hours: Mon–Sat, 9:00 AM – 7:00 PM`;
+
+  const url = `https://wa.me/${SUPPORT_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+}
+
 async function onAuthSuccess(user){
   CURRENT_USER_ID = user.id;
   await ensureSellerRow(user);
@@ -7072,5 +7306,164 @@ async function handleSignup(e){
 loadLoginBanner();
 
 </script>
+
+<!-- ── WhatsApp Support Widget (floating, bottom-right) ─────────── -->
+<style>
+#waSupportWidget { position: fixed; right: 24px; bottom: 24px; z-index: 9999; font-family: var(--font); }
+
+#waFab {
+  display: flex; align-items: center; gap: 10px;
+  height: 54px; padding: 0 16px 0 0;
+  border-radius: 27px;
+  background: #25D366;
+  box-shadow: 0 6px 18px rgba(37,211,102,0.45), 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  width: 54px;
+  overflow: hidden;
+  transition: width 0.25s ease;
+  white-space: nowrap;
+}
+#waFab:hover { width: 210px; }
+#waFab .wa-fab-icon {
+  width: 54px; height: 54px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+#waFab .wa-fab-icon i { font-size: 27px; color: #fff; }
+#waFab .wa-fab-label {
+  font-size: 14.5px; font-weight: 700; color: #fff;
+  opacity: 0; transition: opacity 0.2s ease 0.05s;
+}
+#waFab:hover .wa-fab-label { opacity: 1; }
+
+#waChatBox {
+  display: none;
+  position: absolute; right: 0; bottom: 68px;
+  width: 320px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 14px 40px rgba(11,29,58,0.25), 0 0 0 1px rgba(11,29,58,0.05);
+  overflow: hidden;
+}
+#waChatBox.show { display: block; }
+
+.wa-chat-header {
+  background: linear-gradient(135deg, #25D366, #128C4C);
+  padding: 16px 18px;
+  display: flex; align-items: center; gap: 10px;
+  color: #fff;
+}
+.wa-chat-header i { font-size: 22px; }
+.wa-chat-header-title { font-size: 15px; font-weight: 700; }
+.wa-chat-header-sub { font-size: 11.5px; color: rgba(255,255,255,0.85); margin-top: 1px; }
+.wa-chat-close {
+  margin-left: auto; cursor: pointer; font-size: 18px;
+  color: rgba(255,255,255,0.85); line-height: 1;
+}
+.wa-chat-close:hover { color: #fff; }
+
+.wa-chat-hours {
+  background: #F0FDF4; border-bottom: 1px solid #DCFCE7;
+  padding: 9px 18px;
+  font-size: 12px; color: #166534;
+  display: flex; align-items: center; gap: 7px;
+}
+.wa-chat-hours i { font-size: 14px; }
+
+.wa-chat-body { padding: 14px 18px 16px; }
+.wa-chat-body label { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+#waIssueText {
+  width: 100%; min-height: 84px; resize: vertical;
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 12px; font-family: var(--font);
+  font-size: 13px; color: var(--text-primary);
+  outline: none;
+}
+#waIssueText:focus { border-color: #25D366; }
+
+.wa-chat-send {
+  width: 100%; margin-top: 12px; border: none; cursor: pointer;
+  background: #25D366; color: #fff; font-weight: 700; font-size: 13.5px;
+  padding: 11px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background 0.15s;
+}
+.wa-chat-send:hover { background: #1EBE5B; }
+.wa-chat-send i { font-size: 17px; }
+
+@media (max-width: 480px) {
+  #waChatBox { width: calc(100vw - 32px); right: -6px; }
+}
+</style>
+
+<div id="waSupportWidget">
+  <div id="waChatBox">
+    <div class="wa-chat-header">
+      <i class="ti ti-brand-whatsapp"></i>
+      <div>
+        <div class="wa-chat-header-title">WhatsApp Support</div>
+        <div class="wa-chat-header-sub">We usually reply within a few minutes</div>
+      </div>
+      <span class="wa-chat-close" onclick="toggleWaChatBox(false)">&times;</span>
+    </div>
+    <div class="wa-chat-hours"><i class="ti ti-clock"></i>Business hours: Mon–Sat, 9:00 AM – 7:00 PM</div>
+    <div class="wa-chat-body">
+      <label for="waIssueText">Describe your issue</label>
+      <textarea id="waIssueText" placeholder="Type your problem here..."></textarea>
+      <button class="wa-chat-send" onclick="sendWaSupportMessage()"><i class="ti ti-brand-whatsapp"></i>WhatsApp</button>
+    </div>
+  </div>
+  <div id="waFab" onclick="toggleWaChatBox()">
+    <div class="wa-fab-icon"><i class="ti ti-brand-whatsapp"></i></div>
+    <div class="wa-fab-label">WhatsApp Support</div>
+  </div>
+</div>
+
+<script>
+const WA_SUPPORT_NUMBER = '918122615305';
+
+function toggleWaChatBox(forceState){
+  const box = document.getElementById('waChatBox');
+  const shouldShow = (typeof forceState === 'boolean') ? forceState : !box.classList.contains('show');
+  box.classList.toggle('show', shouldShow);
+  if(shouldShow){
+    setTimeout(() => document.getElementById('waIssueText').focus(), 50);
+  }
+}
+
+function sendWaSupportMessage(){
+  const issueEl = document.getElementById('waIssueText');
+  const issue = (issueEl.value || '').trim();
+
+  const name     = (typeof SELLER_PROFILE !== 'undefined' && SELLER_PROFILE.name)     || 'N/A';
+  const whatsapp = (typeof SELLER_PROFILE !== 'undefined' && SELLER_PROFILE.whatsapp) || 'N/A';
+  const email    = (typeof SELLER_PROFILE !== 'undefined' && SELLER_PROFILE.email)    || 'N/A';
+
+  const message =
+`Hi MySellerDesk Support,
+
+*Seller name:* ${name}
+*WhatsApp no:* ${whatsapp}
+*Email Id:* ${email}
+
+Issue: ${issue || '(not specified)'}
+
+Business hours: Mon–Sat, 9:00 AM – 7:00 PM`;
+
+  const url = `https://wa.me/${WA_SUPPORT_NUMBER}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+
+  issueEl.value = '';
+  toggleWaChatBox(false);
+}
+
+/* Close the chat box if user clicks anywhere outside the widget */
+document.addEventListener('click', function(e){
+  const widget = document.getElementById('waSupportWidget');
+  if(widget && !widget.contains(e.target)){
+    toggleWaChatBox(false);
+  }
+});
+</script>
+
 </body>
 </html>
