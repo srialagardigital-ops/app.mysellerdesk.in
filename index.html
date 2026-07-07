@@ -4883,23 +4883,39 @@ function loadBannerConfig(){
   }catch(e){}
 }
 
+/* ── Given a list of banner rows (from the `banners` table) for one
+   location, decide which one is "live" right now — mirrors the same
+   active/inactive/scheduled logic used in the admin panel. Rows should
+   already be sorted newest-first; we return the first currently-active one. ── */
+function bn_isRowActiveNow(b){
+  if(b.status === 'inactive') return false;
+  if(b.status === 'scheduled'){
+    if(!b.start_date || !b.end_date) return false;
+    const today = new Date().toISOString().slice(0,10);
+    return today >= b.start_date && today <= b.end_date;
+  }
+  return b.status === 'active';
+}
+function bn_pickActiveBanner(rows){
+  if(!rows || !rows.length) return null;
+  return rows.find(bn_isRowActiveNow) || null;
+}
+
 /* ── Load the shared dashboard banner image (admin-managed, from Supabase)
    plus this seller's real plan name/expiry (from their `subscriptions` row).
    A seller's own manual upload (loadBannerConfig(), localStorage) still takes
    priority over the shared image if they've set one — see call order below. ── */
 async function loadDashboardBannerFromSupabase(){
   try{
-    // Shared banner image + copy, managed centrally in `app_banners`
-    const { data: banner, error: bannerErr } = await sbClient
-      .from('app_banners')
-      .select('image_url,title,description')
-      .eq('placement', 'seller_dashboard')
-      .eq('is_active', true)
-      .order('sort_order', { ascending: true })
-      .limit(1)
-      .maybeSingle();
+    // Shared banner image + copy, managed centrally in `banners`
+    const { data: rows, error: bannerErr } = await sbClient
+      .from('banners')
+      .select('image,title,subtitle,status,start_date,end_date')
+      .eq('location', 'dashboard')
+      .order('created_at', { ascending: false });
     if(bannerErr){ console.warn('Dashboard banner fetch failed:', bannerErr.message); }
-    if(banner && banner.image_url){ BANNER_CONFIG.image = banner.image_url; }
+    const banner = bn_pickActiveBanner(rows);
+    if(banner && banner.image){ BANNER_CONFIG.image = banner.image; }
 
     // This seller's real, current plan — from `subscriptions`, not a hardcoded value
     if(CURRENT_USER_ID){
@@ -4932,31 +4948,25 @@ async function loadDashboardBannerFromSupabase(){
    HTML if the table is empty or unreachable. ── */
 async function loadLoginBanner(){
   try{
-    const { data, error } = await sbClient
-      .from('app_banners')
-      .select('image_url,title,description,features')
-      .eq('placement', 'login')
-      .eq('is_active', true)
-      .order('sort_order', { ascending: true })
-      .limit(1)
-      .maybeSingle();
+    const { data: rows, error } = await sbClient
+      .from('banners')
+      .select('image,title,subtitle,status,start_date,end_date')
+      .eq('location', 'login')
+      .order('created_at', { ascending: false });
     if(error){ console.warn('Login banner fetch failed:', error.message); return; }
+    const data = bn_pickActiveBanner(rows);
     if(!data) return;
 
     if(data.title) document.getElementById('authBannerTitle').textContent = data.title;
-    if(data.description) document.getElementById('authBannerDesc').textContent = data.description;
+    if(data.subtitle) document.getElementById('authBannerDesc').textContent = data.subtitle;
 
-    if(Array.isArray(data.features) && data.features.length){
-      document.getElementById('authBannerFeatures').innerHTML = data.features.map(f => `
-        <div class="auth-banner-feature">
-          <div class="auth-banner-feature-icon"><i class="ti ${f.icon || 'ti-check'}"></i></div>
-          <div class="auth-banner-feature-text">${f.text || ''}</div>
-        </div>
-      `).join('');
-    }
+    // Note: the admin Banner Management screen no longer has a "features"
+    // list field, so the feature bullets below always keep their hardcoded
+    // defaults from the HTML — only the title/description/image are
+    // admin-managed now.
 
-    if(data.image_url){
-      document.getElementById('authBannerImg').src = data.image_url;
+    if(data.image){
+      document.getElementById('authBannerImg').src = data.image;
       document.getElementById('authBannerImgLayer').style.display = 'block';
     }
   }catch(e){
