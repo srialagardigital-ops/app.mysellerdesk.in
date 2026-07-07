@@ -1725,13 +1725,13 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
     </div>
   </div>
   <div class="nav-section">
-    <div class="nav-item active" onclick="nav('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
-    <div class="nav-item" onclick="nav('orders',this)"><i class="ti ti-shopping-cart-filled"></i>Orders</div>
-    <div class="nav-item" onclick="nav('products',this)"><i class="ti ti-box"></i>Products</div>
-    <div class="nav-item" onclick="nav('suppliers',this)"><i class="ti ti-truck"></i>Suppliers</div>
-    <div class="nav-item" onclick="nav('customers',this)"><i class="ti ti-users"></i>Customers</div>
-    <div class="nav-item" onclick="nav('reports',this)"><i class="ti ti-chart-bar"></i>Reports</div>
-    <div class="nav-item" onclick="nav('settings',this)"><i class="ti ti-settings"></i>Settings</div>
+    <div class="nav-item active" data-page="dashboard" onclick="nav('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+    <div class="nav-item" data-page="orders" onclick="nav('orders',this)"><i class="ti ti-shopping-cart-filled"></i>Orders</div>
+    <div class="nav-item" data-page="products" onclick="nav('products',this)"><i class="ti ti-box"></i>Products</div>
+    <div class="nav-item" data-page="suppliers" onclick="nav('suppliers',this)"><i class="ti ti-truck"></i>Suppliers</div>
+    <div class="nav-item" data-page="customers" onclick="nav('customers',this)"><i class="ti ti-users"></i>Customers</div>
+    <div class="nav-item" data-page="reports" onclick="nav('reports',this)"><i class="ti ti-chart-bar"></i>Reports</div>
+    <div class="nav-item" data-page="settings" onclick="nav('settings',this)"><i class="ti ti-settings"></i>Settings</div>
   </div>
   <div class="sidebar-footer">
     <div class="plan-card">
@@ -2739,6 +2739,15 @@ function nav(page, el) {
   document.getElementById('page-title').textContent = titles[page][0];
   document.getElementById('page-sub').textContent   = titles[page][1];
   if(page === 'reports'){ renderChannelChart(); renderReportsPage(); }
+  try{ history.replaceState(null, '', '#' + page); }catch(e){}
+}
+
+/* Restore whichever page the user was on before a refresh, using the URL hash. */
+function restorePageFromHash(){
+  const requested = (location.hash || '').replace('#', '');
+  const page = (requested && titles[requested]) ? requested : 'dashboard';
+  const el = document.querySelector('.nav-item[data-page="' + page + '"]') || document.querySelector('.nav-item[data-page="dashboard"]');
+  if(el) nav(page, el);
 }
 
 /* ── TOPBAR USER DROPDOWN ── */
@@ -6940,6 +6949,7 @@ async function onAuthSuccess(user){
   await ensureSellerRow(user);
   showAppScreen();
   await bootApp();
+  restorePageFromHash();
 }
 
 async function handleLogin(e){
