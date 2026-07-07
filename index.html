@@ -1556,8 +1556,15 @@ body { font-family: var(--font); background: var(--bg-app); -webkit-font-smoothi
 </head>
 <body>
 
+<!-- Loader shown while we check the session / restore the page. Hides the
+     login-screen and dashboard flash that used to happen on refresh. -->
+<div id="appBootLoader" style="position:fixed;inset:0;background:var(--bg-app);display:flex;align-items:center;justify-content:center;z-index:9999;">
+  <i class="ti ti-loader-2" style="font-size:28px;color:var(--navy-500);animation:spin 0.8s linear infinite;"></i>
+</div>
+<style>@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}</style>
+
 <!-- AUTH SCREEN (Login / Signup) -->
-<div class="auth-wrap" id="authScreen">
+<div class="auth-wrap" id="authScreen" style="display:none">
 
   <!-- LEFT BANNER (content loaded from Supabase — see loadLoginBanner()) -->
   <div class="auth-banner-side" id="authBannerSide">
@@ -2739,12 +2746,16 @@ function nav(page, el) {
   document.getElementById('page-title').textContent = titles[page][0];
   document.getElementById('page-sub').textContent   = titles[page][1];
   if(page === 'reports'){ renderChannelChart(); renderReportsPage(); }
-  try{ history.replaceState(null, '', '#' + page); }catch(e){}
+  try{ localStorage.setItem('sd_last_page', page); }catch(e){}
 }
 
-/* Restore whichever page the user was on before a refresh, using the URL hash. */
+/* Restore whichever page the user was on before a refresh. */
 function restorePageFromHash(){
-  const requested = (location.hash || '').replace('#', '');
+  if(location.hash){
+    try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+  }
+  let requested = '';
+  try{ requested = localStorage.getItem('sd_last_page') || ''; }catch(e){}
   const page = (requested && titles[requested]) ? requested : 'dashboard';
   const el = document.querySelector('.nav-item[data-page="' + page + '"]') || document.querySelector('.nav-item[data-page="dashboard"]');
   if(el) nav(page, el);
@@ -6856,10 +6867,12 @@ function hideAuthMsg(){
 }
 
 function showAuthScreen(){
+  document.getElementById('appBootLoader').style.display = 'none';
   document.getElementById('authScreen').style.display = 'flex';
   document.getElementById('appShell').style.display = 'none';
 }
 function showAppScreen(){
+  document.getElementById('appBootLoader').style.display = 'none';
   document.getElementById('authScreen').style.display = 'none';
   document.getElementById('appShell').style.display = 'flex';
 }
@@ -6948,8 +6961,8 @@ async function onAuthSuccess(user){
   CURRENT_USER_ID = user.id;
   await ensureSellerRow(user);
   showAppScreen();
-  await bootApp();
   restorePageFromHash();
+  await bootApp();
 }
 
 async function handleLogin(e){
