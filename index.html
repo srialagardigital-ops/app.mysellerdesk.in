@@ -4727,6 +4727,7 @@ function toast(msg, bg){
 async function bootApp(){
   await loadSellerData();
   await loadDashboardBannerFromSupabase();
+  renderDashBanner();
   init();
 }
 
@@ -4811,76 +4812,11 @@ function renderDashBanner(){
     if(renewWrap)      renewWrap.style.display       = 'none';
   }
 
-  /* Sync settings UI if open */
-  const previewImg = document.getElementById('bannerPreviewImg');
-  const placeholder = document.getElementById('bannerUploadPlaceholder');
-  if(previewImg && placeholder){
-    if(cfg.image){ previewImg.src = cfg.image; previewImg.style.display='block'; placeholder.style.display='none'; }
-    else { previewImg.style.display='none'; placeholder.style.display='block'; }
-  }
-  const planNameInput   = document.getElementById('planNameInput');
-  const planExpiryInput = document.getElementById('planExpiryInput');
-  if(planNameInput)   planNameInput.value   = cfg.planName   || '';
-  if(planExpiryInput) planExpiryInput.value = cfg.planExpiry || '';
-
   /* Also refresh notification badge */
   const notifs = buildNotifications();
   const unread = notifs.filter(n=>!n.read).length;
   const badge  = document.getElementById('notifBadge');
   if(badge){ badge.textContent = unread; badge.style.display = unread ? 'flex' : 'none'; }
-}
-
-/* ── Banner image upload ── */
-function handleBannerUpload(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    BANNER_CONFIG.image = ev.target.result;
-    renderDashBanner();
-    saveBannerConfig();
-    toast('✅ Banner image uploaded!');
-  };
-  reader.readAsDataURL(file);
-}
-
-function clearBannerImage(){
-  BANNER_CONFIG.image = null;
-  document.getElementById('bannerFileInput').value = '';
-  renderDashBanner();
-  saveBannerConfig();
-  toast('🗑 Banner image removed');
-}
-
-/* ── Save plan details from settings inputs ── */
-function saveBannerSettings(){
-  const name   = (document.getElementById('planNameInput')?.value||'').trim();
-  const expiry = (document.getElementById('planExpiryInput')?.value||'').trim();
-  BANNER_CONFIG.planName   = name;
-  BANNER_CONFIG.planExpiry = expiry;
-  /* Also sync PLAN_INFO for notifications */
-  PLAN_INFO.name   = name;
-  PLAN_INFO.expiry = expiry ? new Date(expiry + 'T00:00:00') : null;
-  renderDashBanner();
-  saveBannerConfig();
-}
-
-/* ── Persist banner config in localStorage ── */
-function saveBannerConfig(){
-  try{ localStorage.setItem('sd_banner', JSON.stringify({ image: BANNER_CONFIG.image, planName: BANNER_CONFIG.planName, planExpiry: BANNER_CONFIG.planExpiry })); }catch(e){}
-}
-function loadBannerConfig(){
-  try{
-    const raw = localStorage.getItem('sd_banner');
-    if(!raw) return;
-    const d = JSON.parse(raw);
-    if(d.image)      BANNER_CONFIG.image      = d.image;
-    if(d.planName)   BANNER_CONFIG.planName   = d.planName;
-    if(d.planExpiry) BANNER_CONFIG.planExpiry = d.planExpiry;
-    /* sync PLAN_INFO */
-    if(d.planName)   PLAN_INFO.name   = d.planName;
-    if(d.planExpiry) PLAN_INFO.expiry = new Date(d.planExpiry + 'T00:00:00');
-  }catch(e){}
 }
 
 /* ── Given a list of banner rows (from the `banners` table) for one
@@ -4903,8 +4839,8 @@ function bn_pickActiveBanner(rows){
 
 /* ── Load the shared dashboard banner image (admin-managed, from Supabase)
    plus this seller's real plan name/expiry (from their `subscriptions` row).
-   A seller's own manual upload (loadBannerConfig(), localStorage) still takes
-   priority over the shared image if they've set one — see call order below. ── */
+   Sellers can no longer set their own banner — the dashboard banner is
+   100% admin-managed via the `banners` table. ── */
 async function loadDashboardBannerFromSupabase(){
   try{
     // Shared banner image + copy, managed centrally in `banners`
@@ -5992,7 +5928,6 @@ function deleteAccount(){
 }
 
 function saveSettings(){
-  saveBannerSettings();
   saveData();
   toast('✅ Settings saved!');
 }
@@ -6768,10 +6703,9 @@ function generateShippingLabel(idx){
   win.document.close();
 }
 
-/* Load banner config & render dashboard banner — called here, at the end of
-   this script block, so every value it depends on (BANNER_CONFIG, PLAN_INFO,
-   _notifReadSet, etc.) has already been declared. */
-loadBannerConfig();
+/* Initial dashboard banner render (defaults), before Supabase data has
+   loaded — bootApp() re-renders it once the real admin-managed banner
+   and plan info come back from Supabase. */
 renderDashBanner();
 
 
